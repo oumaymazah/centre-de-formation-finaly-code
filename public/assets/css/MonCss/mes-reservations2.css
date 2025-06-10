@@ -1,0 +1,528 @@
+.card-header h4 {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    position: relative;
+    font-size: 1.4rem;
+}
+
+.card-header h4:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100px;
+}
+
+/* Nouveaux styles pour l'alerte dropdown */
+.payment-alert {
+    border-radius: 8px;
+    border-left: 4px solid #f8d7da;
+    background-color: #f8d7da;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+    color: #721c24;
+    overflow: hidden;
+}
+
+.payment-alert-header {
+    padding: 15px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.payment-alert-content {
+    padding: 0 15px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    margin: 0;
+    visibility: hidden;
+}
+
+.payment-alert-content.open {
+    padding: 0 15px 15px 15px;
+    visibility: visible;
+}
+
+.dropdown-icon {
+    transition: transform 0.3s ease;
+}
+
+.dropdown-icon.rotate {
+    transform: rotate(180deg);
+}
+
+.alert-icon {
+    font-size: 1.5rem;
+    color: #721c24;
+}
+
+.status-badge .badge {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.8rem;
+    letter-spacing: 0.5px;
+    border-radius: 0;
+}
+
+.formations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 0;
+}
+
+.formation-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background-color: white;
+}
+
+.formation-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.formation-image {
+    height: 160px;
+    overflow: hidden;
+    position: relative;
+}
+
+.formation-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.no-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.formation-details {
+    padding: 15px;
+}
+
+.formation-details h5 {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    font-size: 1rem;
+    line-height: 1.3;
+    height: 2.6rem;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.card {
+    margin-bottom: 30px;
+    border: 1px solid #ADD8E633;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+    border-radius: 0;
+    width: 100% !important;
+    height: 100% !important;
+    background-color: #fff;
+}
+
+.teacher {
+    color: #666;
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+}
+
+.discount-badge {
+    background-color: #1e6356;
+    color: white;
+    padding: 6px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.ribbon-success {
+    top: 50px !important;
+    right: 0 !important;
+    left: auto !important;
+}
+
+.price-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: flex-start;
+}
+
+.final-price {
+    font-weight: 700;
+    color: #333;
+    font-size: 1rem;
+    order: 1;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: #888;
+    font-size: 0.85rem;
+    order: 2;
+    margin-left: 0;
+}
+
+/* Ensure proper spacing for the total section outside the card when visible */
+.d-flex.justify-content-end .total-section {
+    margin-top: -20px;
+    margin-bottom: 20px;
+}
+
+/* Adjust the total-section inside the card for consistency */
+.total-container .total-section {
+    margin-top: 20px;
+    margin-bottom: 0;
+    width: 250px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px 20px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 0.95rem;
+    color: #6c757d;
+}
+
+.grand-total {
+    margin-top: 8px;
+    padding-top: 12px;
+    padding: 6px 10px;
+    font-weight: 200;
+    font-size: 1rem;
+    background-color: #6c757d !important;
+    color: #fff !important;
+}
+
+/* Style pour le bouton Voir le reçu */
+.view-invoice-btn {
+    color: white !important;
+    background-color: #6c757d !important;
+    transition: all 0.3s ease;
+    border-radius: 0;
+    padding: 6px 14px;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.square-button {
+    border-radius: 0 !important;
+}
+
+/* Style pour les badges carrés */
+.square-badge {
+    border-radius: 0 !important;
+    padding: 0.5rem 0.8rem;
+    letter-spacing: 0.5px;
+}
+
+.view-invoice-btn:hover {
+    background-color: #5a6268;
+    color: white;
+}
+
+.custom-bg {
+    background-color: #f8d7da !important;
+    color: #721c24 !important;
+}
+
+.card-footer {
+    padding: 15px 20px;
+}
+
+/* S'assurer que le conteneur parent gère bien l'overflow */
+.card-body {
+    padding: 30px;
+    overflow: visible;
+    height: auto;
+    min-height: auto; /* Permettre l'ajustement automatique */
+}
+
+/* Améliorer la gestion de l'espace pour les formations nombreuses */
+.formations-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px; /* Ajouter une marge en bas */
+}
+
+/* Conteneur pour le total qui reste dans la card */
+.total-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    padding-bottom: 0; /* S'assurer qu'il n'y a pas de padding supplémentaire */
+}
+
+/* Animation améliorée pour la carte de réservation */
+.reservation-card {
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border: none;
+    overflow: visible;
+    margin-bottom: 30px;
+    min-height: auto;
+    height: auto;
+}
+
+/* FIX PRINCIPAL : Ajustement spécifique pour les formations peu nombreuses */
+.formations-container:has(.formations-grid:not(:has(+ .text-center))) .total-container {
+    margin-top: 15px; /* Plus d'espace quand il n'y a pas de bouton "Voir plus" */
+    margin-bottom: 0;
+}
+
+/* Alternative si :has() n'est pas supporté - utiliser une classe spécifique */
+.formations-few .total-container {
+    margin-top: 2px;
+    margin-bottom: 0;
+}
+
+/* Assurer que la section totale reste dans les limites de la card */
+.formations-few .total-section {
+    margin-top: 0; /* Pas de marge supplémentaire car déjà dans le conteneur */
+}
+
+/* Responsive pour maintenir la section dans la card sur mobile */
+@media (max-width: 768px) {
+    .d-flex.justify-content-end .total-section,
+    .total-container .total-section {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 20px;
+    }
+
+    .total-container {
+        justify-content: stretch;
+    }
+}
+
+/* Gestion spécifique pour les formations cachées */
+.hidden-formations {
+    display: contents;
+    transition: opacity 0.3s ease;
+}
+
+.hidden-formations .formation-card {
+    animation: fadeInUp 0.5s ease forwards;
+    opacity: 0;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animation inverse pour cacher les formations */
+.hidden-formations.hiding .formation-card {
+    animation: fadeOutDown 0.3s ease forwards;
+}
+
+@keyframes fadeOutDown {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+/* Bouton voir plus amélioré */
+.btn-voir-plus {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    color: #6c757d;
+    padding: 10px 20px;
+    border-radius: 0;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-voir-plus::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-voir-plus:hover::before {
+    left: 100%;
+}
+
+.btn-voir-plus:hover {
+    background-color: #e9ecef;
+    border-color: #adb5bd;
+    color: #495057;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+}
+
+.btn-voir-plus i {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-voir-plus:hover i {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Centrage du bouton */
+.text-center.mt-3.mb-4 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* Responsive pour le bouton voir plus */
+@media (max-width: 768px) {
+    .btn-voir-plus {
+        font-size: 0.85rem;
+        padding: 8px 16px;
+    }
+}
+
+.empty-reservations-container {
+    padding: 0;
+    background-color: transparent;
+    border-radius: 0;
+    min-height: auto;
+    display: block;
+}
+
+.empty-reservations-content {
+    max-width: 100%;
+    text-align: left;
+    padding: 40px;
+    background-color: #f9fafb;
+    border-radius: 8px;
+    margin: 0;
+    display: inline-block;
+    width: 100%;
+}
+
+.cart-icon-wrapper {
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.cart-icon-wrapper i {
+    font-size: 24px;
+    color: #333;
+}
+
+.empty-reservations-title {
+    font-size: 30px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.empty-reservations-message {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.empty-reservations-subtext {
+    font-size: 16px;
+    color: #6B7280;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.empty-reservations-action {
+    margin-top: 20px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.btn-discover, .btn-cart {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+.btn-discover {
+    color: #2B6ED4;
+}
+
+.btn-cart {
+    color: #6c757d;
+}
+
+.btn-discover i, .btn-cart i {
+    margin-left: 8px;
+    transition: transform 0.3s ease;
+}
+
+.btn-cart i {
+    margin-left: 0;
+    margin-right: 8px;
+}
+
+.btn-discover:hover {
+    color: #1e5bb8;
+}
+
+.btn-cart:hover {
+    color: #5a6268;
+}
+
+.btn-discover:hover i {
+    transform: translateX(4px);
+}
+
+@media (max-width: 768px) {
+    .empty-reservations-title {
+        font-size: 24px;
+    }
+
+    .empty-reservations-message,
+    .empty-reservations-subtext {
+        font-size: 15px;
+    }
+
+    .empty-reservations-content {
+        padding: 30px 20px;
+    }
+}

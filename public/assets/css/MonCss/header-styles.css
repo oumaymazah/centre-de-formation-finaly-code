@@ -1,0 +1,639 @@
+/* Styles pour les nouveaux liens de navigation */
+.nav-menus {
+  display: flex!important;
+  align-items: center;
+  gap: 8px; /* Réduit pour économiser l'espace */
+  flex-wrap: nowrap; /* CRITIQUE - Force une seule ligne */
+  white-space: nowrap; /* Empêche le retour à la ligne */
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  flex-shrink: 1; /* MODIFIÉ - Permet une compression contrôlée */
+}
+
+/* Styles pour le logo dans la navigation (utilisateurs non authentifiés) */
+   .nav-logo {
+  display: flex;
+  align-items: center;
+  margin-right: -60px !important; /* MODIFIÉ - Espace réduit à droite du logo pour le rapprocher du premier lien */
+  margin-left: 50px !important; /* MODIFIÉ - Augmenté de 20px pour décaler le logo plus à droite */
+  height: 40px;
+  overflow: visible;
+  z-index: 10;
+  flex-shrink: 0; /* CRITIQUE - Empêche la compression du logo */
+  min-width:100px; /* AJOUTÉ - Largeur minimale garantie pour le logo */
+}
+
+.nav-logo a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  height: 80%;
+  transition: none !important;
+  flex-shrink: 0; /* Empêche la compression du lien logo */
+}
+
+/* Forcer l'absence totale de hover sur le logo et ses enfants */
+.nav-logo a:hover,
+.nav-logo:hover,
+.nav-logo a:hover *,
+.nav-logo:hover * {
+  background-color: transparent !important;
+  color: inherit !important;
+  transform: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.nav-logo-img {
+  height: 90px;
+  width: auto;
+  object-fit: contain;
+  transition: none !important;
+  flex-shrink: 0; /* CRITIQUE - Empêche la compression de l'image */
+  min-width: 80px; /* AJOUTÉ - Largeur minimale pour l'image */
+}
+
+/* Forcer l'absence de hover sur l'image du logo */
+.nav-logo-img:hover {
+  transform: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+.nav-links {
+  color: #374151 !important;
+  font-size: 14px !important; /* RÉDUIT pour économiser l'espace */
+  font-weight: 500 !important;
+  text-decoration: none;
+padding: 4px 6px; /* Padding encore plus réduit */
+  transition: all 0.2s ease;
+  border-radius: 6px;
+  white-space: nowrap;
+  flex-shrink: 1; /* MODIFIÉ - Permet compression contrôlée */
+}
+
+.nav-links:hover {
+  color: #2563EB !important;
+}
+
+.nav-links.active {
+  background-color: #2563EB !important;
+  color: white;
+}
+
+/* Ajustement pour aligner avec le logo */
+.main-header-left {
+  display: flex;
+  align-items: center;
+  gap: 1px; /* RÉDUIT */
+  flex-shrink: 0; /* CRITIQUE - Empêche la compression de la section logo */
+}
+
+.page-main-header {
+  min-height: 80px;
+  position: relative;
+  z-index: 5;
+  overflow: visible; /* AJOUTÉ - Permet l'affichage complet */
+}
+
+.main-header-right {
+  display: flex;
+  align-items: center;
+  min-height: 80px;
+  width: 100%; /* AJOUTÉ - Utilise toute la largeur disponible */
+  justify-content: space-between; /* AJOUTÉ - Répartit l'espace entre logo et navigation */
+  flex-wrap: nowrap; /* CRITIQUE - Force une seule ligne */
+}
+
+/* CRITIQUE - Section de navigation avec gestion d'espace optimisée */
+.nav-right {
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 1;
+  align-items: center;
+  flex-wrap: nowrap; /* CRITIQUE - Force une seule ligne */
+  gap: 1px; /* Espacement réduit */
+  overflow: hidden; /* MODIFIÉ - Supprime le scroll horizontal */
+}
+
+.nav-menus {
+  display: flex;
+  align-items: center;
+  gap: 2px; /* Espacement réduit */
+  flex-wrap: nowrap; /* CRITIQUE - Force une seule ligne */
+  justify-content: flex-end; /* Aligne les éléments à droite */
+  white-space: nowrap; /* Empêche le retour à la ligne */
+  overflow: hidden; /* MODIFIÉ - Pas de scroll */
+}
+
+/* Gestion responsive améliorée - MAINTIENT UNE LIGNE */
+@media (max-width: 1200px) {
+  .nav-menus {
+    gap: 3px; /* Encore plus serré */
+  }
+
+  .nav-links {
+    font-size: 11px; /* Plus petit */
+    padding: 5px 6px; /* Plus compact */
+  }
+
+  .nav-logo {
+    margin-right: 10px; /* MODIFIÉ - Réduit pour maintenir la proximité */
+    margin-left: 35px; /* MODIFIÉ - Ajusté proportionnellement pour maintenir le décalage */
+  }
+
+  .btn-connect-nav,
+  .btn-register-nav {
+    padding: 5px 8px;
+    font-size: 11px;
+    gap: 1px;
+  }
+}
+
+@media (max-width: 992px) {
+  .nav-menus {
+    gap: 2px; /* Très serré */
+  }
+
+  .nav-links {
+    font-size: 10px;
+    padding: 4px 5px;
+  }
+
+  .nav-logo {
+    margin-right: 8px; /* MODIFIÉ - Encore plus proche du premier lien */
+    margin-left: 25px; /* MODIFIÉ - Ajusté proportionnellement */
+  }
+
+  .nav-logo-img {
+    height: 80px; /* Légèrement plus petit */
+  }
+
+  .btn-connect-nav,
+  .btn-register-nav {
+    padding: 4px 6px;
+    font-size: 10px;
+    gap: 1px;
+  }
+
+  .btn-connect-nav svg,
+  .btn-register-nav svg {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+/* Responsive pour mobile */
+@media (max-width: 768px) {
+  .nav-menus {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px;
+    flex-wrap: wrap;
+    width: 100%;
+    overflow: visible; /* Permet l'affichage complet sur mobile */
+  }
+
+  .nav-item {
+    width: 100%;
+  }
+
+  .nav-links{
+    font-size: 12px;
+    padding: 6px 10px;
+    white-space: normal;
+  }
+
+  .main-header-left {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .nav-logo {
+    height: 40px;
+    margin-right: 0;
+    margin-left: 15px; /* MODIFIÉ - Légèrement augmenté pour maintenir le décalage sur mobile */
+    margin-bottom: 15px; /* Espace sous le logo sur mobile */
+    min-width: auto; /* Retire la contrainte de largeur sur mobile */
+  }
+
+  .nav-logo-img {
+    height: 45px;
+    min-width: auto; /* Retire la contrainte de largeur sur mobile */
+  }
+
+  .main-header-right {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    gap: 1px;
+    overflow: visible; /* Permet l'affichage complet sur mobile */
+  }
+
+  .nav-right {
+    width: 100%;
+    justify-content: flex-start;
+    overflow: visible; /* Permet l'affichage complet sur mobile */
+  }
+}
+
+/* Styles pour empêcher le hover externe sur les boutons d'authentification */
+.nav-menus li.auth-buttons-nav {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  background: transparent !important;
+  transition: none !important;
+  flex-shrink: 0; /* AJOUTÉ - Empêche la compression */
+}
+
+.nav-menus li.auth-buttons-nav:hover {
+  background: transparent !important;
+  transform: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.auth-buttons-nav {
+  display: flex !important;
+  align-items: center;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  flex-shrink: 0; /* AJOUTÉ - Empêche la compression */
+}
+
+.btn-connect-nav,
+.btn-register-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px; /* RÉDUIT */
+  padding: 6px 10px; /* RÉDUIT */
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 12px; /* RÉDUIT */
+  transition: all 0.2s ease;
+  border: 2px solid;
+  border-color: #4285f4;
+  white-space: nowrap;
+  margin: 0 1px;
+  flex-shrink: 1; /* MODIFIÉ - Permet compression contrôlée */
+}
+
+.btn-connect-nav {
+  background: #4285f4;
+  color: white;
+}
+
+.btn-connect-nav svg {
+  stroke: white;
+}
+
+.btn-connect-nav:hover {
+  background: #3367d6;
+  color: white;
+  text-decoration: none;
+}
+
+.btn-connect-nav:hover svg {
+  stroke: white;
+}
+
+.btn-register-nav {
+  background: transparent;
+  color: #4285f4;
+  border-color: #4285f4;
+  margin-right: 0 !important;
+}
+
+.btn-register-nav svg {
+  stroke: #4285f4;
+}
+
+.btn-register-nav:hover {
+  background: #f8fafc;
+  border-color: #4285f4;
+  color: #4285f4;
+  text-decoration: none;
+}
+
+.btn-register-nav:hover svg {
+  stroke: #4285f4;
+}
+
+.nav-menus li.auth-buttons-nav:last-of-type {
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Ajustements pour les écrans très larges */
+@media (min-width: 1400px) {
+  .nav-menus {
+    gap: 10px; /* Plus d'espace sur grands écrans */
+  }
+
+  .nav-links {
+    padding: 8px 16px; /* Plus de padding sur grands écrans */
+  }
+
+  .btn-connect-nav,
+  .btn-register-nav {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .nav-logo {
+    margin-right: 20px; /* MODIFIÉ - Plus d'espace sur grands écrans mais toujours proche */
+  }
+}
+
+/* Styles pour le modal de connexion panier */
+.cart-login-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.cart-login-modal.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.cart-login-modal .modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.cart-login-modal.show .modal-content {
+  transform: translateY(0);
+}
+
+.close-modal-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.close-modal-btn:hover {
+  background: #f3f4f6;
+  color: #374151;
+  transform: scale(1.1);
+}
+
+.close-modal-btn:active {
+  transform: scale(0.95);
+}
+
+.cart-login-modal .modal-icon {
+  margin-bottom: 1rem;
+}
+
+.cart-login-modal h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 1rem 0;
+}
+
+.cart-login-modal p {
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.cart-login-modal .modal-buttons {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.cart-login-modal .btn-connect {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.cart-login-modal .btn-register {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 2px solid;
+  border-color: #1d4ed8;
+}
+
+.cart-login-modal .btn-connect {
+  background: #2563eb;
+  color: white;
+}
+
+.cart-login-modal .btn-connect:hover {
+  background: #1d4ed8;
+}
+
+.cart-badge,
+.custom-violet-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #2563EB;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  z-index: 10;
+}
+
+/* Ajoutez ces styles CSS à votre fichier header-styles.css */
+
+/* Styles spécifiques pour les utilisateurs authentifiés */
+.authenticated-header {
+  min-height: 100px !important; /* Réduit de 80px à 60px */
+}
+
+.authenticated-main-header {
+  min-height: 100px !important;
+  display: flex;
+  align-items: center;
+}
+
+.authenticated-left {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  flex-shrink: 0;
+  height: 80px; /* Hauteur réduite */
+}
+
+.authenticated-logo {
+  height: 350px !important; /* Logo plus petit pour utilisateurs connectés */
+  width: auto;
+  object-fit: contain;
+}
+
+.authenticated-nav-right {
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 1;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 1px;
+  overflow: hidden;
+  height: 90px; /* Hauteur réduite */
+}
+
+.authenticated-nav-menus {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  white-space: nowrap;
+  overflow: hidden;
+  height: 100px; /* Hauteur réduite */
+}
+
+/* Ajustements pour les icônes dans l'en-tête authentifié */
+.authenticated-nav-menus .feather-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.authenticated-nav-menus .cart-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Bouton logout plus compact */
+.authenticated-nav-menus .btn-primary-light {
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+}
+
+/* Responsive pour utilisateurs authentifiés */
+@media (max-width: 1200px) {
+  .authenticated-header {
+    min-height: 55px !important;
+  }
+
+  .authenticated-main-header,
+  .authenticated-left,
+  .authenticated-nav-right,
+  .authenticated-nav-menus {
+    min-height: 55px !important;
+    height: 55px;
+  }
+
+  .authenticated-logo {
+    height: 45px !important;
+  }
+}
+
+@media (max-width: 992px) {
+  .authenticated-header {
+    min-height: 50px !important;
+  }
+
+  .authenticated-main-header,
+  .authenticated-left,
+  .authenticated-nav-right,
+  .authenticated-nav-menus {
+    min-height: 50px !important;
+    height: 50px;
+  }
+
+  .authenticated-logo {
+    height: 40px !important;
+  }
+
+  .authenticated-nav-menus .feather-icon,
+  .authenticated-nav-menus .cart-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .authenticated-nav-menus .btn-primary-light {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .authenticated-header {
+    min-height: 45px !important;
+  }
+
+  .authenticated-main-header {
+    flex-direction: row;
+    min-height: 45px !important;
+    height: 45px;
+  }
+
+  .authenticated-left {
+    height: 45px;
+  }
+
+  .authenticated-nav-right,
+  .authenticated-nav-menus {
+    height: 45px;
+  }
+
+  .authenticated-logo {
+    height: 35px !important;
+  }
+}
+

@@ -1,0 +1,114 @@
+.image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.centered-image {
+    width: 400px;
+    height: 200px;
+    margin: 0 auto 15px auto;
+    object-fit: contain;
+    display: block;
+}
+
+/* Style pour la nouvelle image (prévisualisation) */
+.image-preview-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.image-preview {
+    width: 200px;  /* Plus petite que l'image existante */
+    height: 120px; /* Plus petite que l'image existante */
+    margin: 0 auto 15px auto;
+    object-fit: contain;
+    display: block;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+}
+
+.image-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.trash-icon {
+    color: #dc3545;
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.trash-icon:hover {
+    transform: scale(1.2);
+}
+
+#restoreImage {
+    display: none;
+    width: 40%;
+    margin-top: 10px;
+    background-color: #808080;
+    color: white;
+    border-color: #707070;
+}
+
+.upload-container {
+    display: flex;
+    flex-direction: column;
+}
+
+#priceContainer {
+    display: none;
+    align-items: center;
+}
+
+#discountContainer {
+    display: none;
+}
+
+#finalPriceContainer {
+    display: none;
+}
+
+.text-success-bleu {
+    color: #2B6ED4;
+}
+
+.publication-status {
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.price-display {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: #6c757d;
+    margin-right: 10px;
+}
+
+.final-price {
+    color: #0a0f0b;
+    font-weight: bold;
+}
+
+.date-input-group {
+    display: flex;
+    gap: 20px;
+}
+
+.date-input-container {
+    flex: 1;
+}

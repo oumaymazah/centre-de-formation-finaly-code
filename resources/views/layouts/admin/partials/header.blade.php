@@ -1,47 +1,33 @@
-
 <link rel="stylesheet" href="{{ asset('assets/css/MonCss/header-styles.css') }}">
+
+<!-- Script for cart badge initialization -->
 <script>
 (function() {
-    // Récupérer le compteur immédiatement
-    var cartCount = localStorage.getItem('cartCount');
-    cartCount = cartCount ? parseInt(cartCount) : 0;
-
-    // Injecter directement dans le document pour éviter le flash de "0"
-    if (cartCount > 0) {
-        document.write(`
-            <style>
-                #fixed-cart-badge {
-                    display: flex !important;
-                    content: "${cartCount}";
-                }
-            </style>
-        `);
+    const cartCount = parseInt(localStorage.getItem('cartCount') || '0');
+    const badge = document.getElementById('fixed-cart-badge');
+    if (badge) {
+        badge.textContent = cartCount.toString();
+        badge.style.visibility = cartCount > 0 ? 'visible' : 'hidden';
+        badge.style.opacity = cartCount > 0 ? '1' : '0';
     }
 })();
 </script>
 
-<!-- Remplacez cette partie dans votre fichier blade -->
 <div class="page-main-header {{ auth()->check() ? 'authenticated-header' : '' }}">
   <div class="main-header-right row m-0 {{ auth()->check() ? 'authenticated-main-header' : '' }}">
-    @auth
-    <div class="main-header-left authenticated-left">
-      <div class="logo-wrapper"><a href="{{ route('index') }}"><img class="img-fluid logo-img authenticated-logo" src="{{asset('assets/images/logo/elsEMPO-removebg-preview.png')}}" alt="Logo"></a></div>
-      <div class="dark-logo-wrapper"><a href="{{ route('index') }}"><img class="img-fluid logo-img authenticated-logo" src="{{asset('assets/images/logo/elsEMPO-removebg-preview.png')}}" alt="Dark Logo"></a></div>
+    <div class="main-header-left {{ auth()->check() ? 'authenticated-left' : '' }}">
+      <!-- Unified logo for both authenticated and non-authenticated users -->
+      <div class="logo-wrapper"><a href="{{ route('index') }}"><img class="img-fluid {{ auth()->check() ? 'authenticated-logo' : 'nav-logo-img' }}" src="{{ asset('assets/images/logo/elsEMPO-removebg-preview.png') }}" alt="Logo"></a></div>
+      <div class="dark-logo-wrapper"><a href="{{ route('index') }}"><img class="img-fluid {{ auth()->check() ? 'authenticated-logo' : 'nav-logo-img' }}" src="{{ asset('assets/images/logo/elsEMPO-removebg-preview.png') }}" alt="Dark Logo"></a></div>
+      <!-- Toggle only for authenticated users -->
+      @auth
+      <div class="toggle-sidebar"><i class="status_toggle middle" data-feather="align-center" id="sidebar-toggle"></i></div>
+      @endauth
     </div>
-    @endauth
 
     <div class="nav-right col pull-right right-menu p-0 {{ auth()->check() ? 'authenticated-nav-right' : '' }}">
       <ul class="nav-menus {{ auth()->check() ? 'authenticated-nav-menus' : '' }}">
-        <!-- Logo ajouté pour les utilisateurs non authentifiés -->
-        @guest
-        <li class="nav-logo">
-          <a href="{{ route('index') }}">
-            <img src="{{asset('assets/images/logo/elsEMPO-removebg-preview.png')}}" alt="Logo" class="nav-logo-img">
-          </a>
-        </li>
-        @endguest
-
-        <!-- Nouveaux liens de navigation visibles uniquement pour les utilisateurs non authentifiés -->
+        <!-- Navigation links for guests -->
         @guest
         <li class="nav-item">
           <a href="{{ url('accueil') }}" class="nav-links">Accueil</a>
@@ -226,39 +212,24 @@ function closeCartLoginModal() {
 document.addEventListener('DOMContentLoaded', function() {
   const modal = document.getElementById('cartLoginModal');
   if (modal) {
-    modal.addEventListener('mouseenter', () => {
-      clearTimeout(cartModalTimeout);
-    });
-
+    modal.addEventListener('mouseenter', () => clearTimeout(cartModalTimeout));
     modal.addEventListener('mouseleave', hideCartLoginModal);
-
     modal.addEventListener('click', function(e) {
-      if (e.target === modal) {
-        closeCartLoginModal();
-      }
+      if (e.target === modal) closeCartLoginModal();
     });
-
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && modal.classList.contains('show')) {
-        closeCartLoginModal();
-      }
+      if (e.key === 'Escape' && modal.classList.contains('show')) closeCartLoginModal();
+    });
+  }
+
+  // Restore toggle sidebar functionality
+  const toggle = document.getElementById('sidebar-toggle');
+  if (toggle) {
+    toggle.addEventListener('click', function() {
+      document.body.classList.toggle('sidebar-mini');
     });
   }
 });
 </script>
 
-<!-- Script inline pour initialisation immédiate -->
-<script>
-(function() {
-  const cartCount = parseInt(localStorage.getItem('cartCount') || '0');
-  const badge = document.getElementById('fixed-cart-badge');
-  if (badge) {
-    badge.textContent = cartCount.toString();
-    badge.style.visibility = cartCount > 0 ? 'visible' : 'hidden';
-    badge.style.opacity = cartCount > 0 ? '1' : '0';
-  }
-})();
-</script>
-
-<!-- Chargement du script panier -->
 <script src="{{ asset('assets/js/MonJs/formations/panier.js') }}"></script>

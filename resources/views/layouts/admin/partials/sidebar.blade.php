@@ -183,7 +183,7 @@
                              <li><a href="{{ route('categoriecreate') }}" class="{{routeActive('categoriecreate')}}">Nouvelle Catégorie </a></li>
                          </ul>
                         @endif
-                        
+
                          {{-- zedtouu  ta formation --}}
                          <a class="nav-link menu-title {{ prefixActive('/formation') }}" href="javascript:void(0)"><i data-feather="box"></i><span>Formations </span></a>
                          <ul class="nav-submenu menu-content" style="display: {{ prefixBlock('/formation') }};">
@@ -204,7 +204,7 @@
                         </ul>
                         @endhasanyrole
 
-                        
+
 
                          {{-- categorie --}}
                          {{-- <style>
@@ -218,7 +218,7 @@
   stroke: #000000 !important;
 }
                          </style> --}}
-                      
+
                         @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('super-admin')|| auth()->user()->hasRole('professeur'))
 
                          {{-- cours --}}

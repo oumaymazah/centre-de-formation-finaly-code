@@ -263,10 +263,17 @@ input:focus {
             animation: rotateInSetting 1.5s ease infinite; }
 
 .setting-primary {
-  background-color: rgba(43, 110, 212, 0.1); }
+
+  background-color: rgba(43, 110, 212, 0.1);
+
+ 
+}
+
+
   .setting-primary svg {
     color: #2B6ED4; }
   .setting-primary i {
+
     color: #2B6ED4; }
   .setting-primary:hover {
     background-color: #2B6ED4; }

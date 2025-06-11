@@ -183,7 +183,7 @@
                              <li><a href="<?php echo e(route('categoriecreate')); ?>" class="<?php echo e(routeActive('categoriecreate')); ?>">Nouvelle Catégorie </a></li>
                          </ul>
                         <?php endif; ?>
-                        
+
                          
                          <a class="nav-link menu-title <?php echo e(prefixActive('/formation')); ?>" href="javascript:void(0)"><i data-feather="box"></i><span>Formations </span></a>
                          <ul class="nav-submenu menu-content" style="display: <?php echo e(prefixBlock('/formation')); ?>;">
@@ -204,11 +204,11 @@
                         </ul>
                         <?php endif; ?>
 
-                        
+
 
                          
                          
-                      
+
                         <?php if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('super-admin')|| auth()->user()->hasRole('professeur')): ?>
 
                          

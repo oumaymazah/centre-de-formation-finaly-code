@@ -7,8 +7,8 @@
     <meta name="description" content="viho admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities. laravel/framework: ^8.40">
     <meta name="keywords" content="admin template, viho admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="pixelstrap">
-    <link rel="icon" href="{{asset('assets/images/favicon.png')}}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{asset('assets/images/favicon.png')}}" type="image/x-icon">
+    <link rel="icon" href="{{asset('assets/images/favicon1.png')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{asset('assets/images/favicon1.png')}}" type="image/x-icon">
     <title>@yield('title')</title>
     <!-- Google font-->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -55,7 +55,7 @@
       </div>
     </div>
     <!-- latest jquery-->
-    
+
     <script type="text/javascript">
         // localStorage.clear();
         var div = document.querySelector("div.page-wrapper")
@@ -66,10 +66,10 @@
             div.classList.remove("modern-sidebar");
         }
         localStorage.setItem('page-wrapper', 'page-wrapper compact-wrapper compact-sidebar');
-        localStorage.setItem('page-body-wrapper', 'sidebar-icon');            
+        localStorage.setItem('page-body-wrapper', 'sidebar-icon');
     </script>
-    
+
     @includeIf('layouts.compact-layout.partials.js')
-  
+
   </body>
 </html>

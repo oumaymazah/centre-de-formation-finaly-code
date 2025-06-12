@@ -1,4 +1,3 @@
-
 <link rel="stylesheet" href="<?php echo e(asset('assets/css/MonCss/header-styles.css')); ?>">
 
 <!-- Script for cart badge initialization -->

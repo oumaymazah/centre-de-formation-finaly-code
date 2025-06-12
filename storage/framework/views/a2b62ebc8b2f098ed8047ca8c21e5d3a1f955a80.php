@@ -10,8 +10,8 @@
     <meta name="description" content="viho admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities. laravel/framework: ^8.40">
     <meta name="keywords" content="admin template, viho admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="pixelstrap">
-    <link rel="icon" href="<?php echo e(asset('assets/images/favicon.png')); ?>" type="image/x-icon">
-    <link rel="shortcut icon" href="<?php echo e(asset('assets/images/favicon.png')); ?>" type="image/x-icon">
+    <link rel="icon" href="<?php echo e(asset('assets/images/favicon1.png')); ?>" type="image/x-icon">
+    <link rel="shortcut icon" href="<?php echo e(asset('assets/images/favicon1.png')); ?>" type="image/x-icon">
     <title><?php echo $__env->yieldContent('title'); ?></title>
     <!-- Google font-->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -42,7 +42,7 @@
           <?php echo $__env->yieldContent('content'); ?>
           <!-- Container-fluid Ends-->
         </div>
-       
+
         <!-- Footer conditionnel -->
         <?php if (! (isset($hideAdminFooter))): ?>
         <footer class="footer">

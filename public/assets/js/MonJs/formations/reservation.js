@@ -326,60 +326,60 @@
     }
 
 
-    function cancelReservation(reservationId) {
-        // Récupérer le bouton et stocker son texte original
-        const cancelButton = document.querySelector('.annuler-button');
-        const originalText = cancelButton.innerHTML;
+    // function cancelReservation(reservationId) {
+    //     // Récupérer le bouton et stocker son texte original
+    //     const cancelButton = document.querySelector('.annuler-button');
+    //     const originalText = cancelButton.innerHTML;
 
-        // Changer le texte et désactiver le bouton pendant l'annulation
-        cancelButton.innerHTML = 'Annulation en cours...';
-        cancelButton.disabled = true;
+    //     // Changer le texte et désactiver le bouton pendant l'annulation
+    //     cancelButton.innerHTML = 'Annulation en cours...';
+    //     cancelButton.disabled = true;
 
-        fetch('/api/reservations/cancel', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                reservation_id: reservationId
-            })
-        })
-        .then(handleResponse)
-        .then(data => {
-            if (data.success) {
-                console.log(data.message || 'Réservation annulée avec succès');
+    //     fetch('/api/reservations/cancel', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+    //             'X-Requested-With': 'XMLHttpRequest',
+    //             'Accept': 'application/json'
+    //         },
+    //         body: JSON.stringify({
+    //             reservation_id: reservationId
+    //         })
+    //     })
+    //     .then(handleResponse)
+    //     .then(data => {
+    //         if (data.success) {
+    //             console.log(data.message || 'Réservation annulée avec succès');
 
-                // Mise à jour des variables
-                window.hasExistingReservation = false;
-                localStorage.removeItem('hasExistingReservation');
-                localStorage.removeItem('reservationId');
-                localStorage.removeItem('reservationStatus');
+    //             // Mise à jour des variables
+    //             window.hasExistingReservation = false;
+    //             localStorage.removeItem('hasExistingReservation');
+    //             localStorage.removeItem('reservationId');
+    //             localStorage.removeItem('reservationStatus');
 
-                // Restaurer l'état du bouton si le panier n'est pas vide
-                const cartCount = parseInt(localStorage.getItem('cartCount') || '0');
-                if (cartCount > 0) {
-                    createReserverButton(false);
-                } else {
-                    // Si le panier est vide, supprimer tous les boutons
-                    removeAllButtons();
-                }
-            } else {
-                console.error(data.message || 'Erreur lors de l\'annulation de la réservation');
-                // Restaurer le texte original et réactiver le bouton
-                cancelButton.innerHTML = originalText;
-                cancelButton.disabled = false;
-            }
-        })
-        .catch(error => {
-            console.error('Erreur lors de l\'annulation de la réservation:', error);
-            // Restaurer le texte original et réactiver le bouton
-            cancelButton.innerHTML = originalText;
-            cancelButton.disabled = false;
-        });
-    }
+    //             // Restaurer l'état du bouton si le panier n'est pas vide
+    //             const cartCount = parseInt(localStorage.getItem('cartCount') || '0');
+    //             if (cartCount > 0) {
+    //                 createReserverButton(false);
+    //             } else {
+    //                 // Si le panier est vide, supprimer tous les boutons
+    //                 removeAllButtons();
+    //             }
+    //         } else {
+    //             console.error(data.message || 'Erreur lors de l\'annulation de la réservation');
+    //             // Restaurer le texte original et réactiver le bouton
+    //             cancelButton.innerHTML = originalText;
+    //             cancelButton.disabled = false;
+    //         }
+    //     })
+    //     .catch(error => {
+    //         console.error('Erreur lors de l\'annulation de la réservation:', error);
+    //         // Restaurer le texte original et réactiver le bouton
+    //         cancelButton.innerHTML = originalText;
+    //         cancelButton.disabled = false;
+    //     });
+    // }
 
 
     function createReserverButton(isInitialLoad = false) {
@@ -552,46 +552,142 @@
         });
     }
 
-    function handleReservationResponse(response) {
-        if (response.success) {
-            console.log(response.message || 'Réservation effectuée avec succès');
+    // function handleReservationResponse(response) {
+    //     if (response.success) {
+    //         console.log(response.message || 'Réservation effectuée avec succès');
 
-            // Mettre à jour la variable globale et localStorage
-            window.hasExistingReservation = true;
-            localStorage.setItem('hasExistingReservation', 'true');
+    //         // Mettre à jour la variable globale et localStorage
+    //         window.hasExistingReservation = true;
+    //         localStorage.setItem('hasExistingReservation', 'true');
 
-            // Récupérer le statut de la réservation (par défaut 0 si non fourni)
-            const status = response.status || 0;
-            window.reservationStatus = status;
-            localStorage.setItem('reservationStatus', status.toString());
+    //         // Récupérer le statut de la réservation (par défaut 0 si non fourni)
+    //         const status = response.status || 0;
+    //         window.reservationStatus = status;
+    //         localStorage.setItem('reservationStatus', status.toString());
 
-            // Transformer le bouton immédiatement
-            if (response.reservation_id) {
-                localStorage.setItem('reservationId', response.reservation_id.toString());
-                transformReserverButton(response.reservation_id, status, false);
+    //         // Transformer le bouton immédiatement
+    //         if (response.reservation_id) {
+    //             localStorage.setItem('reservationId', response.reservation_id.toString());
+    //             transformReserverButton(response.reservation_id, status, false);
+    //         }
+
+    //         // Si la réservation est réussie et qu'il faut vider le panier
+    //         if (response.clearCart) {
+    //             // Mise à jour du compteur sans supprimer visuellement le bouton
+    //             localStorage.setItem('cartCount', '0');
+    //         }
+
+    //         // Redirection éventuelle vers la page de confirmation
+    //         if (response.redirectUrl) {
+    //             window.location.href = response.redirectUrl;
+    //         }
+    //     } else {
+    //         console.error(response.message || 'Erreur lors de la réservation');
+    //         // Restaurer le texte original du bouton
+    //         const reservButton = document.querySelector('.reserver-button');
+    //         if (reservButton) {
+    //             reservButton.innerHTML = 'Réserver <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    //         }
+    //         throw new Error(response.message || 'Erreur lors de la réservation');
+    //     }
+    // }
+function handleReservationResponse(response) {
+    if (response.success) {
+        console.log(response.message || 'Réservation effectuée avec succès');
+
+        window.hasExistingReservation = true;
+        localStorage.setItem('hasExistingReservation', 'true');
+        localStorage.setItem('reservationId', response.reservation_id.toString());
+        window.reservationStatus = response.status || 0;
+        localStorage.setItem('reservationStatus', (response.status || 0).toString());
+
+        if (response.reservation_id) {
+            transformReserverButton(response.reservation_id, response.status || 0, false);
+        }
+
+        // Appeler refreshFormationCards après succès
+        if (typeof refreshFormationCards === 'function') {
+            refreshFormationCards();
+            console.log('Mise à jour des cartes effectuée après réservation');
+        } else {
+            console.error('refreshFormationCards n\'est pas défini dans handleReservationResponse');
+        }
+
+        if (window.location.pathname.includes('/formation-details/')) {
+            window.location.reload();
+        }
+
+        if (response.clearCart) {
+            localStorage.setItem('cartCount', '0');
+        }
+    } else {
+        console.error(response.message || 'Erreur lors de la réservation');
+        const reservButton = document.querySelector('.reserver-button');
+        if (reservButton) {
+            reservButton.innerHTML = 'Réserver <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        }
+        throw new Error(response.message || 'Erreur lors de la réservation');
+    }
+}
+
+function cancelReservation(reservationId) {
+    const cancelButton = document.querySelector('.annuler-button');
+    const originalText = cancelButton.innerHTML;
+
+    cancelButton.innerHTML = 'Annulation en cours...';
+    cancelButton.disabled = true;
+
+    fetch('/api/reservations/cancel', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({ reservation_id: reservationId })
+    })
+    .then(handleResponse)
+    .then(data => {
+        if (data.success) {
+            window.hasExistingReservation = false;
+            localStorage.removeItem('hasExistingReservation');
+            localStorage.removeItem('reservationId');
+            localStorage.removeItem('reservationStatus');
+
+            // Appeler refreshFormationCards après annulation
+            if (typeof refreshFormationCards === 'function') {
+                refreshFormationCards();
+                console.log('Mise à jour des cartes effectuée après annulation');
+            } else {
+                console.error('refreshFormationCards n\'est pas défini dans cancelReservation');
             }
 
-            // Si la réservation est réussie et qu'il faut vider le panier
-            if (response.clearCart) {
-                // Mise à jour du compteur sans supprimer visuellement le bouton
-                localStorage.setItem('cartCount', '0');
-            }
-
-            // Redirection éventuelle vers la page de confirmation
-            if (response.redirectUrl) {
-                window.location.href = response.redirectUrl;
+            const cartCount = parseInt(localStorage.getItem('cartCount') || '0');
+            if (cartCount > 0) {
+                createReserverButton(false);
+            } else {
+                removeAllButtons();
             }
         } else {
-            console.error(response.message || 'Erreur lors de la réservation');
-            // Restaurer le texte original du bouton
-            const reservButton = document.querySelector('.reserver-button');
-            if (reservButton) {
-                reservButton.innerHTML = 'Réserver <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-            }
-            throw new Error(response.message || 'Erreur lors de la réservation');
+            console.error(data.message || 'Erreur lors de l\'annulation de la réservation');
+            cancelButton.innerHTML = originalText;
+            cancelButton.disabled = false;
         }
-    }
+    })
+    .catch(error => {
+        console.error('Erreur lors de l\'annulation de la réservation:', error);
+        cancelButton.innerHTML = originalText;
+        cancelButton.disabled = false;
+    });
+}
 
+function handleResponse(response) {
+    if (!response.ok) {
+        throw new Error('Erreur réseau: ' + response.statusText);
+    }
+    return response.json();
+}
     function handleReservationError(error) {
         console.error('Erreur lors de la réservation:', error);
     }
@@ -602,12 +698,12 @@
         window.location.href = '/login';
     }
 
-    function handleResponse(response) {
-        if (!response.ok) {
-            throw new Error('Erreur réseau');
-        }
-        return response.json();
-    }
+    // function handleResponse(response) {
+    //     if (!response.ok) {
+    //         throw new Error('Erreur réseau');
+    //     }
+    //     return response.json();
+    // }
 
     window.addEventListener('load', startDOMObserver);
 

@@ -90,7 +90,7 @@ class Training extends Model
         }
 
         $parts = explode(':', $time);
-        
+
         if (count($parts) === 3) {
             // Format HH:MM:SS
             $result = (int)$parts[0] * 3600 + (int)$parts[1] * 60 + (int)$parts[2];
@@ -102,7 +102,7 @@ class Training extends Model
             Log::info("Training {$this->id}: Convertir {$time} (HH:MM) en secondes: {$result}");
             return $result;
         }
-        
+
         Log::warning("Training {$this->id}: Format de durée non reconnu: {$time}");
         return 0;
     }
@@ -154,7 +154,7 @@ class Training extends Model
             }
         });
     }
-    
+
     // Accesseur pour vérifier si dans le panier
     public function getInCartAttribute()
     {
@@ -173,14 +173,14 @@ public function getFormattedDurationAttribute()
 {
     // Calculer la durée en temps réel plutôt que d'utiliser la valeur stockée
     $duration = $this->calculateTotalDuration();
-    
+
     if (empty($duration)) {
         return '';
     }
 
     // Découpe la durée en heures, minutes, secondes
     $parts = explode(':', $duration);
-    
+
     $hours = (int)$parts[0];
     $minutes = (int)($parts[1] ?? 0);
     $seconds = (int)($parts[2] ?? 0);
@@ -196,31 +196,41 @@ public function getFormattedDurationAttribute()
 
 
 //zedtha tww
-public function getRemainingSeatsAttribute()
-{
-    $totalSeats = $this->total_seats;
-    
-    // Récupérer toutes les réservations confirmées (status = 1)
-    $confirmedReservations = \App\Models\Reservation::where('status', 1)->get();
-    
-    // Compter combien de fois cette formation apparaît dans les paniers des réservations confirmées
-    $occupiedSeats = 0;
-    
-    foreach ($confirmedReservations as $reservation) {
-        $cart = \App\Models\Cart::find($reservation->cart_id);
-        
-        if ($cart && is_array($cart->training_ids)) {
-            // Si la formation est dans ce panier réservé, incrémenter le compteur
-            if (in_array($this->id, $cart->training_ids)) {
-                $occupiedSeats++;
-            }
-        }
-    }
-    
-    // Calculer les places restantes
-    $remainingSeats = $totalSeats - $occupiedSeats;
-    
-    return max(0, $remainingSeats); // Pour éviter un nombre négatif
-}
+// public function getRemainingSeatsAttribute()
+// {
+//     $totalSeats = $this->total_seats;
 
+//     // Récupérer toutes les réservations confirmées (status = 1)
+//     $confirmedReservations = \App\Models\Reservation::where('status', 1)->get();
+
+//     // Compter combien de fois cette formation apparaît dans les paniers des réservations confirmées
+//     $occupiedSeats = 0;
+
+//     foreach ($confirmedReservations as $reservation) {
+//         $cart = \App\Models\Cart::find($reservation->cart_id);
+
+//         if ($cart && is_array($cart->training_ids)) {
+//             // Si la formation est dans ce panier réservé, incrémenter le compteur
+//             if (in_array($this->id, $cart->training_ids)) {
+//                 $occupiedSeats++;
+//             }
+//         }
+//     }
+
+//     // Calculer les places restantes
+//     $remainingSeats = $totalSeats - $occupiedSeats;
+
+//     return max(0, $remainingSeats); // Pour éviter un nombre négatif
+// }
+public function getRemainingPlaces($trainingId)
+{
+    $training = Training::findOrFail($trainingId);
+    $remainingSeats = $training->getRemainingSeatsAttribute();
+    Log::info("API Response for training ID $trainingId: remaining_places=$remainingSeats, total_places={$training->total_seats}, is_full=" . ($remainingSeats <= 0));
+    return response()->json([
+        'remaining_places' => $remainingSeats,
+        'is_full' => $remainingSeats <= 0,
+        'total_places' => $training->total_seats
+    ]);
+}
 }

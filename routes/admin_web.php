@@ -110,7 +110,8 @@ Route::get('/blocked-account', [EditController::class, 'pageDeBlockage'])->name(
 
 Route::group(['middleware' => 'auth'], function () {
 	Route::post('/formations/availability', [PanierController::class, 'getFormationsAvailability']);
-
+    Route::get('/trainings/{trainingId}/remaining-places', [ReservationController::class, 'getRemainingPlaces']);
+    Route::get('/trainings/check-complete', [ReservationController::class, 'checkCompleteFormations']);
 
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/parametre', [EditController::class, 'index'])->name('parametre');

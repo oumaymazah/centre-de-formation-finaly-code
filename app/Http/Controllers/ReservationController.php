@@ -11,6 +11,35 @@ use Illuminate\Support\Facades\Mail;
 class ReservationController extends Controller
 {
 
+    public function getRemainingPlaces($trainingId)
+    {
+        $training = Training::findOrFail($trainingId);
+        $remainingSeats = $training->getRemainingSeatsAttribute();
+        return response()->json([
+            'remaining_places' => $remainingSeats,
+            'is_full' => $remainingSeats <= 0,
+            'total_places' => $training->total_seats
+        ]);
+    }
+
+    public function checkCompleteFormations()
+    {
+        $userId = Auth::id();
+        $cart = Cart::where('user_id', $userId)->first();
+        $hasComplete = false;
+
+        if ($cart && !empty($cart->training_ids)) {
+            foreach ($cart->training_ids as $trainingId) {
+                $training = Training::find($trainingId);
+                if ($training && $training->getRemainingSeatsAttribute() <= 0) {
+                    $hasComplete = true;
+                    break;
+                }
+            }
+        }
+
+        return response()->json(['has_complete_formations' => $hasComplete]);
+    }
     //zedtha neww
     public function checkConfirmedReservation($formationId)
 {
@@ -420,7 +449,7 @@ class ReservationController extends Controller
     }
 
     // Paginer les résultats - 2 réservations par page comme dans votre code original
-    $reservations = $query->paginate(2)->appends(request()->query());
+    $reservations = $query->paginate(10)->appends(request()->query());
 
     $studentsWithReservations = [];
 
@@ -871,6 +900,7 @@ public function checkUserReservationForFormation($formationId)
                     $cart->save();
                     Log::info("Panier vidé (ID: {$cart->id}) après confirmation du paiement");
                 }
+               
 
                 // Envoyer l'email de confirmation
                 try {

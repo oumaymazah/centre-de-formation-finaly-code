@@ -782,7 +782,89 @@ const showCartButtons = !isAdminRole; // Ne pas afficher les boutons pour admin/
     return cardHtml;
 }
 
-// Fonction pour vérifier si l'utilisateur a une réservation pour une formation spécifique
+
+
+function handleResponse(response) {
+    if (!response.ok) {
+        throw new Error('Erreur réseau: ' + response.statusText);
+    }
+    return response.json();
+}
+
+// function refreshFormationCards() {
+//     const cards = document.querySelectorAll('.formation-item');
+//     cards.forEach(card => {
+//         const trainingId = card.dataset.id;
+//         fetch(`/api/trainings/${trainingId}/remaining-places`)
+//             .then(handleResponse)
+//             .then(data => {
+//                 const isComplete = data.remaining_places <= 0 || data.is_full;
+//                 card.dataset.isComplete = isComplete;
+//                 const ribbon = card.querySelector('.ribbon-danger');
+//                 if (ribbon) {
+//                     ribbon.style.display = isComplete ? 'block' : 'none';
+//                 }
+//                 const modal = document.getElementById(`formation-modal-${trainingId}`);
+//                 if (modal) {
+//                     const modalRibbon = modal.querySelector('.ribbon-danger');
+//                     if (modalRibbon) {
+//                         modalRibbon.style.display = isComplete ? 'block' : 'none';
+//                     }
+//                     const badge = modal.querySelector('.badge');
+//                     if (badge) {
+//                         badge.className = `badge ${isComplete ? 'badge-danger' : (data.remaining_places < data.total_places * 0.2 ? 'badge-warning' : 'badge-bleu')} text-white`;
+//                         badge.textContent = `${data.total_places - data.remaining_places} / ${data.total_places}`;
+//                     }
+//                 }
+//                 console.log(`Mise à jour de la formation ${trainingId}: isComplete=${isComplete}`);
+//             })
+//             .catch(error => console.error(`Erreur mise à jour formation ${trainingId}:`, error));
+//     });
+// }
+function refreshFormationCards() {
+    const cards = document.querySelectorAll('.formation-item');
+    cards.forEach(card => {
+        const trainingId = card.dataset.id;
+        fetch(`/api/trainings/${trainingId}/remaining-places`)
+            .then(handleResponse)
+            .then(data => {
+                const isComplete = data.remaining_places <= 0 || data.is_full;
+                card.dataset.isComplete = isComplete;
+                const ribbon = card.querySelector('.ribbon-danger');
+                if (ribbon) {
+                    ribbon.style.display = isComplete ? 'block' : 'none';
+                    ribbon.className = `ribbon ribbon-danger ${getCompleteRibbonClass(formation)}`; // Restaurer la classe correcte
+                }
+                const modal = document.getElementById(`formation-modal-${trainingId}`);
+                if (modal) {
+                    const modalRibbon = modal.querySelector('.ribbon-danger');
+                    if (modalRibbon) {
+                        modalRibbon.style.display = isComplete ? 'block' : 'none';
+                        modalRibbon.className = `ribbon ribbon-danger ${getCompleteRibbonClass(formation)}`;
+                    }
+                    const badge = modal.querySelector('.badge');
+                    if (badge) {
+                        badge.className = `badge ${isComplete ? 'badge-danger' : (data.remaining_places < data.total_places * 0.2 ? 'badge-warning' : 'badge-bleu')} text-white`;
+                        badge.textContent = `${data.total_places - data.remaining_places} / ${data.total_places}`;
+                    }
+                }
+                console.log(`Mise à jour de la formation ${trainingId}: isComplete=${isComplete}`);
+            })
+            .catch(error => console.error(`Erreur mise à jour formation ${trainingId}:`, error));
+    });
+}
+
+function getCompleteRibbonClass(formation) {
+    const hasGratuite = formation.type === 'gratuite';
+    const hasDiscount = formation.discount > 0;
+    if (hasGratuite && hasDiscount) {
+        return 'ribbon-bottom-right';
+    } else if (hasGratuite || hasDiscount) {
+        return '';
+    } else {
+        return '';
+    }
+}
 function checkUserReservationForFormation(formationId) {
     console.log(`Vérification de réservation pour formation ${formationId}`);
 

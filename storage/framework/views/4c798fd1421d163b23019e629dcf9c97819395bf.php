@@ -1,7 +1,7 @@
 <?php
     $hideAdminFooter = true;
 ?>
-
+<?php $__env->startSection('title'); ?> Accueil <?php echo e($title); ?> <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
 <div class="fullwidth-container">
     <!DOCTYPE html>

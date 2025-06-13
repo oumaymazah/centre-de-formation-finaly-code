@@ -4,7 +4,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="invoiceModalLabel<?php echo e($reservation->id); ?>">
-                     Reçu - Réservation 
+                    Reçu - Réservation
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -25,14 +25,13 @@
                             </div>
                             <div class="col-5 text-end">
                                 <div class="invoice-info mt-3">
-                                    
                                     <p><strong>Reçu No:</strong> <span class="fw-bold"><?php echo e($reservation->id); ?></span></p>
                                     <p><strong>Date d'émission:</strong> <?php echo e(\Carbon\Carbon::parse($reservation->created_at)->format('d.m.Y')); ?></p>
                                     <div class="status-badge mb-3">
                                         <?php if($reservation->status): ?>
                                         <span class="badge square-badge" style="background-color: #2B6ED4; color: white;"><i class="fas fa-check-circle me-1"></i> Payée</span>
                                         <?php else: ?>
-                                        <span class="badge custom-bg  small square-badge"><i class="fas fa-clock me-1"></i> En attente de paiement</span>
+                                        <span class="badge custom-bg small square-badge"><i class="fas fa-clock me-1"></i> En attente de paiement</span>
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -45,7 +44,7 @@
                         <div class="col-6">
                             <div class="invoice-info-box">
                                 <div class="invoice-pay-to">
-                                    <h5></i>Payé à:</h5>
+                                    <h5>Payé à:</h5>
                                     <p>
                                         <strong>EMPOWERMENT LEARNING SUCCESS</strong><br>
                                         Rue farabi trocadéro, immeuble kraiem 1 étage<br>
@@ -76,80 +75,84 @@
                     </div>
 
                     <!-- Détails de la facture -->
-                    
-                                                        
-                                                    
-                                                 
-                    <!-- Détails de la facture -->
-<div class="px-4 mt-4">
-    <div class="table-responsive">
-        <table class="table invoice-table">
-            <thead>
-                <tr class="table-header-row">
-                    <th>Formations</th>
-                    <th>Professeur</th>
-                    <?php if($reservation->total_discount > 0): ?>
-                        <th class="text-end nowrap">Prix original</th>
-                        <th class="text-end">Remise</th>
-                    <?php endif; ?>
-                    <th class="text-end nowrap">    Prix<?php echo e($reservation->total_discount > 0 ? ' final' : ''); ?></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php $__currentLoopData = $reservation->trainings; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $training): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <tr>
-                        <td><?php echo e($index + 1); ?>. <?php echo e($training->title); ?></td>
-                        <td>Par <?php echo e($training->user ? $training->user->lastname . ' ' . $training->user->name : 'Non assigné'); ?></td>
-                        <?php if($reservation->total_discount > 0): ?>
-                            <td class="text-end"><?php echo e(number_format($training->price, 2, ',', ' ')); ?> Dt</td>
-                            <td class="text-end">
-                                <?php if($training->discount > 0): ?>
-                                    <?php echo e($training->discount); ?>% 
-                                <?php else: ?>
-                                    -
-                                <?php endif; ?>
-                            </td>
-                        <?php endif; ?>
-                        <td class="text-end"><?php echo e(number_format($training->price_after_discount, 2, ',', ' ')); ?> Dt</td>
-                    </tr>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            </tbody>
-        </table>
-    </div>
-    
-    <div class="row mt-4">
-        <div class="col-7">
+                    <div class="px-4 mt-4">
+                        <div class="table-responsive">
+                            <table class="table invoice-table">
+                                <thead>
+                                    <tr class="table-header-row">
+                                        <th>Formations</th>
+                                        <th>Professeur</th>
+                                        <th>Date de début</th>
+                                        <th>Date de fin</th>
+                                        <?php if($reservation->total_discount > 0): ?>
+                                            <th class="text-end nowrap">Prix original</th>
+                                            <th class="text-end">Remise</th>
+                                        <?php endif; ?>
+                                        <th class="text-end nowrap">Prix<?php echo e($reservation->total_discount > 0 ? ' final' : ''); ?></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $__currentLoopData = $reservation->trainings; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $training): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <tr>
+                                            <td><?php echo e($index + 1); ?>. <?php echo e($training->title); ?></td>
+                                            <td><?php echo e($training->user ? $training->user->lastname . ' ' . $training->user->name : 'Non assigné'); ?></td>
+                                            <td>
+                                                <?php echo e(property_exists($training, 'start_date') && $training->start_date ? \Carbon\Carbon::parse($training->start_date)->format('d.m.Y') : '-'); ?>
 
-        </div>
-        <div class="col-5">
-            <div class="invoice-totals-wrapper">
-                <div class="invoice-totals-container">
-                    <table class="table table-clear invoice-totals mb-0">
-                        <tbody>
-                            <?php if($reservation->total_discount > 0): ?>
-                                <tr class="subtotal-row">
-                                    <td class="text-end"><strong>Sous-total:</strong></td>
-                                    <td class="price-column"><?php echo e(number_format($reservation->original_total, 2, ',', ' ')); ?> Dt</td>
-                                </tr>
-                                <tr class="discount-row">
-                                    <td class="text-end"><strong>Remise: </strong></td>
-                                    <td class="price-column"><?php echo e(number_format($reservation->total_discount, 2, ',', ' ')); ?> Dt</td>
-                                </tr>
-                            <?php endif; ?>
-                            <tr class="grand-total">
-                                <div class="total-content">
-                                    <span class="total-label">Total:</span>
-                                    <span class="total-amount"><?php echo e(number_format($reservation->total_price, 2, ',', ' ')); ?> Dt</span>
+                                            </td>
+                                            <td>
+                                                <?php echo e(property_exists($training, 'end_date') && $training->end_date ? \Carbon\Carbon::parse($training->end_date)->format('d.m.Y') : '-'); ?>
+
+                                            </td>
+                                            <?php if($reservation->total_discount > 0): ?>
+                                                <td class="text-end"><?php echo e(number_format($training->price, 2, ',', ' ')); ?> Dt</td>
+                                                <td class="text-end">
+                                                    <?php if($training->discount > 0): ?>
+                                                        <?php echo e($training->discount); ?>%
+                                                    <?php else: ?>
+                                                        -
+                                                    <?php endif; ?>
+                                                </td>
+                                            <?php endif; ?>
+                                            <td class="text-end"><?php echo e(number_format($training->price_after_discount, 2, ',', ' ')); ?> Dt</td>
+                                        </tr>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-7">
+                            </div>
+                            <div class="col-5">
+                                <div class="invoice-totals-wrapper">
+                                    <div class="invoice-totals-container">
+                                        <table class="table table-clear invoice-totals mb-0">
+                                            <tbody>
+                                                <?php if($reservation->total_discount > 0): ?>
+                                                    <tr class="subtotal-row">
+                                                        <td class="text-end"><strong>Sous-total:</strong></td>
+                                                        <td class="price-column"><?php echo e(number_format($reservation->original_total, 2, ',', ' ')); ?> Dt</td>
+                                                    </tr>
+                                                    <tr class="discount-row">
+                                                        <td class="text-end"><strong>Remise: </strong></td>
+                                                        <td class="price-column"><?php echo e(number_format($reservation->total_discount, 2, ',', ' ')); ?> Dt</td>
+                                                    </tr>
+                                                <?php endif; ?>
+                                                <tr class="grand-total">
+                                                    <div class="total-content">
+                                                        <span class="total-label">Total:</span>
+                                                        <span class="total-amount"><?php echo e(number_format($reservation->total_price, 2, ',', ' ')); ?> Dt</span>
+                                                    </div>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-                    
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Signature - section modifiée pour être complètement indépendante -->
                     <div class="signature-section px-4 mt-4 mb-4">
                         <div class="row">
@@ -164,8 +167,7 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Les conditions générales ont été supprimées -->
+
                 </div>
             </div>
             <div class="modal-footer">
@@ -183,22 +185,21 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <script>
-
 // Impression exacte du reçu comme il apparaît dans le modal
 document.querySelectorAll('.print-invoice').forEach(button => {
     button.addEventListener('click', function() {
         const invoiceId = this.getAttribute('data-invoice-id');
-        
+
         // Ajout du feedback visuel
         this.classList.add('btn-loading');
-        
+
         // Cloner le contenu de la facture pour l'impression
         const modalContent = document.getElementById(`invoiceContent${invoiceId}`);
         const contentToPrint = modalContent.cloneNode(true);
-        
+
         // Obtenir les dimensions actuelles du modal pour les conserver
         const modalWidth = modalContent.offsetWidth;
-        
+
         // Assurer que les images sont chargées avant l'impression
         const images = contentToPrint.querySelectorAll('img');
         const imagePromises = Array.from(images).map(img => {
@@ -212,7 +213,7 @@ document.querySelectorAll('.print-invoice').forEach(button => {
                 }
             });
         });
-        
+
         // Créer un style spécifique pour l'impression
         const style = document.createElement('style');
         style.innerHTML = `
@@ -221,12 +222,12 @@ document.querySelectorAll('.print-invoice').forEach(button => {
                 body * {
                     visibility: hidden;
                 }
-                
+
                 /* Rendre visible uniquement notre contenu d'impression */
                 #printSection, #printSection * {
                     visibility: visible;
                 }
-                
+
                 /* Positionner notre contenu en haut de la page */
                 #printSection {
                     position: absolute;
@@ -235,20 +236,20 @@ document.querySelectorAll('.print-invoice').forEach(button => {
                     width: 100%;
                     height: auto;
                 }
-                
+
                 /* Force l'impression des couleurs exactement comme affichées */
                 * {
                     -webkit-print-color-adjust: exact !important;
                     print-color-adjust: exact !important;
                     color-adjust: exact !important;
                 }
-                
+
                 /* Définition des marges de page */
                 @page  {
                     size: auto;
                     margin: 10mm;
                 }
-                
+
                 /* Préserver le style du modal original */
                 .invoice-container {
                     width: 100% !important;
@@ -259,64 +260,63 @@ document.querySelectorAll('.print-invoice').forEach(button => {
                     scale: 1 !important; /* Empêcher le redimensionnement */
                     transform: scale(1) !important; /* Assurer une échelle 1:1 */
                 }
-                
+
                 /* S'assurer que les couleurs des éléments spécifiques sont conservées */
                 .table-header-row, .grand-total, .total-content {
                     background-color: #007bff !important;
                     color: white !important;
                 }
-                
+
                 /* Éliminer toute pagination inutile */
                 .modal-body {
                     overflow: visible !important;
                     page-break-inside: avoid !important;
                 }
-                
+
                 /* Garantir que tous les tableaux s'affichent correctement */
                 .table-responsive {
                     overflow: visible !important;
                 }
-                
+
                 /* Éviter les sauts de page à l'intérieur du contenu */
                 table, tr, td, th, tbody, thead, tfoot {
                     page-break-inside: avoid !important;
                 }
-                
+
                 /* Permettre au contenu de s'adapter à une seule page */
                 html, body {
                     height: 99%;
                     page-break-after: avoid;
                 }
-                
+
                 /* Conserver les espacements du modal */
                 .px-4 {
                     padding-left: 1.5rem !important;
                     padding-right: 1.5rem !important;
                 }
-                
+
                 /* Assurer que les tailles des éléments sont préservées */
                 .invoice-logo {
                     max-height: 80px !important;
-                    margin-left:-85px !important;
-
+                    margin-left: -85px !important;
                 }
-                
+
                 /* Préserver la taille des textes */
                 .company-name {
                     font-size: 16px !important;
                 }
-                
+
                 /* Maintenir la taille des tableaux */
                 .invoice-table td, .invoice-table th {
                     padding: 8px 6px !important;
                     font-size: 14px !important;
                 }
-                
+
                 /* Assurer que les signatures sont bien visibles */
                 .signature-container {
                     margin-top: 20px !important;
                 }
-                
+
                 /* Préserver l'apparence des badges */
                 .badge {
                     padding: 5px 10px !important;
@@ -324,7 +324,7 @@ document.querySelectorAll('.print-invoice').forEach(button => {
                 }
             }
         `;
-        
+
         // Attendre que toutes les images soient chargées
         Promise.all(imagePromises)
             .then(() => {
@@ -335,16 +335,16 @@ document.querySelectorAll('.print-invoice').forEach(button => {
                     printSection.id = 'printSection';
                     document.body.appendChild(printSection);
                 }
-                
+
                 // Vider le conteneur d'impression et y ajouter le contenu
                 printSection.innerHTML = '';
                 printSection.appendChild(style);
                 printSection.appendChild(contentToPrint);
-                
+
                 // Ajouter un style inline pour s'assurer que la largeur est préservée
                 contentToPrint.style.width = `${modalWidth}px`;
                 contentToPrint.style.maxWidth = '100%';
-                
+
                 // Petit délai pour permettre au DOM d'être mis à jour
                 setTimeout(() => {
                     try {
@@ -374,10 +374,10 @@ document.querySelectorAll('.download-pdf').forEach(button => {
     button.addEventListener('click', function() {
         const reservationId = this.getAttribute('data-reservation-id');
         const element = document.getElementById(`invoiceContent${reservationId}`);
-        
+
         // Ajout du feedback visuel
         this.classList.add('btn-loading');
-        
+
         // S'assurer que les images sont chargées avec URLs absolues
         const images = element.querySelectorAll('img');
         images.forEach(img => {
@@ -388,94 +388,74 @@ document.querySelectorAll('.download-pdf').forEach(button => {
             // Ajouter un attribut crossorigin pour les images externes
             img.setAttribute('crossorigin', 'anonymous');
         });
-        
-        // Configuration pour html2pdf
-        // const opt = {
-        //     margin: [0.5, 0.5, 0.5, 0.5],
-        //     filename: `Reçu_ELS_${reservationId}.pdf`,
-        //     image: { type: 'jpeg', quality: 0.98 },
-        //     html2canvas: { 
-        //         scale: 2,
-        //         useCORS: true,
-        //         logging: true,
-        //         letterRendering: true,
-        //         allowTaint: true
-        //     },
-        //     jsPDF: { 
-        //         unit: 'in', 
-        //         format: 'a4', 
-        //         orientation: 'portrait',
-        //         compress: true
-        //     },
-        //     pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-        // };
-        // Dans la partie download-pdf, modifiez les options comme suit :
-const opt = {
-    margin: [0.3, 0.3, 0.3, 0.3], // Marges réduites au minimum
-    filename: `Reçu_ELS_${reservationId}.pdf`,
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { 
-        scale: 2,
-        useCORS: true,
-        logging: true,
-        letterRendering: true,
-        allowTaint: true,
-        scrollY: 0 // Important pour éviter les problèmes de positionnement
-    },
-    jsPDF: { 
-        unit: 'in', 
-        format: 'a4', 
-        orientation: 'portrait',
-        compress: true
-    },
-    pagebreak: { 
-        mode: ['avoid-all', 'css', 'legacy'],
-        before: '#force-page-break' // Utilisez cette option si nécessaire
-    }
-};
 
-// Ajoutez ce style temporaire avant la génération du PDF :
-const styleNode = document.createElement('style');
-styleNode.innerHTML = `
-    @media  print {
-        /* Réduire les espacements pour le PDF */
-        .invoice-header {
-            padding-bottom: 5px !important;
-        }
-        .invoice-info-box {
-            padding: 10px !important;
-        }
-        .mt-4 {
-            margin-top: 0.5rem !important;
-        }
-        .px-4 {
-            padding-left: 0.5rem !important;
-            padding-right: 0.5rem !important;
-        }
-        .invoice-table td, .invoice-table th {
-            padding: 4px 3px !important;
-            font-size: 12px !important;
-        }
-        /* Forcer la signature à rester sur la première page */
-        .signature-section {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            width: auto;
-            margin-top: 0 !important;
-            page-break-inside: avoid !important;
-        }
-        /* Réduire la taille de certains éléments si nécessaire */
-        .company-name {
-            font-size: 14px !important;
-        }
-        .invoice-title {
-            font-size: 24px !important;
-        }
-    }
-`;
-element.appendChild(styleNode);
-        
+        // Configuration pour html2pdf
+        const opt = {
+            margin: [0.3, 0.3, 0.3, 0.3], // Marges réduites au minimum
+            filename: `Reçu_ELS_${reservationId}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: {
+                scale: 2,
+                useCORS: true,
+                logging: true,
+                letterRendering: true,
+                allowTaint: true,
+                scrollY: 0 // Important pour éviter les problèmes de positionnement
+            },
+            jsPDF: {
+                unit: 'in',
+                format: 'a4',
+                orientation: 'portrait',
+                compress: true
+            },
+            pagebreak: {
+                mode: ['avoid-all', 'css', 'legacy'],
+                before: '#force-page-break' // Utilisez cette option si nécessaire
+            }
+        };
+
+        // Ajoutez ce style temporaire avant la génération du PDF
+        const styleNode = document.createElement('style');
+        styleNode.innerHTML = `
+            @media  print {
+                /* Réduire les espacements pour le PDF */
+                .invoice-header {
+                    padding-bottom: 5px !important;
+                }
+                .invoice-info-box {
+                    padding: 10px !important;
+                }
+                .mt-4 {
+                    margin-top: 0.5rem !important;
+                }
+                .px-4 {
+                    padding-left: 0.5rem !important;
+                    padding-right: 0.5rem !important;
+                }
+                .invoice-table td, .invoice-table th {
+                    padding: 4px 3px !important;
+                    font-size: 12px !important;
+                }
+                /* Forcer la signature à rester sur la première page */
+                .signature-section {
+                    position: absolute;
+                    bottom: 20px;
+                    right: 20px;
+                    width: auto;
+                    margin-top: 0 !important;
+                    page-break-inside: avoid !important;
+                }
+                /* Réduire la taille de certains éléments si nécessaire */
+                .company-name {
+                    font-size: 14px !important;
+                }
+                .invoice-title {
+                    font-size: 24px !important;
+                }
+            }
+        `;
+        element.appendChild(styleNode);
+
         // Création du PDF avec gestion des erreurs
         html2pdf()
             .set(opt)
@@ -774,11 +754,11 @@ element.appendChild(styleNode);
     font-weight: 600;
     color: #333;
 }
- .square-badge {
-        border-radius: 0 !important; /* Rendre les badges carrés */
-        padding: 0.5rem 0.8rem;
-        letter-spacing: 0.5px;
-    }
+.square-badge {
+    border-radius: 0 !important; /* Rendre les badges carrés */
+    padding: 0.5rem 0.8rem;
+    letter-spacing: 0.5px;
+}
 
 .modal-footer {
     border-top: 1px solid #eee;
@@ -845,7 +825,7 @@ element.appendChild(styleNode);
 
 /* Ligne du total avec fond bleu */
 .grand-total {
-    background-color: #007bff !important;
+    background-color: #007bff ;
     color: white !important;
     padding: 0;
 }
@@ -888,13 +868,13 @@ element.appendChild(styleNode);
         margin: 0;
         padding: 0;
     }
-    
+
     /* S'assurer que le contenu d'impression occupe toute la page */
     #printSection {
         width: 100%;
         max-width: 100%;
     }
-    
+
     /* Style pour la facture imprimée */
     .invoice-container {
         width: 100% !important;
@@ -904,36 +884,37 @@ element.appendChild(styleNode);
         font-size: 14px !important;
         transform-origin: top left;
     }
-    
+
     /* Préserver les espacements */
     .mt-4 {
         margin-top: 1.5rem !important;
     }
-    
+
     .px-4 {
         padding-left: 1.5rem !important;
         padding-right: 1.5rem !important;
     }
-    
+
     /* Assurer la bonne taille des éléments spécifiques */
     .logo-container {
         margin-left: 0 !important;
     }
-    
+
     .invoice-logo {
         max-height: 80px !important;
         max-width: 120px !important;
         margin-left: 0 !important;
     }
-    
+
     .company-name {
         font-size: 16px !important;
     }
-    
+
     /* S'assurer que les couleurs des éléments sont préservées */
     .table-header-row th, .total-content {
         background-color: #007bff !important;
         color: white !important;
     }
 }
-</style><?php /**PATH D:\apprendre laravel\Centre_Formation-main\resources\views/admin/apps/reservations/modal-facture.blade.php ENDPATH**/ ?>
+</style>
+<?php /**PATH D:\apprendre laravel\Centre_Formation-main\resources\views/admin/apps/reservations/modal-facture.blade.php ENDPATH**/ ?>

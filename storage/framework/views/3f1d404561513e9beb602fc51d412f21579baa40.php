@@ -1,3 +1,4 @@
+<?php $__env->startSection('title'); ?> Politique <?php echo e($title); ?> <?php $__env->stopSection(); ?>
 <?php
     $hideAdminFooter = true;
 ?>

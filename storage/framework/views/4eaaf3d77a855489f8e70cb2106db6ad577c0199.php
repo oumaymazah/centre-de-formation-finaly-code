@@ -1,4 +1,4 @@
-<?php $__env->startSection('title'); ?> Gestion des Utilisateurs & Permissions <?php $__env->stopSection(); ?>
+<?php $__env->startSection('title'); ?> Gestion des Utilisateurs <?php echo e($title); ?> <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('css'); ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">

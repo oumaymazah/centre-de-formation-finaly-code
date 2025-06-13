@@ -1,6 +1,6 @@
 @extends('layouts.admin.master')
 
-@section('title') Modifier une Formation @endsection
+@section('title') Modifier une Formation {{ $title }} @endsection
 
 @push('css')
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/dropzone.css') }}">

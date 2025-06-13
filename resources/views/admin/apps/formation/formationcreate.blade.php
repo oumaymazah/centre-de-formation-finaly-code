@@ -1,5 +1,5 @@
 @extends('layouts.admin.master')
-@section('title') Ajouter une Formation @endsection
+@section('title') Ajouter une Formation {{ $title }}@endsection
 @push('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/MonCss/formationcreate.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/dropzone.css') }}">

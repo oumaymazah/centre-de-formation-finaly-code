@@ -1,113 +1,28 @@
 <?php $__env->startSection('title'); ?>
-Formations
+Formations | ELS-Centre de Formation en Ligne
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('css'); ?>
 <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/select2.css')); ?>">
 <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/owlcarousel.css')); ?>">
 <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/range-slider.css')); ?>">
-
-
-
-<style>
-    /**badlt el height w with */
-.card {
-  margin-bottom: 30px;
-  border: 1px solid #ADD8E633;
-  -webkit-transition: all 0.3s ease;
-  transition: all 0.3s ease;
-  letter-spacing: 0.5px;
-  border-radius: 0;
-  width:90% !important;
-  height:90% !important;
-  background-color: #fff;
-}
-
-
-</style>
-<style>
-.nav-link {
-  color: #374151 !important;
-  font-size: 14px !important; /* RÉDUIT pour économiser l'espace */
-  font-weight: 500 !important;
-  text-decoration: none !important;
-padding: 6px 12px !important;
-  transition: all 0.2s ease;
-  border-radius: 6px !important;
-  white-space: nowrap;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-    line-height: 1.6;
-
-}
-.nav-link:hover {
-  color: #2563EB !important;
-}
- .nav-logo {
-  display: flex;
-  align-items: center;
-  margin-right: 250px !important; /* MODIFIÉ - Espace réduit à droite du logo pour le rapprocher du premier lien */
-  margin-left: 200px !important; /* MODIFIÉ - Augmenté de 20px pour décaler le logo plus à droite */
-  height: 50px;
-  overflow: visible;
-  z-index: 10;
-  flex-shrink: 0; /* CRITIQUE - Empêche la compression du logo */
-  min-width:100px; /* AJOUTÉ - Largeur minimale garantie pour le logo */
-}
-.nav-logo-img {
-  height: 90px;
-  width: auto;
-  object-fit: contain;
-  transition: none !important;
-  flex-shrink: 0; /* CRITIQUE - Empêche la compression de l'image */
-  min-width: 80px; /* AJOUTÉ - Largeur minimale pour l'image */
-}
-.main-header-left {
-  display: flex;
-  align-items: center;
-  gap: 1px; /* RÉDUIT */
-  flex-shrink: 0; /* CRITIQUE - Empêche la compression de la section logo */
-}
-
-.page-main-header {
-  min-height: 80px;
-  position: relative;
-  z-index: 5;
-  overflow: visible; /* AJOUTÉ - Permet l'affichage complet */
-}
-
-.main-header-right {
-  display: flex;
-  align-items: center;
-  min-height: 80px;
-  width: 100%; /* AJOUTÉ - Utilise toute la largeur disponible */
-  justify-content: space-between; /* AJOUTÉ - Répartit l'espace entre logo et navigation */
-  flex-wrap: nowrap; /* CRITIQUE - Force une seule ligne */
-}
-
-/* CRITIQUE - Section de navigation avec gestion d'espace optimisée */
-.nav-right {
-  display: flex;
-  justify-content: flex-end;
-  flex-grow: 1;
-  align-items: center;
-  flex-wrap: nowrap; /* CRITIQUE - Force une seule ligne */
-  gap: 1px; /* Espacement réduit */
-  overflow: hidden; /* MODIFIÉ - Supprime le scroll horizontal */
-}
-
-.nav-menus {
-  display: flex;
-  align-items: center;
-  gap: 2px; /* Espacement réduit */
-  flex-wrap: nowrap; /* CRITIQUE - Force une seule ligne */
-  justify-content: flex-end; /* Aligne les éléments à droite */
-  white-space: nowrap; /* Empêche le retour à la ligne */
-  overflow: hidden; /* MODIFIÉ - Pas de scroll */
-}
-
-</style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
 <style>
+    /* Card styling */
+    .card {
+      margin-bottom: 30px;
+      border: 1px solid #ADD8E633;
+      -webkit-transition: all 0.3s ease;
+      transition: all 0.3s ease;
+      letter-spacing: 0.5px;
+      border-radius: 0;
+      width: 90% !important;
+      height: 90% !important;
+      background-color: #fff;
+    }
+
+    /* Rating and filter styles */
     .rating-label {
         display: inline-flex;
         align-items: center;
@@ -118,11 +33,11 @@ padding: 6px 12px !important;
     .rating-label .far.fa-star {
         font-size: 12px;
         margin-right: 1px;
-        color: #FFC107 ;
+        color: #FFC107;
     }
     .rating-label .far.fa-star,
     .rating-label .fa-star-half-alt {
-        color:  #FFC107;
+        color: #FFC107;
     }
     .product-filter .checkbox-animated label {
         cursor: pointer;
@@ -163,7 +78,13 @@ padding: 6px 12px !important;
     .product-search .form-group {
         position: relative;
     }
+
+    /* Ensure page content starts below the header */
+    .product-wrapper {
+        margin-top: 80px;
+    }
 </style>
+<?php $__env->stopPush(); ?>
 
 <script>
     let userRoles = [];
@@ -179,7 +100,6 @@ padding: 6px 12px !important;
         console.log("Utilisateur non connecté, rôle défini comme 'guest'");
     <?php endif; ?>
 </script>
-<?php $__env->stopPush(); ?>
 
 <?php $__env->startSection('content'); ?>
 <div class="container-fluid product-wrapper">
@@ -228,50 +148,47 @@ padding: 6px 12px !important;
                                     <div class="left-filter">
                                         <div class="card-body filter-cards-view animate-chk">
                                             <!-- Filtrage par Catégories -->
-                                            
-  <!-- Filtrage par Catégories -->
-    <div class="product-filter">
-        <h6 class="f-w-600 categories-toggle">Catégories
-            <span class="pull-right"><i class="fa fa-chevron-down"></i></span>
-        </h6>
-        <div class="checkbox-animated mt-0 categories-content" style="display: none;">
-            <label class="d-flex align-items-center" for="category-all">
-                <input class="radio_animated me-2"
-                       id="category-all"
-                       type="radio"
-                       name="category_filter"
-                       value=""
-                       <?php echo e((!request()->has('category_id') && !request()->has('category_title')) ||
-                          request()->category_id === null ||
-                          request()->category_id === '' ? 'checked' : ''); ?>/>
-                Toutes les catégories
-            </label>
-            <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <label class="d-flex align-items-center" for="category-<?php echo e($category->id); ?>">
-                    <input class="radio_animated me-2"
-                           id="category-<?php echo e($category->id); ?>"
-                           type="radio"
-                           name="category_filter"
-                           value="<?php echo e($category->id); ?>"
-                           data-category-title="<?php echo e($category->title); ?>"
-                           <?php echo e((request()->category_id == $category->id) ||
-                              (request()->has('category_title') &&
-                               strtolower(trim(request()->category_title)) === strtolower(trim($category->title)))
-                              ? 'checked' : ''); ?>/>
-                    <?php echo e($category->title); ?> (<?php echo e($category->trainings_count); ?>)
-                </label>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-        </div>
-    </div>
-<script>
-// Rendre les catégories disponibles globalement pour JavaScript
-window.categories = <?php echo json_encode($categories->map(function($category) {
-    return [
-        'id' => $category->id, 'title' => $category->title, 'trainings_count' => $category->trainings_count
-    ];
-})) ?>;
-</script>
-
+                                            <div class="product-filter">
+                                                <h6 class="f-w-600 categories-toggle">Catégories
+                                                    <span class="pull-right"><i class="fa fa-chevron-down"></i></span>
+                                                </h6>
+                                                <div class="checkbox-animated mt-0 categories-content" style="display: none;">
+                                                    <label class="d-flex align-items-center" for="category-all">
+                                                        <input class="radio_animated me-2"
+                                                               id="category-all"
+                                                               type="radio"
+                                                               name="category_filter"
+                                                               value=""
+                                                               <?php echo e((!request()->has('category_id') && !request()->has('category_title')) ||
+                                                                  request()->category_id === null ||
+                                                                  request()->category_id === '' ? 'checked' : ''); ?>/>
+                                                        Toutes les catégories
+                                                    </label>
+                                                    <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <label class="d-flex align-items-center" for="category-<?php echo e($category->id); ?>">
+                                                            <input class="radio_animated me-2"
+                                                                   id="category-<?php echo e($category->id); ?>"
+                                                                   type="radio"
+                                                                   name="category_filter"
+                                                                   value="<?php echo e($category->id); ?>"
+                                                                   data-category-title="<?php echo e($category->title); ?>"
+                                                                   <?php echo e((request()->category_id == $category->id) ||
+                                                                      (request()->has('category_title') &&
+                                                                       strtolower(trim(request()->category_title)) === strtolower(trim($category->title)))
+                                                                      ? 'checked' : ''); ?>/>
+                                                            <?php echo e($category->title); ?> (<?php echo e($category->trainings_count); ?>)
+                                                        </label>
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                </div>
+                                            </div>
+                                            <script>
+                                            // Rendre les catégories disponibles globalement pour JavaScript
+                                            window.categories = <?php echo json_encode($categories->map(function($category) {
+                                                return [
+                                                    'id' => $category->id, 'title' => $category->title, 'trainings_count' => $category->trainings_count
+                                                ];
+                                            })) ?>;
+                                            </script>
 
                                             <!-- Filtrage par Évaluations -->
                                             <div class="product-filter">
@@ -310,11 +227,11 @@ window.categories = <?php echo json_encode($categories->map(function($category) 
                             <form onsubmit="return false;" autocomplete="off">
                                 <div class="form-group m-0">
                                     <input class="form-control" type="search"
-                                        placeholder="Rechercher..."
-                                        data-original-title=""
-                                        title=""
-                                        id="search-formations"
-                                        autocomplete="off" />
+                                           placeholder="Rechercher..."
+                                           data-original-title=""
+                                           title=""
+                                           id="search-formations"
+                                           autocomplete="off" />
                                     <i class="fa fa-search search-clear-icon"></i>
                                 </div>
                             </form>
@@ -323,7 +240,6 @@ window.categories = <?php echo json_encode($categories->map(function($category) 
                 </div>
             </div>
         </div>
-        
         <div class="product-wrapper-grid">
             <div class="row formations-container">
                 <?php $__empty_1 = true; $__currentLoopData = $formations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $formation): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
@@ -331,11 +247,69 @@ window.categories = <?php echo json_encode($categories->map(function($category) 
                         <div class="card h-100">
                             <div class="product-box d-flex flex-column h-100">
                                 <div class="product-img" style="height: 200px; overflow: hidden; position: relative;">
-                                    
-                                    
-                                    
+                                    <img class="img-fluid" src="<?php echo e(asset('storage/' . $formation->image)); ?>" alt="<?php echo e($formation->title); ?>" style="width: 100%; height: 100%; object-fit: cover;" />
+                                    <div class="product-hover">
+                                        <ul>
+                                            <li>
+                                                <a href="javascript:void(0)" onclick="showFormationDetails(<?php echo e($formation->id); ?>)" data-bs-toggle="modal" data-bs-target="#formation-modal-<?php echo e($formation->id); ?>">
+                                                    <i class="icon-eye"></i>
+                                                </a>
+                                            </li>
+                                            <?php if($userIsEtudiant || $userIsGuest): ?>
+                                                <li>
+                                                    <a href="javascript:void(0)" class="add-to-cart" data-formation-id="<?php echo e($formation->id); ?>" >
+                                                        <i class="icon-shopping-cart"></i>
+                                                    </a>
+                                                </li>
+                                            <?php endif; ?>
+                                            <?php if(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('super-admin') )): ?>
+                                                <li>
+                                                    <a href="<?php echo e(route('formationedit', $formation->id)); ?>"><i class="icon-pencil"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0)" class="delete-formation" data-id="<?php echo e($formation->id); ?>">
+                                                        <i class="icon-trash"></i>
+                                                    </a>
+                                                </li>
+                                            <?php endif; ?>
+                                        </ul>
+                                    </div>
                                 </div>
-                                
+                                <?php echo $__env->make('admin.apps.formation.formation-modal', ['formation' => $formation], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                                <div class="product-details flex-grow-1 d-flex flex-column p-3">
+                                    <div class="card-content flex-grow-1">
+                                        <a href="<?php echo e(route('formationshow', $formation->id)); ?>">
+                                            <h4 class="formation-title" title="<?php echo e($formation->title); ?>"><?php echo e($formation->title); ?></h4>
+                                        </a>
+                                        <p class="mb-1">Par <?php echo e($formation->user->name); ?> <?php echo e($formation->user->lastname); ?></p>
+                                        <div class="rating-wrapper mb-2">
+                                            <?php if($formation->average_rating): ?>
+                                                <?php for($i = 1; $i <= 5; $i++): ?>
+                                                    <?php if($i <= floor($formation->average_rating)): ?>
+                                                        <i class="fa fa-star text-warning"></i>
+                                                    <?php elseif($i == ceil($formation->average_rating) && $formation->average_rating != floor($formation->average_rating)): ?>
+                                                        <i class="fa fa-star-half-alt text-warning"></i>
+                                                    <?php else: ?>
+                                                        <i class="far fa-star text-muted"></i>
+                                                    <?php endif; ?>
+                                                <?php endfor; ?>
+                                                <span>(<?php echo e($formation->total_feedbacks); ?>)</span>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                    <div class="product-price-container">
+                                        <div class="product-price mb-0">
+                                            <?php if($formation->type == 'payante'): ?>
+                                                <?php if($formation->discount > 0): ?>
+                                                    <?php echo e(number_format($formation->final_price, 2)); ?> Dt
+                                                    <del><?php echo e(number_format($formation->price, 2)); ?> Dt</del>
+                                                <?php else: ?>
+                                                    <?php echo e(number_format($formation->price, 2)); ?> Dt
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -376,124 +350,123 @@ window.categories = <?php echo json_encode($categories->map(function($category) 
 </div>
 <?php endif; ?>
 
-
+<!-- Footer conditionnel selon l'authentification -->
 <?php if(!auth()->check()): ?>
     <?php ($hideAdminFooter = true); ?>
     <style>
     .footer .container {
-    padding-left: 50rem !important; /* Ajustez cette valeur selon vos besoins */
-    padding-right: -100rem !important;
-}
+        padding-left: 50rem !important; /* Ajustez cette valeur selon vos besoins */
+        padding-right: -100rem !important;
+    }
 
-.container {
-                width: 100% !important;
-                max-width: none !important;
-                margin: 0 !important;
-                padding: 0 2rem !important;
-            }
-
-            .content-container {
-                max-width: 1400px;
-                margin: 0 auto;
-    padding: 0  10rem !important; /* ⇨ pousse un peu à droite */
-            }
-</style>
-
-<style>
-    .formations-container {
-    margin-bottom: 0.6rem;
-    padding-bottom: 0.6rem;
-}
-</style>
-
-<style>
-    .footer {
-        background: #1f2937;
-        color: white;
-        padding: 2rem 0 2rem;
-        width: 100vw !important;
+    .container {
+        width: 100% !important;
+        max-width: none !important;
         margin: 0 !important;
-        margin-left: -290px !important;
-        margin-right: 5px !important;
-        font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        line-height: 1.7;
-        color: #1a202c;
-        display: none; /* Masquer le footer par défaut */
+        padding: 0 2rem !important;
     }
 
-    .footer-content {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 2rem;
-        margin-bottom: 5rem;
-        margin: 0 !important;
-        padding: 0 5rem !important;
+    .content-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 10rem !important; /* ⇨ pousse un peu à droite */
     }
+    </style>
 
-    .footer-section h3 {
-        font-size: 1.3rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        color: #60a5fa;
-    }
+    <style>
+        .formations-container {
+            margin-bottom: 0.6rem;
+            padding-bottom: 0.6rem;
+        }
+    </style>
 
-    .footer-section p,
-    .footer-section a {
-        color: #d1d5db;
-        text-decoration: none;
-        line-height: 1.8;
-        transition: color 0.3s ease;
-    }
+    <style>
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 2rem 0 2rem;
+            width: 100vw !important;
+            margin: 0 !important;
+            margin-left: -290px !important;
+            margin-right: 5px !important;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: #1a202c;
+            display: none; /* Masquer le footer par défaut */
+        }
 
-    .footer-section a:hover {
-        color: #60a5fa;
-    }
-
-    .footer-bottom {
-        border-top: 1px solid #374151;
-        padding: 1rem 2rem 0 2rem !important;
-        text-align: right;
-        color: #9ca3af;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-
-    .footer-bottom-left {
-        flex: 1;
-        text-align: right;
-        min-width: 0;
-        padding-right: 2rem;
-    }
-
-    .footer-bottom-right {
-        flex: 1;
-        padding-right: -5rem;
-        margin-right: 3rem;
-    }
-
-    @media (max-width: 768px) {
         .footer-content {
-            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+            margin: 0 !important;
+            padding: 0 5rem !important;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #60a5fa;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #d1d5db;
+            text-decoration: none;
+            line-height: 1.8;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #60a5fa;
         }
 
         .footer-bottom {
-            padding: 2rem 1rem 0 1rem;
-            flex-direction: column;
-            text-align: center;
+            border-top: 1px solid #374151;
+            padding: 1rem 2rem 0 2rem !important;
+            text-align: right;
+            color: #9ca3af;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
             gap: 1rem;
         }
 
-        .footer-bottom-left,
-        .footer-bottom-right {
-            text-align: center;
+        .footer-bottom-left {
+            flex: 1;
+            text-align: right;
+            min-width: 0;
+            padding-right: 2rem;
         }
-    }
-</style>
+
+        .footer-bottom-right {
+            flex: 1;
+            padding-right: -5rem;
+            margin-right: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                padding: 0 1rem;
+            }
+
+            .footer-bottom {
+                padding: 2rem 1rem 0 1rem;
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .footer-bottom-left,
+            .footer-bottom-right {
+                text-align: center;
+            }
+        }
+    </style>
     <footer class="footer">
-        <!-- Suppression du div container pour permettre la largeur complète -->
         <div class="footer-content">
             <div class="footer-section">
                 <h3>EMPOWERMENT LEARNING SUCCESS</h3>
@@ -506,7 +479,7 @@ window.categories = <?php echo json_encode($categories->map(function($category) 
                 <p><a href="formations">Formations</a></p>
                 <p><a href="politique">Politique de réservation</a></p>
             </div>
-             <div class="footer-section">
+            <div class="footer-section">
                 <h3>Formations</h3>
                 <?php
                 // Récupérer les 4 premières catégories avec au moins une formation publiée
@@ -527,7 +500,6 @@ window.categories = <?php echo json_encode($categories->map(function($category) 
                 }
                 ?>
             </div>
-            
             <div class="footer-section" id="contact">
                 <h3>Contact</h3>
                 <p>
@@ -556,13 +528,9 @@ window.categories = <?php echo json_encode($categories->map(function($category) 
             </div>
         </div>
     </footer>
-
 <?php endif; ?>
-<!-- Modal pour connexion/inscription -->
-
 
 <?php $__env->startPush('scripts'); ?>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo e(asset('assets/js/range-slider/ion.rangeSlider.min.js')); ?>"></script>
@@ -583,8 +551,11 @@ window.categories = <?php echo json_encode($categories->map(function($category) 
 <script src="<?php echo e(asset('assets/js/MonJs/formations/panier.js')); ?>"></script>
 <script src="<?php echo e(asset('assets/js/MonJs/formations/reservation.js')); ?>"></script>
 <script src="<?php echo e(asset('assets/js/MonJs/cart.js')); ?>"></script>
-
 <?php $__env->stopPush(); ?>
 <?php $__env->stopSection(); ?>
+
+
+
+
 
 <?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\apprendre laravel\Centre_Formation-main\resources\views/admin/apps/formation/formations.blade.php ENDPATH**/ ?>

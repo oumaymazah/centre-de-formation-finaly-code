@@ -36,7 +36,7 @@
           <a href="{{ url('ÀPropos') }}" class="nav-links">À propos</a>
         </li>
         <li class="nav-item"><a href="{{ route('formations') }}" class="nav-links">Catalogues de formations</a></li>
-        <li class="nav-item"><a href="#contact" class="nav-links">Nos contacts</a></li>
+        {{-- <li class="nav-item"><a href="#contact" class="nav-links">Nos contacts</a></li> --}}
         <li class="nav-item"><a href="politique" class="nav-links">Politique de réservation</a></li>
         @endguest
 
@@ -233,3 +233,4 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <script src="{{ asset('assets/js/MonJs/formations/panier.js') }}"></script>
+

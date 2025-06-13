@@ -996,117 +996,148 @@ function showLoginPopup() {
     const modal = new bootstrap.Modal(document.getElementById('loginModal'));
     modal.show();
 }
+// function addButtonStyles() {
+//     const style = document.createElement('style');
+//     style.textContent = `
+//    .btn-sky {
+//             background-color: rgb(141, 26, 186) !important;
+//             color: #ffffff !important;
+//             border-color: rgb(141, 26, 186) !important;
+//         }
+
+//         .btn-sky:hover {
+//             background-color:rgb(141, 26, 186) !important;
+//             border-color:rgb(141, 26, 186) !important;
+//         }
+
+//         .btn-sky:disabled {
+//             background-color:rgb(141, 26, 186) !important;
+//             border-color:rgb(141, 26, 186) !important;
+//                 color: white !important;  // ← CORRECTION : texte blanc même quand désactivé
+
+//             opacity: 0.8 !important;
+//         }
+//         .addcart-btn {
+//             display: flex !important;
+//             gap: 10px !important;
+//             width: 100% !important;
+//         }
+//         .addcart-btn .btn {
+//             flex: 1 !important;
+//             white-space: nowrap !important;
+//         }
+//          .badge-bleu {
+//             background-color:  #2B6ED4;
+//             color: #ffffff !important;
+//         }
+//         body {
+//             padding-right: 0 !important;
+//             overflow-y: scroll !important;
+//         }
+
+//         body.modal-open {
+//             overflow: hidden !important;
+//             padding-right: 0 !important;
+//         }
+
+//         .modal-open .modal {
+//             overflow-x: hidden;
+//             overflow-y: auto;
+//         }
+
+//         /* NOUVEAUX STYLES: Styles pour le popup de connexion */
+//         #loginModal .modal-body i.icon-user {
+//             margin-bottom: 15px;
+//         }
+
+//         #loginModal .modal-footer .btn {
+//             margin: 0 5px;
+//             min-width: 100px;
+//         }
+
+//         #loginModal .modal-content {
+//             border-radius: 10px;
+//             border: none;
+//             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+//         }
+
+//         #loginModal .modal-header {
+//             background: linear-gradient(135deg, #2B6ED4 0%, #1e5bb8 100%);
+//             color: white;
+//             border-bottom: none;
+//             border-radius: 10px 10px 0 0;
+//         }
+
+//         #loginModal .modal-header .btn-close {
+//             filter: invert(1);
+//         }
+
+//         /* Styles améliorés pour tous les rubans */
+//         .ribbon {
+//             width: 110px !important;
+//             min-width: 110px !important;
+//             max-width: 110px !important;
+//             text-align: center !important;
+//             padding: 3px 10px !important;
+//             box-sizing: border-box !important;
+//             height: 27px !important;
+//             line-height: 20px !important;
+//             overflow: hidden !important;
+//             white-space: nowrap !important;
+//             text-overflow: ellipsis !important;
+//         }
+
+//         .ribbon-danger {
+//             top: 15px !important;
+//             right: 0 !important;
+//             left: auto !important;
+//         }
+
+//         .ribbon-warning {
+//             top: 50px !important;
+//             right: 0 !important;
+//             left: auto !important;
+//         }
+
+//         .ribbon-success {
+//             top: 50px !important;
+//             right: 0 !important;
+//             left: auto !important;
+//         }
+
+//         .progress {
+//             height: 4px !important;
+//         }
+//     `;
+//     document.head.appendChild(style);
+// }
 function addButtonStyles() {
     const style = document.createElement('style');
     style.textContent = `
-   .btn-sky {
-            background-color: rgb(141, 26, 186) !important;
-            color: #ffffff !important;
-            border-color: rgb(141, 26, 186) !important;
-        }
+        /* Styles existants... */
 
-        .btn-sky:hover {
-            background-color:rgb(141, 26, 186) !important;
-            border-color:rgb(141, 26, 186) !important;
-        }
-
-        .btn-sky:disabled {
-            background-color:rgb(141, 26, 186) !important;
-            border-color:rgb(141, 26, 186) !important;
-                color: white !important;  // ← CORRECTION : texte blanc même quand désactivé
-
-            opacity: 0.8 !important;
-        }
-        .addcart-btn {
-            display: flex !important;
-            gap: 10px !important;
-            width: 100% !important;
-        }
-        .addcart-btn .btn {
-            flex: 1 !important;
-            white-space: nowrap !important;
-        }
-         .badge-bleu {
-            background-color:  #2B6ED4;
-            color: #ffffff !important;
-        }
+        /* Ajout de styles pour les conteneurs principaux */
         body {
-            padding-right: 0 !important;
-            overflow-y: scroll !important;
+            opacity: 1 !important;
+            background-color: #ffffff !important;
+            transition: none !important;
         }
 
-        body.modal-open {
-            overflow: hidden !important;
-            padding-right: 0 !important;
+        .container-fluid,
+        .formations-container,
+        .formation-item,
+        .card,
+        .product-box {
+            opacity: 1 !important;
+            background-color: #ffffff !important;
+            transition: none !important;
         }
 
-        .modal-open .modal {
-            overflow-x: hidden;
-            overflow-y: auto;
-        }
-
-        /* NOUVEAUX STYLES: Styles pour le popup de connexion */
-        #loginModal .modal-body i.icon-user {
-            margin-bottom: 15px;
-        }
-
-        #loginModal .modal-footer .btn {
-            margin: 0 5px;
-            min-width: 100px;
-        }
-
-        #loginModal .modal-content {
-            border-radius: 10px;
-            border: none;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        #loginModal .modal-header {
-            background: linear-gradient(135deg, #2B6ED4 0%, #1e5bb8 100%);
-            color: white;
-            border-bottom: none;
-            border-radius: 10px 10px 0 0;
-        }
-
-        #loginModal .modal-header .btn-close {
-            filter: invert(1);
-        }
-
-        /* Styles améliorés pour tous les rubans */
-        .ribbon {
-            width: 110px !important;
-            min-width: 110px !important;
-            max-width: 110px !important;
-            text-align: center !important;
-            padding: 3px 10px !important;
-            box-sizing: border-box !important;
-            height: 27px !important;
-            line-height: 20px !important;
-            overflow: hidden !important;
-            white-space: nowrap !important;
-            text-overflow: ellipsis !important;
-        }
-
-        .ribbon-danger {
-            top: 15px !important;
-            right: 0 !important;
-            left: auto !important;
-        }
-
-        .ribbon-warning {
-            top: 50px !important;
-            right: 0 !important;
-            left: auto !important;
-        }
-
-        .ribbon-success {
-            top: 50px !important;
-            right: 0 !important;
-            left: auto !important;
-        }
-
-        .progress {
-            height: 4px !important;
+        .formation-item img,
+        .card img,
+        .product-box img {
+            opacity: 1 !important;
+            transition: none !important;
         }
     `;
     document.head.appendChild(style);

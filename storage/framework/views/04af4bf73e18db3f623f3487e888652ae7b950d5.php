@@ -19,8 +19,6 @@
     <link rel="stylesheet" href="<?php echo e(asset('assets/css/MonCss/reservation.css')); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <style>
-
-        
         @keyframes  fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -31,7 +29,6 @@
     gap: 0.5rem;
     margin-bottom: 1rem;
 }
-
 .complete-formations-warning {
     width: 75vw; /* Largeur de toute la fenêtre */
     padding: 1rem;
@@ -43,12 +40,11 @@
     align-items: center;
     justify-content: center; /* ← LIGNE AJOUTÉE pour centrer */
 }
-
 /* ALERTE DATE DÉPASSÉE - MÊME STYLE QUE EXPIRED */
 .expired-formations-warning {
     width: 75vw; /* Largeur de toute la fenêtre */
     padding: 1rem;
-    background-color: #d1d5db;; 
+    background-color: #d1d5db;;
     color: #495057;
     border: 1px solid #d0d9e0;  /* ← GRIS FONCÉ */
     border-radius: 4px;
@@ -111,7 +107,7 @@
     opacity: 1 !important;
     transform: none !important;
 }
-    </style>
+</style>
 </head>
 <body>
     <div class="container" style="background-color: white !important;">
@@ -136,7 +132,7 @@
                                     <div class="placeholder-image"></div>
                                 <?php endif; ?>
                             </div>
-                            
+
                             <div class="formation-details">
                                 <h3 class="formation-title">
                                     <?php echo e($item->Training->title); ?>
@@ -187,7 +183,7 @@
                                         <span class="rating-count">(<?php echo e($item->Training->total_feedbacks ?? 0); ?>)</span>
                                     </div>
                                 <?php endif; ?>
-                                
+
                                 <div class="formation-meta">
                                     <?php if($item->Training->duration && $item->Training->duration != '00:00' && !empty($item->Training->formatted_duration)): ?>
                                         <span><strong><?php echo e($item->Training->formatted_duration); ?></strong> au Total</span>
@@ -200,7 +196,7 @@
                                     <?php endif; ?>
                                 </div>
                             </div>
-                            
+
                             <div class="formation-actions">
                                 <div class="action-links">
                                     <a href="javascript:void(0);" class="remove-link" data-formation-id="<?php echo e($item->Training->id); ?>">Supprimer</a>
@@ -224,7 +220,7 @@
                         </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
-                
+
                 <div class="panier-summary usd-style">
                     <div class="summary-title">Total:</div>
                     <div class="total-price"><?php echo e(number_format($totalPrice, 2)); ?> Dt</div>
@@ -232,12 +228,12 @@
                         <div class="original-price"><?php echo e(number_format($totalWithoutDiscount, 2)); ?> Dt</div>
                         <div class="discount-percentage"> -<?php echo e($discountPercentage); ?>%</div>
                     <?php endif; ?>
-                    
+
                     <div class="reservation-buttons-container" id="reservationButtons">
                         <?php if($reservationData['hasReservation']): ?>
                             <?php if($reservationData['buttonState'] === 'viewReservations'): ?>
                                 <button class="voir-reservations-button" data-action="view-reservations">
-                                    Voir mes réservations 
+                                    Voir mes réservations
                                     <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
@@ -249,7 +245,7 @@
                                 <?php endif; ?>
                             <?php elseif($reservationData['buttonState'] === 'viewReservationsOnly'): ?>
                                 <button class="voir-reservations-button" data-action="view-reservations">
-                                    Voir mes réservations 
+                                    Voir mes réservations
                                     <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
@@ -257,7 +253,7 @@
                             <?php endif; ?>
                         <?php else: ?>
                             <button class="reserver-button <?php echo e(!empty($completeFormations) || !empty($expiredFormations) ? 'disabled' : ''); ?>" data-action="create-reservation" id="reserveButton" <?php echo e(!empty($completeFormations) || !empty($expiredFormations) ? 'disabled title="Une ou plusieurs formations sont complètes ou ont une date dépassée"' : ''); ?>>
-                                Réserver 
+                                Réserver
                                 <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
@@ -294,9 +290,9 @@ function formatDuration($duration) {
     if (empty($duration) || $duration === '00:00:00' || $duration === '0:0:0') {
         return '';
     }
-    
+
     $parts = explode(':', $duration);
-    
+
     $hours = (int)($parts[0] ?? 0);
     $minutes = (int)($parts[1] ?? 0);
     $seconds = (int)($parts[2] ?? 0);
@@ -315,10 +311,10 @@ return !empty($result) ? implode(' ', $result) : '';
     document.addEventListener('DOMContentLoaded', function() {
         // Récupérer le compteur depuis les données de la vue
         const cartCount = <?php echo e($cartCount ?? 0); ?>;
-        
+
         // Mettre à jour immédiatement le localStorage et le badge
         localStorage.setItem('cartCount', cartCount.toString());
-        
+
         // S'assurer que la fonction updateCartBadge existe
         if (typeof updateCartBadge === 'function') {
             updateCartBadge(cartCount);
@@ -335,6 +331,4 @@ return !empty($result) ? implode(' ', $result) : '';
 
 <?php endif; ?>
 
-
-     
 <?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\apprendre laravel\Centre_Formation-main\resources\views/admin/apps/formation/panier.blade.php ENDPATH**/ ?>

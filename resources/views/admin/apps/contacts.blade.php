@@ -1,6 +1,6 @@
 @extends('layouts.admin.master')
 
-@section('title') Gestion des Utilisateurs & Permissions @endsection
+@section('title') Gestion des Utilisateurs {{ $title }} @endsection
 
 @push('css')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">

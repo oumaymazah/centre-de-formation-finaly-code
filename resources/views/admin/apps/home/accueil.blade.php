@@ -3,7 +3,7 @@
 @php
     $hideAdminFooter = true;
 @endphp
-
+@section('title') Accueil {{ $title }} @endsection
 @section('content')
 <div class="fullwidth-container">
     <!DOCTYPE html>

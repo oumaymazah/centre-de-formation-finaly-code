@@ -916,6 +916,7 @@ function addToCart(formationId, redirectToCart = false, callback = null) {
         });
 }
 
+
 function addBadgeToIcon(icon, cartCount) {
     const container = icon.closest('a, div, button, .cart-container');
     if (container && !container.querySelector('.cart-badge, .custom-violet-badge')) {

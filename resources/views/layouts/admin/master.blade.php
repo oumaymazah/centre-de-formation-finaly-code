@@ -93,6 +93,8 @@
     <div class="page-wrapper compact-sidebar" id="pageWrapper">
       <!-- Page Header Start-->
       @includeIf('layouts.admin.partials.header')
+
+    
       <!-- Page Header Ends -->
       <!-- Page Body Start-->
       <div class="page-body-wrapper sidebar-icon">

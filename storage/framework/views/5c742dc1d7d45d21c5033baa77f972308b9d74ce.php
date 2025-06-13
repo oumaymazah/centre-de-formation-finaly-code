@@ -1,4 +1,4 @@
-<?php $__env->startSection('title'); ?> Modifier une Formation <?php $__env->stopSection(); ?>
+<?php $__env->startSection('title'); ?> Modifier une Formation <?php echo e($title); ?> <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('css'); ?>
     <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/dropzone.css')); ?>">

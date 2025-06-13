@@ -1,5 +1,5 @@
 @extends('layouts.admin.master')
-
+@section('title') Politique {{ $title }} @endsection
 @php
     $hideAdminFooter = true;
 @endphp

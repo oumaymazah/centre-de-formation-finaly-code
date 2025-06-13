@@ -4,7 +4,7 @@
 @php
     $hideAdminFooter = true;
 @endphp
-
+@section('title') A propos {{ $title }} @endsection
 @section('content')
 <div class="fullwidth-container">
     <!DOCTYPE html>

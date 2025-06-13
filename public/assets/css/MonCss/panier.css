@@ -180,7 +180,7 @@
         min-width: 220px;
     }
 
-   
+
 
     .remove-link:hover {
         background-color: #f0e6ff; /* Fond légèrement violet au survol */
@@ -219,8 +219,8 @@
         font-family: 'Roboto', sans-serif;
 
       }
-      
-    
+
+
     .price-section {
         margin-bottom: 15px;
     }
@@ -241,7 +241,7 @@
         align-items: flex-end;
         min-width: 120px; /* Largeur minimale pour assurer l'alignement */
     }
-    
+
     .empty-cart {
         text-align: center;
         padding: 60px 0;
@@ -342,11 +342,11 @@
         .panier-content {
             flex-direction: column;
         }
-        
+
         .formation-item {
             flex-direction: column;
         }
-        
+
         .formation-image {
             width: 100%;
             height: 180px;
@@ -357,12 +357,12 @@
             text-align: left;
             margin-top: 10px;
         }
-        
+
         .panier-summary {
             max-width: 100%;
             margin-top: 20px;
         }
-        
+
         .action-links {
             flex-direction: row;
             justify-content: space-between;

@@ -187,7 +187,7 @@
         }
 
         .login-card {
-            background: transparent;
+            background: none !important;
             border: none;
             box-shadow: none;
             padding: 0;
@@ -271,11 +271,7 @@
             color: white;
         }
 
-        /* .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(93, 173, 226, 0.3);
-            background: linear-gradient(135deg, #4fa3d1 0%, #2980b9 100%);
-        } */
+
 
         .login-social-title {
             text-align: center;

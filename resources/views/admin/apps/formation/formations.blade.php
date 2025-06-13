@@ -21,7 +21,7 @@ Formations | ELS-Centre de Formation en Ligne
       letter-spacing: 0.5px;
       border-radius: 0;
       width: 90% !important;
-      height: 90% !important;
+      /* height: 90% !important; */
       background-color: #fff;
     }
 
@@ -86,6 +86,8 @@ Formations | ELS-Centre de Formation en Ligne
     .product-wrapper {
         margin-top: 80px;
     }
+
+    
 </style>
 @endpush
 

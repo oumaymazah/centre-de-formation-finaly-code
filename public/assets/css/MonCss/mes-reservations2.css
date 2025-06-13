@@ -186,7 +186,7 @@
 
 /* Adjust the total-section inside the card for consistency */
 .total-container .total-section {
-    margin-top: 20px;
+
     margin-bottom: 0;
     width: 250px;
     background-color: #f8f9fa;
@@ -259,7 +259,7 @@
 
 /* Améliorer la gestion de l'espace pour les formations nombreuses */
 .formations-container {
-    display: flex;
+    /* display: flex; */
     flex-direction: column;
     margin-bottom: 20px; /* Ajouter une marge en bas */
 }

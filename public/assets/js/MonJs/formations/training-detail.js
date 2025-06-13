@@ -1382,10 +1382,10 @@ function displayBlockedContent(message, requiresAuth, requiresPayment) {
     if (requiresAuth) {
         title = 'Connexion Requise';
         actionButton = `
-            <a href="/login" class="btn btn-primary btn-lg me-2">
+            <a href="/login" class="btn btn-connect-nav btn-lg me-2">
                 <i class="fas fa-sign-in-alt me-2"></i>Se connecter
             </a>
-            <a href="/sign-up" class="btn btn-outline-primary btn-lg">
+            <a href="/sign-up" class="btn btn-register-nav btn-lg">
                 <i class="fas fa-user-plus me-2"></i>S'inscrire
             </a>
         `;
@@ -1513,7 +1513,7 @@ function openImageModal(imagePath, imageName) {
                     <div class="modal-body text-center">
                         <img src="/storage/${imagePath}" class="img-fluid" alt="${imageName}" style="max-height: 70vh;">
                     </div>
-                    
+
                 </div>
             </div>
         </div>

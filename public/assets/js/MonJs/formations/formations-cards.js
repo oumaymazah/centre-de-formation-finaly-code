@@ -1,4 +1,3 @@
-
 function initFooterVisibility() {
     console.log("Initialisation de la visibilité du footer");
     const footer = document.querySelector('.footer');
@@ -516,7 +515,6 @@ function showFormationEndedPopup() {
                             <h6 class="mb-3">Cette formation est déjà terminée</h6>
                             <p class="text-muted">Vous ne pouvez pas modifier une formation dont la date de fin est dépassée.</p>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -564,7 +562,7 @@ function updateButtonLayout(formationId) {
                 updateCompleteBadge(formationElement, isComplete);
             }
         });
-    }
+}
 // Initialiser au chargement du document
 document.addEventListener('DOMContentLoaded', function() {
     initButtonLayout();
@@ -782,8 +780,6 @@ const showCartButtons = !isAdminRole; // Ne pas afficher les boutons pour admin/
     return cardHtml;
 }
 
-
-
 function handleResponse(response) {
     if (!response.ok) {
         throw new Error('Erreur réseau: ' + response.statusText);
@@ -791,36 +787,6 @@ function handleResponse(response) {
     return response.json();
 }
 
-// function refreshFormationCards() {
-//     const cards = document.querySelectorAll('.formation-item');
-//     cards.forEach(card => {
-//         const trainingId = card.dataset.id;
-//         fetch(`/api/trainings/${trainingId}/remaining-places`)
-//             .then(handleResponse)
-//             .then(data => {
-//                 const isComplete = data.remaining_places <= 0 || data.is_full;
-//                 card.dataset.isComplete = isComplete;
-//                 const ribbon = card.querySelector('.ribbon-danger');
-//                 if (ribbon) {
-//                     ribbon.style.display = isComplete ? 'block' : 'none';
-//                 }
-//                 const modal = document.getElementById(`formation-modal-${trainingId}`);
-//                 if (modal) {
-//                     const modalRibbon = modal.querySelector('.ribbon-danger');
-//                     if (modalRibbon) {
-//                         modalRibbon.style.display = isComplete ? 'block' : 'none';
-//                     }
-//                     const badge = modal.querySelector('.badge');
-//                     if (badge) {
-//                         badge.className = `badge ${isComplete ? 'badge-danger' : (data.remaining_places < data.total_places * 0.2 ? 'badge-warning' : 'badge-bleu')} text-white`;
-//                         badge.textContent = `${data.total_places - data.remaining_places} / ${data.total_places}`;
-//                     }
-//                 }
-//                 console.log(`Mise à jour de la formation ${trainingId}: isComplete=${isComplete}`);
-//             })
-//             .catch(error => console.error(`Erreur mise à jour formation ${trainingId}:`, error));
-//     });
-// }
 function refreshFormationCards() {
     const cards = document.querySelectorAll('.formation-item');
     cards.forEach(card => {
@@ -893,7 +859,6 @@ function checkUserReservationForFormation(formationId) {
             return false;
         });
 }
-
 
 function checkFormationHasConfirmedReservation(formationId) {
     console.log(`Vérification des réservations confirmées pour la formation ${formationId}`);
@@ -993,7 +958,7 @@ function updateAddToCartButton(formationId, inCart, isComplete) {
             if (hasReservation) {
                 // L'utilisateur a une réservation pour cette formation spécifique
                 console.log(`Formation #${formationId} - Utilisateur a une réservation. Configuration du bouton en "Voir mes réservations"`);
-                button.textContent = 'Voir mes réservations';
+                button.textContent = 'mes réservations';
                 button.classList.add('btn-primary');
                 button.href = '/mes-reservations';
                 button.removeAttribute('data-in-cart');
@@ -1078,134 +1043,116 @@ function showLoginPopup() {
     const modal = new bootstrap.Modal(document.getElementById('loginModal'));
     modal.show();
 }
-// function addButtonStyles() {
-//     const style = document.createElement('style');
-//     style.textContent = `
-//    .btn-sky {
-//             background-color: rgb(141, 26, 186) !important;
-//             color: #ffffff !important;
-//             border-color: rgb(141, 26, 186) !important;
-//         }
-
-//         .btn-sky:hover {
-//             background-color:rgb(141, 26, 186) !important;
-//             border-color:rgb(141, 26, 186) !important;
-//         }
-
-//         .btn-sky:disabled {
-//             background-color:rgb(141, 26, 186) !important;
-//             border-color:rgb(141, 26, 186) !important;
-//                 color: white !important;  // ← CORRECTION : texte blanc même quand désactivé
-
-//             opacity: 0.8 !important;
-//         }
-//         .addcart-btn {
-//             display: flex !important;
-//             gap: 10px !important;
-//             width: 100% !important;
-//         }
-//         .addcart-btn .btn {
-//             flex: 1 !important;
-//             white-space: nowrap !important;
-//         }
-//          .badge-bleu {
-//             background-color:  #2B6ED4;
-//             color: #ffffff !important;
-//         }
-//         body {
-//             padding-right: 0 !important;
-//             overflow-y: scroll !important;
-//         }
-
-//         body.modal-open {
-//             overflow: hidden !important;
-//             padding-right: 0 !important;
-//         }
-
-//         .modal-open .modal {
-//             overflow-x: hidden;
-//             overflow-y: auto;
-//         }
-
-//         /* NOUVEAUX STYLES: Styles pour le popup de connexion */
-//         #loginModal .modal-body i.icon-user {
-//             margin-bottom: 15px;
-//         }
-
-//         #loginModal .modal-footer .btn {
-//             margin: 0 5px;
-//             min-width: 100px;
-//         }
-
-//         #loginModal .modal-content {
-//             border-radius: 10px;
-//             border: none;
-//             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-//         }
-
-//         #loginModal .modal-header {
-//             background: linear-gradient(135deg, #2B6ED4 0%, #1e5bb8 100%);
-//             color: white;
-//             border-bottom: none;
-//             border-radius: 10px 10px 0 0;
-//         }
-
-//         #loginModal .modal-header .btn-close {
-//             filter: invert(1);
-//         }
-
-//         /* Styles améliorés pour tous les rubans */
-//         .ribbon {
-//             width: 110px !important;
-//             min-width: 110px !important;
-//             max-width: 110px !important;
-//             text-align: center !important;
-//             padding: 3px 10px !important;
-//             box-sizing: border-box !important;
-//             height: 27px !important;
-//             line-height: 20px !important;
-//             overflow: hidden !important;
-//             white-space: nowrap !important;
-//             text-overflow: ellipsis !important;
-//         }
-
-//         .ribbon-danger {
-//             top: 15px !important;
-//             right: 0 !important;
-//             left: auto !important;
-//         }
-
-//         .ribbon-warning {
-//             top: 50px !important;
-//             right: 0 !important;
-//             left: auto !important;
-//         }
-
-//         .ribbon-success {
-//             top: 50px !important;
-//             right: 0 !important;
-//             left: auto !important;
-//         }
-
-//         .progress {
-//             height: 4px !important;
-//         }
-//     `;
-//     document.head.appendChild(style);
-// }
 function addButtonStyles() {
     const style = document.createElement('style');
     style.textContent = `
-        body, .container-fluid, .product-wrapper, .formations-container, .formation-item, .card, .product-box {
-            opacity: 1 !important;
-            visibility: visible !important;
-            background-color: #ffffff !important;
-            display: block !important;
-            transition: none !important;
+   .btn-sky {
+            background-color: rgb(141, 26, 186) !important;
+            color: #ffffff !important;
+            border-color: rgb(141, 26, 186) !important;
         }
-        .formation-item img, .card img, .product-box img {
-            opacity: 1 !important;
-            visibility: visible !important;
+
+        .btn-sky:hover {
+            background-color: rgb(141, 26, 186) !important;
+            border-color: rgb(141, 26, 186) !important;
+        }
+
+        .btn-sky:disabled {
+            background-color: rgb(141, 26, 186) !important;
+            border-color: rgb(141, 26, 186) !important;
+            color: white !important;  // ← CORRECTION : texte blanc même quand désactivé
+            opacity: 0.8 !important;
+        }
+        .addcart-btn {
+            display: flex !important;
+            gap: 10px !important;
+            width: 100% !important;
+        }
+        .addcart-btn .btn {
+            flex: 1 !important;
+            white-space: nowrap !important;
+        }
+         .badge-bleu {
+            background-color: #2B6ED4;
+            color: #ffffff !important;
+        }
+        body {
+            padding-right: 0 !important;
+            overflow-y: scroll !important;
+        }
+
+        body.modal-open {
+            overflow: hidden !important;
+            padding-right: 0 !important;
+        }
+
+        .modal-open .modal {
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        /* NOUVEAUX STYLES: Styles pour le popup de connexion */
+        #loginModal .modal-body i.icon-user {
+            margin-bottom: 15px;
+        }
+
+        #loginModal .modal-footer .btn {
+            margin: 0 5px;
+            min-width: 100px;
+        }
+
+        #loginModal .modal-content {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        #loginModal .modal-header {
+            background: linear-gradient(135deg, #2B6ED4 0%, #1e5bb8 100%);
+            color: white;
+            border-bottom: none;
+            border-radius: 10px 10px 0 0;
+        }
+
+        #loginModal .modal-header .btn-close {
+            filter: invert(1);
+        }
+
+        /* Styles améliorés pour tous les rubans */
+        .ribbon {
+            width: 110px !important;
+            min-width: 110px !important;
+            max-width: 110px !important;
+            text-align: center !important;
+            padding: 3px 10px !important;
+            box-sizing: border-box !important;
+            height: 27px !important;
+            line-height: 20px !important;
+            overflow: hidden !important;
+            white-space: nowrap !important;
+            text-overflow: ellipsis !important;
+        }
+
+        .ribbon-danger {
+            top: 15px !important;
+            right: 0 !important;
+            left: auto !important;
+        }
+
+        .ribbon-warning {
+            top: 50px !important;
+            right: 0 !important;
+            left: auto !important;
+        }
+
+        .ribbon-success {
+            top: 50px !important;
+            right: 0 !important;
+            left: auto !important;
+        }
+
+        .progress {
+            height: 4px !important;
         }
     `;
     document.head.appendChild(style);
@@ -1222,7 +1169,6 @@ if (typeof module !== 'undefined' && module.exports) {
         addButtonStyles,
         initButtonLayout,
         showLoginPopup
-
     };
 }
 function applyLeftShiftForUnauthenticated() {

@@ -1196,30 +1196,16 @@ function showLoginPopup() {
 function addButtonStyles() {
     const style = document.createElement('style');
     style.textContent = `
-        /* Styles existants... */
-
-        /* Ajout de styles pour les conteneurs principaux */
-        body {
+        body, .container-fluid, .product-wrapper, .formations-container, .formation-item, .card, .product-box {
             opacity: 1 !important;
+            visibility: visible !important;
             background-color: #ffffff !important;
+            display: block !important;
             transition: none !important;
         }
-
-        .container-fluid,
-        .formations-container,
-        .formation-item,
-        .card,
-        .product-box {
+        .formation-item img, .card img, .product-box img {
             opacity: 1 !important;
-            background-color: #ffffff !important;
-            transition: none !important;
-        }
-
-        .formation-item img,
-        .card img,
-        .product-box img {
-            opacity: 1 !important;
-            transition: none !important;
+            visibility: visible !important;
         }
     `;
     document.head.appendChild(style);

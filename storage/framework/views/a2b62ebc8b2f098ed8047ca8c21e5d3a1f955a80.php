@@ -32,7 +32,7 @@
       <!-- Page Header Start-->
       <?php if ($__env->exists('layouts.admin.partials.header')) echo $__env->make('layouts.admin.partials.header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-    
+
       <!-- Page Header Ends -->
       <!-- Page Body Start-->
       <div class="page-body-wrapper sidebar-icon">

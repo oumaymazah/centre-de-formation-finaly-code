@@ -87,7 +87,7 @@ Route::get('/debug-formation/{id}', [ReservationController::class, 'debugFormati
 
 Route::post('/clean-reservations', [ReservationController::class,'cleanEmptyReservationsEndpoint']);
 
-
+Route::get('/training/{id}', [TrainingDetailController::class, 'show'])->name('training.detail');
 Route::get('sign-up', [RegisterController::class, 'showRegistrationForm'])->name('sign-up');
 Route::post('sign-up', [RegisterController::class, 'register'])->name('register');
 Route::get('validation', [RegisterController::class, 'showValidationForm'])->name('validation.form');
@@ -424,7 +424,7 @@ Route::get('/certificats', [CertificationController::class, 'index'])->name('cer
 
     Route::get('create', [FormationController::class, 'create'])->name('formationcreate');
     Route::post('formation/store', [FormationController::class, 'store'])->name('formationstore');
-    Route::get('/training/{id}', [TrainingDetailController::class, 'show'])->name('training.detail');
+    // Route::get('/training/{id}', [TrainingDetailController::class, 'show'])->name('training.detail');
     Route::get('/api/lesson/{lessonId}/content', [TrainingDetailController::class, 'getLessonContent'])->name('lesson.content');
 
 // Pour le tracking des vues

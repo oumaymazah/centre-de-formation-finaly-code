@@ -34,7 +34,8 @@ class ChangePasswordController extends Controller
         $user->first_login = false;
         $user->save();
 
-        return redirect()->route('dashboard.index')
+
+        return redirect()->route('formations')
             ->with('success', 'Vous pouvez modifier votre mot de passe plus tard.');
     }
     public function changePassword(Request $request)
@@ -52,10 +53,7 @@ class ChangePasswordController extends Controller
             $user->first_login = false; // Marquer que ce n'est plus la première connexion
             $user->save();
 
-            
-
-
-            return redirect()->route('dashboard.index')
+            return redirect()->route('formations')
                 ->with('success', 'Votre mot de passe a été modifié avec succès.');
         } catch (\Exception $e) {
             Log::error('Erreur lors de la modification du mot de passe: ' . $e->getMessage());

@@ -40,7 +40,7 @@ class ReservationController extends Controller
 
         return response()->json(['has_complete_formations' => $hasComplete]);
     }
-    //zedtha neww
+   
     public function checkConfirmedReservation($formationId)
 {
     try {
@@ -900,7 +900,7 @@ public function checkUserReservationForFormation($formationId)
                     $cart->save();
                     Log::info("Panier vidé (ID: {$cart->id}) après confirmation du paiement");
                 }
-               
+
 
                 // Envoyer l'email de confirmation
                 try {

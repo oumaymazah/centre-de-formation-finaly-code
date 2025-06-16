@@ -663,8 +663,8 @@
 
                     <div class="mt-4 d-flex justify-content-between align-items-center">
                         @if($quiz->isFinalQuiz())
-                            <a href="{{ route('index') }}" class="btn btn-primary">
-                                <i class="fas fa-home mr-1"></i> Retour au tableau de bord
+                            <a href="{{ route('formations') }}" class="btn btn-primary">
+                                <i class="fas fa-home mr-1"></i> Retour à la liste de formations
                             </a>
                         @else
                             <a href="{{ route('training.detail',$quiz->training->id) }}" class="btn btn-primary">

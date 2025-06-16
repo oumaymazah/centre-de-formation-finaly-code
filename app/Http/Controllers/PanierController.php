@@ -17,25 +17,25 @@ public function debugFormationReservations($formationId)
     if (!$formation) {
         return response()->json(['error' => 'Formation non trouvée']);
     }
-    
+
     // Récupérer toutes les réservations qui contiennent cette formation
     $reservations = DB::table('reservations')
         ->where('training_data', 'like', '%' . $formationId . '%')
         ->get();
-    
+
     $debug = [
         'formation_id' => $formationId,
         'total_seats' => $formation->total_seats,
         'total_reservations' => $reservations->count(),
         'reservations_details' => []
     ];
-    
+
     $confirmedCount = 0;
     $pendingCount = 0;
-    
+
     foreach ($reservations as $reservation) {
         $trainingData = json_decode($reservation->training_data, true);
-        
+
         // Compter les occurrences de cette formation dans training_data
         $formationCount = 0;
         if (is_array($trainingData)) {
@@ -43,7 +43,7 @@ public function debugFormationReservations($formationId)
                 return (string)$id === (string)$formationId;
             }));
         }
-        
+
         $debug['reservations_details'][] = [
             'reservation_id' => $reservation->id,
             'user_id' => $reservation->user_id,
@@ -52,40 +52,40 @@ public function debugFormationReservations($formationId)
             'formation_occurrences' => $formationCount,
             'created_at' => $reservation->created_at
         ];
-        
+
         if ($reservation->status == 1) {
             $confirmedCount += $formationCount;
         } else {
             $pendingCount += $formationCount;
         }
     }
-    
+
     $debug['summary'] = [
         'confirmed_reservations' => $confirmedCount,
         'pending_reservations' => $pendingCount,
         'remaining_seats' => max(0, $formation->total_seats - $confirmedCount),
         'is_complete' => ($formation->total_seats - $confirmedCount) <= 0 && $formation->total_seats > 0
     ];
-    
+
     return response()->json($debug);
 }
 
 
-public function getRemainingSeats($formationId) 
+public function getRemainingSeats($formationId)
 {
     try {
         $formation = Training::findOrFail($formationId);
         $totalSeats = (int)($formation->total_seats ?? 0);
-        
+
         // CORRECTION: Compter TOUTES les réservations validées (status = 1)
         // sans exception - y compris celles de l'utilisateur actuel
         $confirmedReservations = DB::table('reservations')
             ->where('status', 1) // Seules les réservations payées/validées comptent
             ->whereRaw("JSON_SEARCH(training_data, 'one', ?) IS NOT NULL", [$formationId])
             ->get();
-        
+
         $confirmedReservationsCount = 0;
-        
+
         // Compter manuellement pour être sûr
         foreach ($confirmedReservations as $reservation) {
             $trainingData = json_decode($reservation->training_data, true);
@@ -102,13 +102,13 @@ public function getRemainingSeats($formationId)
                 }
             }
         }
-        
+
         $remainingSeats = max(0, $totalSeats - $confirmedReservationsCount);
         $isComplete = $remainingSeats === 0 && $totalSeats > 0;
-        
+
         // Logging pour debug
         Log::info("Formation {$formationId}: Total={$totalSeats}, Confirmées={$confirmedReservationsCount}, Restantes={$remainingSeats}, Complète={$isComplete}");
-        
+
         return response()->json([
             'success' => true,
             'total_seats' => $totalSeats,
@@ -116,7 +116,7 @@ public function getRemainingSeats($formationId)
             'remaining_seats' => $remainingSeats,
             'is_complete' => $isComplete
         ]);
-        
+
     } catch (\Exception $e) {
         Log::error("Erreur getRemainingSeats pour formation {$formationId}: " . $e->getMessage());
         return response()->json([
@@ -137,7 +137,7 @@ public function index()
                 'redirect_url' => route('login')
             ], 401);
         }
-        
+
         return view('admin.apps.formation.panier', [
             'authenticated' => false,
             'panierItems' => collect(),
@@ -155,7 +155,7 @@ public function index()
                 'message' => 'Accès restreint aux étudiants uniquement'
             ], 403);
         }
-        
+
         return view('admin.apps.formation.panier', [
             'authenticated' => true,
             'authorized' => false,
@@ -363,18 +363,12 @@ private function getReservationData($userId)
         $response['status'] = 0;
         $response['buttonState'] = 'viewReservations';
     }
-    // Si nous avons une réservation confirmée mais pas d'articles dans le panier
-    // elseif ($confirmedReservation && !$hasItemsInCart) {
-    //     $response['hasReservation'] = true;
-    //     $response['reservation_id'] = $confirmedReservation->id;
-    //     $response['status'] = 1;
-    //     $response['buttonState'] = 'viewReservationsOnly'; // Juste voir, pas d'annulation
-    // }
+   
 
     return $response;
 }
 
-      
+
 public function ajouter(Request $request)
 {
     try {
@@ -412,11 +406,11 @@ public function ajouter(Request $request)
             $pendingReservations = Reservation::where('user_id', $userId)
                 ->where('status', 0) // Réservations en attente uniquement
                 ->get();
-            
+
             if ($pendingReservations->isNotEmpty()) {
                 // Récupérer les informations de la formation à ajouter
                 $training = Training::find($formationId);
-                
+
                 if ($training) {
                     // Ajouter simplement l'ID de la formation comme string
                     $trainingData = (string)$training->id;
@@ -424,7 +418,7 @@ public function ajouter(Request $request)
                     foreach ($pendingReservations as $reservation) {
                         // S'assurer que training_data est toujours un tableau
                         $existingTrainingData = [];
-                        
+
                         // Vérifier si training_data est déjà défini
                         if ($reservation->training_data !== null) {
                             if (is_array($reservation->training_data)) {
@@ -442,7 +436,7 @@ public function ajouter(Request $request)
                             $existingTrainingData[] = $trainingData;  // Ajouter seulement l'ID
                             $reservation->training_data = $existingTrainingData;
                             $reservation->save();
-                            
+
                             Log::info("ID de Formation {$formationId} ajouté à la réservation {$reservation->id}");
                         }
                     }
@@ -461,31 +455,31 @@ public function ajouter(Request $request)
     } catch (\Exception $e) {
         Log::error('Erreur lors de l\'ajout au panier: ' . $e->getMessage());
         Log::error($e->getTraceAsString());
-        
+
         return response()->json([
             'success' => false,
             'message' => 'Erreur serveur: ' . $e->getMessage()
         ], 500);
     }
 }
-    
+
 public function supprimer(Request $request)
 {
     Log::info('Received request to supprimer', ['formation_id' => $request->formation_id]);
     $userId = Auth::id() ?? session()->getId();
     $formationId = $request->formation_id;
-    
+
     $cart = Cart::where('user_id', $userId)->first();
-    
+
     if (!$cart) {
         return response()->json([
             'success' => false,
             'message' => 'Panier introuvable'
         ], 404);
     }
-    
+
     $trainingIds = $cart->training_ids ?: [];
-    
+
     // Vérifier si la formation est dans le panier
     $key = array_search($formationId, $trainingIds);
     if ($key === false) {
@@ -494,7 +488,7 @@ public function supprimer(Request $request)
             'message' => 'Formation introuvable dans votre panier'
         ], 404);
     }
-    
+
     // Supprimer la formation du panier
     array_splice($trainingIds, $key, 1);
     $cart->training_ids = array_values($trainingIds); // Réindexer le tableau
@@ -505,29 +499,29 @@ public function supprimer(Request $request)
         // Convertir l'ID de formation en entier et en chaîne pour les comparaisons
         $formationIdInt = (int)$formationId;
         $formationIdStr = (string)$formationId;
-        
+
         Log::info("Suppression en cours pour formation: ID int={$formationIdInt}, ID string={$formationIdStr}");
-        
+
         $pendingReservations = Reservation::where('user_id', $userId)
             ->where('status', 0) // Réservations en attente uniquement
             ->get();
-        
+
         foreach ($pendingReservations as $reservation) {
             Log::info("Traitement de la réservation: " . $reservation->id, [
                 'training_data_type' => gettype($reservation->training_data),
                 'training_data' => $reservation->training_data
             ]);
-            
+
             // Assurons-nous que training_data est bien un tableau
             $trainingData = $reservation->training_data;
             if (is_string($trainingData)) {
                 $trainingData = json_decode($trainingData, true) ?: [];
             }
-            
+
             if (empty($trainingData)) {
                 continue; // Passer à la réservation suivante si pas de données
             }
-            
+
             // Cas 1: Si training_data est un simple tableau d'IDs (comme [4,8,6])
             if (isset($trainingData[0]) && !is_array($trainingData[0])) {
                 Log::info("Format détecté: Tableau simple d'IDs");
@@ -535,20 +529,20 @@ public function supprimer(Request $request)
                 if ($keyToRemove === false) {
                     $keyToRemove = array_search($formationIdStr, $trainingData);
                 }
-                
+
                 if ($keyToRemove !== false) {
                     array_splice($trainingData, $keyToRemove, 1);
                     $reservation->training_data = array_values($trainingData);
                     $reservation->save();
                     Log::info("Formation {$formationId} supprimée de la réservation {$reservation->id} (tableau simple)");
                 }
-            } 
+            }
             // Cas 2: Si training_data est un tableau d'objets (comme [{id: 4, ...}, {id: 8, ...}])
             else {
                 Log::info("Format détecté: Tableau d'objets");
                 $updatedTrainingData = [];
                 $removed = false;
-                
+
                 foreach ($trainingData as $item) {
                     // Récupérer l'ID de l'élément de formation
                     $itemId = null;
@@ -557,7 +551,7 @@ public function supprimer(Request $request)
                     } elseif (is_object($item) && isset($item->id)) {
                         $itemId = $item->id;
                     }
-                    
+
                     // Comparer avec les deux formats (entier et chaîne)
                     if ($itemId !== $formationIdInt && $itemId !== $formationIdStr) {
                         $updatedTrainingData[] = $item;
@@ -566,7 +560,7 @@ public function supprimer(Request $request)
                         Log::info("Formation trouvée et supprimée du training_data: ID={$itemId}");
                     }
                 }
-                
+
                 if ($removed) {
                     $reservation->training_data = $updatedTrainingData;
                     $reservation->save();
@@ -584,25 +578,25 @@ public function supprimer(Request $request)
         'training_ids' => $cart->training_ids,
         'count' => count($cart->training_ids)
     ]);
-    
+
     // Recalculer les totaux
     $trainings = Training::whereIn('id', $trainingIds)->get();
-    
+
     $totalPrice = 0;
     $totalWithoutDiscount = 0;
     $discountedItemsOriginalPrice = 0;
     $discountedItemsFinalPrice = 0;
     $hasDiscount = false;
-    
+
     foreach ($trainings as $training) {
         if ($training && $training->price) {
             $originalPrice = $training->price;
             $totalWithoutDiscount += $originalPrice;
-            
+
             if ($training->discount > 0) {
                 $hasDiscount = true;
                 $discountedPrice = $originalPrice * (1 - $training->discount / 100);
-                
+
                 $discountedItemsOriginalPrice += $originalPrice;
                 $discountedItemsFinalPrice += $discountedPrice;
                 $totalPrice += $discountedPrice;
@@ -616,12 +610,12 @@ public function supprimer(Request $request)
     if ($totalWithoutDiscount > 0 && $totalPrice < $totalWithoutDiscount) {
         $globalDiscountPercentage = round(100 - ($totalPrice / $totalWithoutDiscount * 100));
     }
-    
+
     $discountPercentage = 0;
     if ($discountedItemsOriginalPrice > 0 && $hasDiscount) {
         $discountPercentage = round(100 - ($discountedItemsFinalPrice / $discountedItemsOriginalPrice * 100));
     }
-    
+
     $formattedTotalPrice = number_format($totalPrice, 3);
     $formattedTotalWithoutDiscount = number_format($totalWithoutDiscount, 3);
     $formattedDiscountedItemsOriginalPrice = number_format($discountedItemsOriginalPrice, 3);
@@ -636,7 +630,7 @@ public function supprimer(Request $request)
         'individualDiscountPercentage' => $discountPercentage,
         'hasDiscount' => $hasDiscount
     ]);
-}    
+}
 
 // Dans votre PanierController.php
 
@@ -645,7 +639,7 @@ public function supprimer(Request $request)
 //     try {
 //         // Récupérer les IDs depuis la requête
 //         $formationIds = $request->input('formation_ids', []);
-        
+
 //         // Validation
 //         if (empty($formationIds) || !is_array($formationIds)) {
 //             return response()->json([
@@ -699,8 +693,8 @@ public function supprimer(Request $request)
 //         $reservationCounts = array_fill_keys($formationIds, 0);
 
 //         foreach ($reservations as $reservation) {
-//             $trainingData = is_string($reservation->training_data) 
-//                 ? json_decode($reservation->training_data, true) 
+//             $trainingData = is_string($reservation->training_data)
+//                 ? json_decode($reservation->training_data, true)
 //                 : $reservation->training_data;
 
 //             if (!is_array($trainingData) || empty($trainingData)) {
@@ -723,7 +717,7 @@ public function supprimer(Request $request)
 
 //             $results['remaining_seats'][$formation->id] = $remainingSeats;
 //             $results['total_seats'][$formation->id] = $totalSeats;
-            
+
 //             // Une formation est complète SEULEMENT si toutes les places sont occupées par des réservations payées
 //             if ($remainingSeats === 0 && $totalSeats > 0) {
 //                 $results['complete_formations'][] = $formation->id;
@@ -745,7 +739,7 @@ public function supprimer(Request $request)
 //             'message' => config('app.debug') ? $e->getMessage() : 'Erreur interne'
 //         ], 500);
 //     }
-// }    
+// }
 
     //     public function getFormationsAvailability(array $formationIds)
     // {
@@ -781,8 +775,8 @@ public function supprimer(Request $request)
     //     $reservationCounts = array_fill_keys($formationIds, 0);
 
     //     foreach ($reservations as $reservation) {
-    //         $trainingData = is_string($reservation->training_data) 
-    //             ? json_decode($reservation->training_data, true) 
+    //         $trainingData = is_string($reservation->training_data)
+    //             ? json_decode($reservation->training_data, true)
     //             : $reservation->training_data;
 
     //         if (!is_array($trainingData) || empty($trainingData)) {
@@ -804,7 +798,7 @@ public function supprimer(Request $request)
     //         $remainingSeats = max(0, $totalSeats - $confirmedReservations);
 
     //         $results['remaining_seats'][$formation->id] = $remainingSeats;
-            
+
     //         // Une formation est complète SEULEMENT si toutes les places sont occupées par des réservations payées
     //         if ($remainingSeats === 0 && $totalSeats > 0) {
     //             $results['complete_formations'][] = $formation->id;
@@ -827,7 +821,7 @@ public function supprimer(Request $request)
     //         $carts = Cart::where('user_id', $userId)->get();
     //         $items = [];
     //         $formationIds = [];
-        
+
     //         // Récupérer tous les IDs de formations
     //         foreach ($carts as $cart) {
     //             $cartFormationIds = $cart->training_ids ?: [];
@@ -835,23 +829,23 @@ public function supprimer(Request $request)
     //             $formationIds = array_merge($formationIds, $cartFormationIds);
     //         }
     //         $formationIds = array_unique($formationIds);
-        
+
     //         // Calculer la disponibilité
     //         $availability = $this->getFormationsAvailability($formationIds);
-        
+
     //         // Vérifier les formations expirées
     //         $expiredFormations = [];
     //         // Définir la date système (28 mai 2025, 01:53 AM CET) - même logique que dans index()
     //         $currentDate = \Carbon\Carbon::create(2025, 5, 28, 1, 53, 0, 'CET');
-        
+
     //         if (!empty($formationIds)) {
     //             $formations = Training::whereIn('id', $formationIds)
     //                 ->get(['id', 'start_date']);
-                
+
     //             foreach ($formations as $formation) {
     //                 if ($formation->start_date) {
     //                     $startDate = \Carbon\Carbon::parse($formation->start_date);
-                    
+
     //                     // Comparer seulement les dates (sans l'heure) pour exclure le même jour
     //                     // La formation est expirée seulement si sa date de début est antérieure à aujourd'hui
     //                     if ($startDate->toDateString() < $currentDate->toDateString()) {
@@ -860,7 +854,7 @@ public function supprimer(Request $request)
     //                 }
     //             }
     //         }
-            
+
     //         return response()->json([
     //             'items' => array_unique($items),
     //             'count' => count(array_unique($items)),
@@ -1030,8 +1024,8 @@ private function calculateFormationsAvailability($formationIds)
         $reservationCounts = array_fill_keys($formationIds, 0);
 
         foreach ($reservations as $reservation) {
-            $trainingData = is_string($reservation->training_data) 
-                ? json_decode($reservation->training_data, true) 
+            $trainingData = is_string($reservation->training_data)
+                ? json_decode($reservation->training_data, true)
                 : $reservation->training_data;
 
             if (!is_array($trainingData) || empty($trainingData)) {
@@ -1054,7 +1048,7 @@ private function calculateFormationsAvailability($formationIds)
 
             $results['remaining_seats'][$formation->id] = $remainingSeats;
             $results['total_seats'][$formation->id] = $totalSeats;
-            
+
             if ($remainingSeats === 0 && $totalSeats > 0) {
                 $results['complete_formations'][] = $formation->id;
             }
@@ -1077,14 +1071,14 @@ public function getFormationsAvailability(Request $request)
 {
     $formationIds = $request->input('formation_ids', []);
     $results = $this->calculateFormationsAvailability($formationIds);
-    
+
     return response()->json(array_merge(['success' => true], $results));
 }
 public function checkInCart($formationId)
         {
             $userId = Auth::id() ?? session()->getId();
             $cart = Cart::where('user_id', $userId)->first();
-            
+
             $inCart = false;
             if ($cart && is_array($cart->training_ids)) {
                 // Log for debugging
@@ -1092,10 +1086,10 @@ public function checkInCart($formationId)
                     'training_ids' => $cart->training_ids,
                     'formationId' => $formationId
                 ]);
-                
+
                 $inCart = in_array($formationId, $cart->training_ids);
             }
-            
+
             return response()->json(['in_cart' => $inCart, 'cart_items' => $cart ? $cart->training_ids : []]);
 }
 
@@ -1189,11 +1183,11 @@ private function calculateCartTotals($trainings)
         if ($training && $training->price) {
             $originalPrice = $training->price;
             $totalWithoutDiscount += $originalPrice;
-            
+
             if ($training->discount > 0) {
                 $hasDiscount = true;
                 $discountedPrice = $originalPrice * (1 - $training->discount / 100);
-                
+
                 $discountedItemsOriginalPrice += $originalPrice;
                 $discountedItemsFinalPrice += $discountedPrice;
                 $totalPrice += $discountedPrice;
@@ -1229,5 +1223,5 @@ public function getCount()
         $count = count($cart->training_ids);
     }
     return response()->json(['count' => $count]);
-} 
+}
 }

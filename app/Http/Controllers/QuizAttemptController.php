@@ -331,8 +331,7 @@ class QuizAttemptController extends Controller
             // Si au moins une réponse incorrecte, 0 point pour cette question (déjà géré)
         }
 
-        // Convertir en score sur 20
-        // $score = ($totalPoints > 0) ? ($earnedPoints / $totalPoints) * 20 : 0;
+        
         $score = ($totalPoints > 0) ? $earnedPoints : 0;
 
         // Mettre à jour le score

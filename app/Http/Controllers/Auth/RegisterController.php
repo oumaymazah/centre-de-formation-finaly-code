@@ -256,7 +256,7 @@ class RegisterController extends Controller
         if ($user->first_login) {
             return redirect()->route('password.change.form');
         }
-        return redirect()->route('index')
+        return redirect()->route('formations')
             ->with('success', 'Votre compte a été activé avec succès.');
     }
     public function resendCode(Request $request)

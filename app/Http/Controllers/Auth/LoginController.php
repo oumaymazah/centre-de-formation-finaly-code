@@ -115,24 +115,9 @@ class LoginController extends Controller
             return redirect()->route('password.change.form');
         }
 
-        // Rediriger les autres utilisateurs vers le dashboard
-        return redirect()->route('dashboard.index');
+
+        return redirect()->route('formations');
     }
 
-    //neww
-
-//     public function logout(Request $request)
-// {
-//     // Déconnecter l'utilisateur
-//     Auth::logout();
-
-//     // Invalider la session
-//     $request->session()->invalidate();
-
-//     // Régénérer le token CSRF
-//     $request->session()->regenerateToken();
-
-//     // Rediriger vers la page de login après logout
-//     return redirect()->route('login');
-// }
+  
 }

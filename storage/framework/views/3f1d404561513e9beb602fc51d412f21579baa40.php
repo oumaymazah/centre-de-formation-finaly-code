@@ -64,16 +64,16 @@
                 position: relative;
                 left: 40%;
                 right: 100%;
-                margin-left: -50vw !important;
+                margin-left: -40vw !important;
                 margin-right: -80vw !important;
             }
 
 
-            * {
+            /* * {
                 margin: 0;
                 padding: 0;
                 box-sizing: border-box;
-            }
+            } */
 
             body {
                 /* font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
@@ -108,14 +108,8 @@
                 100% { transform: rotate(360deg); }
             }
 
-            /* .container {
-                max-width: 1400px;
-                margin: 0 auto;
-                padding: 0 40px;
-                position: relative;
-                z-index: 2;
-            } */
-               .container {
+
+            .container {
                 width: 100% !important;
                 max-width: none !important;
                 margin: 0 !important;
@@ -131,7 +125,7 @@
 
             .section-header {
                 text-align: center;
-                margin-bottom: 80px;
+                /* margin-bottom: 80px; */
                 animation: fadeInDown 1.2s ease-out;
             }
 
@@ -368,10 +362,7 @@
             </div>
         </section>
 
-        <!-- Include Footer Component with offset -->
-        <div class="footer-offset">
-            <?php echo $__env->make('components.footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-        </div>
+
 
         <script>
             // Animation au scroll simple

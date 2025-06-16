@@ -53,10 +53,8 @@
                 padding: 0 !important;
                 width: 100vw !important;
                 position: relative;
-                left: 40%;
-                right: 100%;
-                margin-left: -50vw !important;
-                margin-right: -80vw !important;
+
+
             }
 
             * {
@@ -595,8 +593,7 @@
             });
         </script>
 
-        <!-- Inclusion du composant footer -->
-        @include('components.footer')
+        
     </body>
     </html>
 </div>

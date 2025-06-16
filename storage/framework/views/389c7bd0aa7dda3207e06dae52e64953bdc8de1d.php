@@ -15,14 +15,13 @@
 <?php
     $selectedFormationId = request()->query('training_id', old('training_id'));
 ?>
- 
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header pb-0">
                         <h5>Nouveau cours</h5>
-                        <span>Complétez les informations pour créer un nouveau cours</span>
                     </div>
 
                     <div class="card-body">
@@ -35,7 +34,7 @@
                                 </ul>
                             </div>
                         <?php endif; ?>
-                        
+
                         <!-- Alerte d'information sur le calcul automatique de la durée -->
                         <div class="alert alert-info">
                             <i class="fa fa-info-circle me-2"></i>
@@ -53,8 +52,10 @@
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="fa fa-tag"></i></span>
                                             <input class="form-control" type="text" id="title" name="title" placeholder="Titre" value="<?php echo e(old('title')); ?>" required />
+                                            <div class="invalid-feedback">Veuillez entrer un titre valide.</div>
+
                                         </div>
-                                        <div class="invalid-feedback">Veuillez entrer un titre valide.</div>
+                                        
                                     </div>
                                 </div>
 
@@ -72,33 +73,48 @@
                                     </div>
                                 </div>
 
-                                <!-- Dates de début et de fin -->
-                                
-                                <div class="mb-3 row">
-                                    <label class="col-sm-2 col-form-label">Périodes <span class="text-danger">*</span></label>
-                                    <div class="col-sm-10">
-                                        <div class="row">
-                                            <!-- Date de début -->
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                                    <input class="form-control datepicker" type="text" id="start_date" name="start_date" placeholder="" value="<?php echo e(old('start_date')); ?>" readonly required />
-                                                </div>
-                                                <small class="text-muted">Date début</small>
-                                                <div class="invalid-feedback">Veuillez sélectionner une date de début valide.</div>
-                                            </div>
-                                            <!-- Date de fin -->
-                                            <div class="col-md-6">
-                                                <div class="input-group">
-                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                                    <input class="form-control datepicker" type="text" id="end_date" name="end_date" placeholder="" value="<?php echo e(old('end_date')); ?>" readonly required />
-                                                </div>
-                                                <small class="text-muted">Date fin</small>
-                                                <div class="invalid-feedback">Veuillez sélectionner une date de fin valide.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label">Périodes <span class="text-danger">*</span></label>
+    <div class="col-sm-10">
+        <div class="row">
+            <!-- Date de début -->
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                    <input class="form-control datepicker"
+                           type="text"
+                           id="start_date"
+                           name="start_date"
+                           placeholder="Sélectionner une date"
+                           value="<?php echo e(old('start_date')); ?>"
+                           readonly
+                           required />
+                                           <div class="invalid-feedback">Veuillez sélectionner une date de début valide.</div>
+
+                </div>
+                <small class="text-muted">Date début</small>
+            </div>
+            <!-- Date de fin -->
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                    <input class="form-control datepicker"
+                           type="text"
+                           id="end_date"
+                           name="end_date"
+                           placeholder="Sélectionner une date"
+                           value="<?php echo e(old('end_date')); ?>"
+                           readonly
+                           required />
+                                           <div class="invalid-feedback">Veuillez sélectionner une date de fin valide.</div>
+
+                </div>
+                <small class="text-muted">Date fin</small>
+            </div>
+        </div>
+    </div>
+</div>
 
                                 <div class="mb-3 row">
                                     <label class="col-sm-2 col-form-label">Formation <span class="text-danger">*</span></label>
@@ -111,7 +127,7 @@
                                                 <?php
                                                     $fromUrl = session('from_url') ?? request()->has('from_url');
                                                 ?>
-                                                
+
                                                 <?php if($selectedFormationId && ($fromUrl || request()->has('training_id'))): ?>
                                                     <?php
                                                         $selectedFormation = $formations->firstWhere('id', $selectedFormationId);
@@ -144,12 +160,13 @@
                                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                     </select>
                                                 <?php endif; ?>
+                                                <div class="invalid-feedback">Veuillez sélectionner une formation valide.</div>
+
                                             </div>
                                         </div>
-                                        <div class="invalid-feedback">Veuillez sélectionner une formation valide.</div>
                                     </div>
                                 </div>
-                               
+
                                 <!-- Boutons de soumission -->
                                 <div class="row">
                                     <div class="col">
@@ -192,11 +209,11 @@
     const urlParams = new URLSearchParams(window.location.search);
     const trainingIdFromUrl = urlParams.get('training_id');
     const fromUrl = urlParams.get('from_url');
-    
+
     // Gestion de la notification après l'ajout du cours
     let coursId = "<?php echo e(session('cours_id')); ?>";
     let fromUrlSession = "<?php echo e(session('from_url')); ?>";
-    
+
     if (coursId) {
         Swal.fire({
             title: "Cours ajouté avec succès !",
@@ -256,7 +273,169 @@
         });
     }
 });
-   
+
+</script>
+
+<script>
+    // Initialisation des datepickers avec validation
+$(document).ready(function() {
+    // Configuration des datepickers
+    $('.datepicker').datepicker({
+        format: 'dd/mm/yyyy',
+        language: 'fr',
+        autoclose: true,
+        todayHighlight: true,
+        startDate: new Date(),
+        orientation: 'bottom auto'
+    }).on('changeDate', function(e) {
+        // Déclencher la validation quand une date est sélectionnée
+        const input = e.target;
+
+        // Forcer la mise à jour de la validation
+        setTimeout(function() {
+            // Supprimer les classes de validation existantes
+            input.classList.remove('is-invalid', 'is-valid');
+
+            // Ajouter la classe de succès si une valeur existe
+            if (input.value && input.value.trim() !== '') {
+                input.classList.add('is-valid');
+            } else {
+                input.classList.add('is-invalid');
+            }
+
+            // Validation spéciale pour les dates de début et de fin
+            validateDateRange();
+        }, 50);
+    }).on('hide', function(e) {
+        // Validation quand le datepicker se ferme
+        const input = e.target;
+        setTimeout(function() {
+            if (input.value && input.value.trim() !== '') {
+                input.classList.remove('is-invalid');
+                input.classList.add('is-valid');
+            } else {
+                input.classList.remove('is-valid');
+                input.classList.add('is-invalid');
+            }
+            validateDateRange();
+        }, 50);
+    });
+
+    // Fonction pour valider la plage de dates
+    function validateDateRange() {
+        const startDateInput = document.getElementById('start_date');
+        const endDateInput = document.getElementById('end_date');
+
+        if (startDateInput && endDateInput && startDateInput.value && endDateInput.value) {
+            const startDate = parseDate(startDateInput.value);
+            const endDate = parseDate(endDateInput.value);
+
+            if (startDate && endDate && startDate >= endDate) {
+                endDateInput.classList.remove('is-valid');
+                endDateInput.classList.add('is-invalid');
+
+                // Mettre à jour le message d'erreur
+                const errorMsg = endDateInput.closest('.col-md-6').querySelector('.invalid-feedback');
+                if (errorMsg) {
+                    errorMsg.textContent = 'La date de fin doit être postérieure à la date de début.';
+                }
+            } else if (startDate && endDate) {
+                // Si les dates sont valides, s'assurer que les deux champs sont marqués comme valides
+                if (endDateInput.classList.contains('is-invalid')) {
+                    endDateInput.classList.remove('is-invalid');
+                    endDateInput.classList.add('is-valid');
+
+                    // Restaurer le message d'erreur original
+                    const errorMsg = endDateInput.closest('.col-md-6').querySelector('.invalid-feedback');
+                    if (errorMsg) {
+                        errorMsg.textContent = 'Veuillez sélectionner une date de fin valide.';
+                    }
+                }
+            }
+        }
+    }
+
+    // Fonction utilitaire pour parser les dates au format dd/mm/yyyy
+    function parseDate(dateString) {
+        if (!dateString) return null;
+        const parts = dateString.split('/');
+        if (parts.length !== 3) return null;
+
+        const day = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10) - 1; // Les mois sont indexés à partir de 0
+        const year = parseInt(parts[2], 10);
+
+        return new Date(year, month, day);
+    }
+});
+
+// Script pour la gestion de la validation en temps réel (sans jQuery)
+document.addEventListener('DOMContentLoaded', function() {
+    // Fonction de validation pour les champs de date
+    function validateDateInput(input) {
+        const value = input.value ? input.value.trim() : '';
+
+        if (value && value !== '') {
+            input.classList.remove('is-invalid');
+            input.classList.add('is-valid');
+            return true;
+        } else {
+            input.classList.remove('is-valid');
+            input.classList.add('is-invalid');
+            return false;
+        }
+    }
+
+    // Écouter les changements sur les champs de date
+    const dateInputs = document.querySelectorAll('.datepicker');
+
+    dateInputs.forEach(function(input) {
+        // Créer un observer pour surveiller les changements de l'attribut value
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
+                    validateDateInput(input);
+                }
+            });
+        });
+
+        // Observer les changements d'attributs
+        observer.observe(input, {
+            attributes: true,
+            attributeFilter: ['value']
+        });
+
+        // Vérification périodique comme fallback
+        let lastValue = input.value;
+        const checkValue = setInterval(function() {
+            if (input.value !== lastValue) {
+                lastValue = input.value;
+                validateDateInput(input);
+            }
+        }, 200);
+
+        // Nettoyer l'interval quand l'élément est supprimé
+        input.addEventListener('DOMNodeRemoved', function() {
+            clearInterval(checkValue);
+        });
+
+        // Écouter l'événement focus pour une validation immédiate
+        input.addEventListener('focus', function() {
+            // Petite temporisation pour laisser le datepicker s'initialiser
+            setTimeout(function() {
+                validateDateInput(input);
+            }, 100);
+        });
+
+        // Écouter l'événement blur
+        input.addEventListener('blur', function() {
+            setTimeout(function() {
+                validateDateInput(input);
+            }, 100);
+        });
+    });
+});
 </script>
 <?php $__env->stopPush(); ?> 
+
 <?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\apprendre laravel\Centre_Formation-main\resources\views/admin/apps/cours/courscreate.blade.php ENDPATH**/ ?>

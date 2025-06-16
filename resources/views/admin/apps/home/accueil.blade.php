@@ -44,10 +44,10 @@
                 padding: 0 !important;
                 width: 100vw !important;
                 position: relative;
-                left: 40%;
-                right: 100%;
-                margin-left: -50vw !important;
-                margin-right: -80vw !important;
+                /* left: 40%;
+                right: 100%; */
+                /* margin-left: -50vw !important;
+                margin-right: -80vw !important; */
             }
 
             * {
@@ -435,7 +435,6 @@
         </section>
 
         <!-- Include Footer Component -->
-        @include('components.footer')
 
         <script>
             // Smooth scrolling for navigation links

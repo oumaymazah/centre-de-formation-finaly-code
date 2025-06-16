@@ -28,8 +28,14 @@
     </div>
     <!-- Loader ends-->
     <!-- page-wrapper Start-->
+<?php if(auth()->guard()->guest()): ?>
+
+    <div class="" id="pageWrapper">
+    <?php endif; ?>
+    <?php if(auth()->guard()->check()): ?>
+
     <div class="page-wrapper compact-sidebar" id="pageWrapper">
-      <!-- Page Header Start-->
+    <?php endif; ?>      <!-- Page Header Start-->
       <?php if ($__env->exists('layouts.admin.partials.header')) echo $__env->make('layouts.admin.partials.header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 
@@ -46,22 +52,159 @@
         </div>
 
         <!-- Footer conditionnel -->
-        <?php if (! (isset($hideAdminFooter))): ?>
-        <footer class="footer">
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col-md-6 footer-copyright">
-                  <p class="mb-0">Copyright <?php echo e(date('Y')); ?>-<?php echo e(date('Y', strtotime('+1 year'))); ?> © ELS Centre de Formation en Ligne. Tous droits réservés.</p>
-                </div>
-                <div class="col-md-6">
-                  <p class="pull-right mb-0">Conçu avec passion <i class="fa fa-graduation-cap"></i> pour votre réussite professionnelle</p>
-                </div>
-              </div>
+        <?php if(auth()->guard()->guest()): ?>
+
+<footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>EMPOWERMENT LEARNING SUCCESS</h3>
+                <p>Votre partenaire pour l'excellence en formation. Nous vous accompagnons dans votre développement professionnel avec des formations de qualité.</p>
             </div>
-        </footer>
+            <div class="footer-section">
+                <h3>Liens Rapides</h3>
+                <p><a href="accueil">Accueil</a></p>
+                <p><a href="ÀPropos">À propos</a></p>
+                <p><a href="formations">Formations</a></p>
+                <p><a href="politique">Politique de réservation</a></p>
+            </div>
+            <div class="footer-section">
+                <h3>Formations</h3>
+                <?php
+                // Récupérer les 4 premières catégories avec au moins une formation publiée
+                $categories = App\Models\Category::withCount(['trainings' => function ($query) {
+                    $query->where('status', 1);
+                }])
+                    ->whereHas('trainings', function ($query) {
+                        $query->where('status', 1);
+                    })
+                    ->take(4)
+                    ->get();
+
+                foreach ($categories as $category) {
+                    $categoryTitle = htmlspecialchars($category->title, ENT_QUOTES, 'UTF-8');
+                    $formationsUrl = url('formations') . '?category_title=' . urlencode($categoryTitle);
+                    // Solution simple : utiliser seulement le lien href sans JavaScript
+                    echo "<p><a href='{$formationsUrl}' class='footer-formation-link' data-category-title='{$categoryTitle}'>{$categoryTitle}</a></p>";
+                }
+                ?>
+            </div>
+            <div class="footer-section" id="contact">
+                <h3>Contact</h3>
+                <p>
+                    <i class="fas fa-envelope" style="margin-right: 8px; color: #60a5fa;"></i>
+                    <a href="mailto:els.center2022@gmail.com">els.center2022@gmail.com</a>
+                </p>
+                <p>
+                    <i class="fas fa-phone" style="margin-right: 8px; color: #60a5fa;"></i>
+                    <a href="tel:+21652450193">52450193</a> / <a href="tel:+21621272129">21272129</a>
+                </p>
+                <p>
+                    <i class="fas fa-map-marker-alt" style="margin-right: 8px; color: #60a5fa;"></i>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Rue+El+Farabi+Sousse+Tunisia" target="_blank">
+                        Rue farabi trocadéro, immeuble kraiem 1 étage
+                    </a>
+                </p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-bottom-left">
+                <span>Copyright 2025-2026 © ELS Centre de Formation en Ligne. Tous droits réservés.</span>
+            </div>
+            <div class="footer-bottom-right">
+                <span>Conçu avec passion pour votre réussite professionnelle</span>
+            </div>
+        </div>
+    </footer>
         <?php endif; ?>
       </div>
     </div>
+      <style>
+        .footer {
+            background: #1f2937;
+            color: white;
+            /* padding: 2rem 0 2rem; */
+            width: 100vw !important;
+            margin: 0 !important;
+            /* margin-left: -290px !important; */
+            /* margin-right: 5px !important; */
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: #1a202c;
+            /* display: none;  */
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+            margin: 0 !important;
+            padding: 0 5rem !important;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #60a5fa;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #d1d5db;
+            text-decoration: none;
+            line-height: 1.8;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #60a5fa;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding: 1rem 2rem 0 2rem !important;
+            text-align: right;
+            color: #9ca3af;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-bottom-left {
+            flex: 1;
+            text-align: right;
+            min-width: 0;
+            padding-right: 2rem;
+        }
+
+        .footer-bottom-right {
+            flex: 1;
+            padding-right: -5rem;
+            margin-right: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                padding: 0 1rem;
+            }
+
+            .footer-bottom {
+                padding: 2rem 1rem 0 1rem;
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .footer-bottom-left,
+            .footer-bottom-right {
+                text-align: center;
+            }
+        }
+    </style>
     <!-- latest jquery-->
     <?php if ($__env->exists('layouts.admin.partials.js')) echo $__env->make('layouts.admin.partials.js', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
   </body>

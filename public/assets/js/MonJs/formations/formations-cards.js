@@ -1252,133 +1252,110 @@ function applyLeftShiftForUnauthenticated() {
         console.log("Utilisateur authentifié - Aucun décalage appliqué");
     }
 }
-function applyLeftShiftStyles() {
-    let shiftStyle = document.getElementById('unauthenticated-left-shift-styles');
-    if (!shiftStyle) {
-        shiftStyle = document.createElement('style');
-        shiftStyle.id = 'unauthenticated-left-shift-styles';
-        document.head.appendChild(shiftStyle);
-    }
-    shiftStyle.textContent = `
-        /* Décalage à gauche pour utilisateurs non authentifiés */
-        body:not(.authenticated-user) {
-            padding-left: 0 !important;
-            margin-left: 0 !important;
-        }
 
-        body:not(.authenticated-user) .container-fluid {
-            padding-left: 50px !important;
-            margin-left: -200px !important;
-        }
 
-        body:not(.authenticated-user) .product-wrapper {
-            margin-left: -30px !important;
-            padding-left: 25px !important;
-        }
 
-        body:not(.authenticated-user) .product-grid {
-            margin-left: -30px !important;
-        }
 
-        body:not(.authenticated-user) .feature-products {
-            margin-left: -40px !important;
-        }
+// function applyLeftShiftStyles() {
+//     let shiftStyle = document.getElementById('unauthenticated-left-shift-styles');
+//     if (!shiftStyle) {
+//         shiftStyle = document.createElement('style');
+//         shiftStyle.id = 'unauthenticated-left-shift-styles';
+//         document.head.appendChild(shiftStyle);
+//     }
+//     shiftStyle.textContent = `
+//         /* Décalage à gauche pour utilisateurs non authentifiés */
+//         body:not(.authenticated-user) {
+//             padding-left: 0 !important;
+//         }
 
-        body:not(.authenticated-user) .pro-filter-sec {
-            margin-left: -30px !important;
-        }
+//         body:not(.authenticated-user) .container-fluid {
+//             padding-left: 50px !important;
+//         }
 
-        body:not(.authenticated-user) .product-sidebar {
-            margin-left: -20px !important;
-        }
+//         body:not(.authenticated-user) .product-wrapper {
+//             padding-left: 25px !important;
+//         }
 
-        body:not(.authenticated-user) .filter-section {
-            margin-left: -20px !important;
-        }
+//         body:not(.authenticated-user) .pro-filter-sec {
+//         }
 
-        body:not(.authenticated-user) .product-search {
-            margin-left: -20px !important;
-        }
+//         body:not(.authenticated-user) .product-sidebar {
+//         }
 
-        body:not(.authenticated-user) .product-wrapper-grid {
-            margin-left: -25px !important;
-        }
+//         body:not(.authenticated-user) .filter-section {
+//         }
 
-        body:not(.authenticated-user) .formations-container {
-            margin-left: -25px !important;
-        }
+//         body:not(.authenticated-user) .product-search {
+//         }
 
-        body:not(.authenticated-user) .formation-item {
-            margin-left: -10px !important;
-        }
+//         body:not(.authenticated-user) .product-wrapper-grid {
+//         }
 
-        body:not(.authenticated-user) .card {
-            margin-left: -10px !important;
-        }
+//         body:not(.authenticated-user) .formations-container {
+//         }
 
-        /* Décalage plus prononcé pour les éléments principaux */
-        body:not(.authenticated-user) .row {
-            margin-left: -25px !important;
-        }
+//         body:not(.authenticated-user) .formation-item {
+//         }
 
-        body:not(.authenticated-user) .col-md-12,
-        body:not(.authenticated-user) .col-xl-3,
-        body:not(.authenticated-user) .col-sm-6,
-        body:not(.authenticated-user) .xl-4 {
-            padding-left: 10px !important;
-            margin-left: -10px !important;
-        }
+//         body:not(.authenticated-user) .card {
+//         }
 
-        /* Ajustements pour les modaux (pas de décalage) */
-        body:not(.authenticated-user) .modal {
-            margin-left: 0 !important;
-            padding-left: 0 !important;
-        }
+//         /* Décalage plus prononcé pour les éléments principaux */
+//         body:not(.authenticated-user) .row {
+//         }
 
-        body:not(.authenticated-user) .modal-dialog {
-            margin-left: auto !important;
-            margin-right: auto !important;
-        }
+//         body:not(.authenticated-user) .col-md-12,
+//         body:not(.authenticated-user) .col-xl-3,
+//         body:not(.authenticated-user) .col-sm-6,
+//         body:not(.authenticated-user) .xl-4 {
+//             padding-left: 10px !important;
+//         }
 
-        /* Ajustements pour les alertes et messages */
-        body:not(.authenticated-user) .alert {
-            margin-left: -20px !important;
-        }
+//         /* Ajustements pour les modaux (pas de décalage) */
+//         body:not(.authenticated-user) .modal {
+//             padding-left: 0 !important;
+//         }
 
-        /* Responsivité - ajustements pour mobile */
-        @media (max-width: 768px) {
-            body:not(.authenticated-user) .container-fluid {
-                margin-left: -20px !important;
-                padding-left: 20px !important;
-            }
+//         body:not(.authenticated-user) .modal-dialog {
+//             margin-right: auto !important;
+//         }
 
-            body:not(.authenticated-user) .row {
-                margin-left: -20px !important;
-            }
+//         /* Ajustements pour les alertes et messages */
+//         body:not(.authenticated-user) .alert {
+//         }
 
-            body:not(.authenticated-user) .formation-item {
-                margin-left: -3px !important;
-            }
-        }
+//         /* Responsivité - ajustements pour mobile */
+//         @media (max-width: 768px) {
+//             body:not(.authenticated-user) .container-fluid {
+//                 padding-left: 20px !important;
+//             }
 
-        /* Version alternative plus subtile - décommentez si le décalage ci-dessus est trop prononcé */
-        /*
-        body:not(.authenticated-user) .container-fluid {
-            transform: translateX(-30px);
-        }
+//             body:not(.authenticated-user) .row {
+//             }
 
-        body:not(.authenticated-user) .product-wrapper {
-            transform: translateX(-25px);
-        }
+//             body:not(.authenticated-user) .formation-item {
+//             }
+//         }
 
-        body:not(.authenticated-user) .formations-container {
-            transform: translateX(-20px);
-        }
-        */
-    `;
+//         /* Version alternative plus subtile - décommentez si le décalage ci-dessus est trop prononcé */
+//         /*
+//         body:not(.authenticated-user) .container-fluid {
+//             transform: translateX(-30px);
+//         }
 
-    console.log("Styles de décalage à gauche appliqués");
-}
+//         body:not(.authenticated-user) .product-wrapper {
+//             transform: translateX(-25px);
+//         }
+
+//         body:not(.authenticated-user) .formations-container {
+//             transform: translateX(-20px);
+//         }
+//         */
+//     `;
+
+//     console.log("Styles de décalage à gauche appliqués");
+// }
 function setAuthenticationBodyClass() {
     const isAuthenticated = typeof userRoles !== 'undefined' && userRoles.length > 0 && !userRoles.includes('guest');
 

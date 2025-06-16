@@ -18,7 +18,7 @@ use App\Http\Controllers\Auth\ChangePasswordController;
 Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/', function () {
-        return redirect()->route('index');
+        return redirect()->route('formations');
     })->name('/');
 
     Route::view('sample-page', 'admin.pages.sample-page')->name('sample-page');

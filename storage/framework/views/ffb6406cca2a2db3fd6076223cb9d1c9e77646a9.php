@@ -50,10 +50,8 @@
                 padding: 0 !important;
                 width: 100vw !important;
                 position: relative;
-                left: 40%;
-                right: 100%;
-                margin-left: -50vw !important;
-                margin-right: -80vw !important;
+
+
             }
 
             * {
@@ -592,8 +590,7 @@
             });
         </script>
 
-        <!-- Inclusion du composant footer -->
-        <?php echo $__env->make('components.footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        
     </body>
     </html>
 </div>

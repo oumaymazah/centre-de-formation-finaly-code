@@ -42,10 +42,10 @@
                 padding: 0 !important;
                 width: 100vw !important;
                 position: relative;
-                left: 40%;
-                right: 100%;
-                margin-left: -50vw !important;
-                margin-right: -80vw !important;
+                /* left: 40%;
+                right: 100%; */
+                /* margin-left: -50vw !important;
+                margin-right: -80vw !important; */
             }
 
             * {
@@ -433,7 +433,6 @@
         </section>
 
         <!-- Include Footer Component -->
-        <?php echo $__env->make('components.footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
         <script>
             // Smooth scrolling for navigation links

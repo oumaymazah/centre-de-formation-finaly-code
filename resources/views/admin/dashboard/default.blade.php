@@ -4,7 +4,7 @@
 
 @push('breadcrumb')
 <li class="breadcrumb-item">Pages</li>
-<li class="breadcrumb-item active">Sample Page</li>
+<li class="breadcrumb-item active">Sample Page< /li>
 @endpush
 
 @push('css')
@@ -26,7 +26,7 @@
                 {{ session('warning') }}
             </div>
         @endif
-        
+
       @yield('breadcrumb-list')
       <!-- Container-fluid starts-->
       <div class="container-fluid dashboard-default-sec">

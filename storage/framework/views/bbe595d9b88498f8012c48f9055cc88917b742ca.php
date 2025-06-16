@@ -24,7 +24,6 @@
                 <div class="card">
                     <div class="card-header pb-0">
                         <h5>Nouvelle Leçon</h5>
-                        <span>Complétez les informations pour créer une nouvelle leçon</span>
                     </div>
                     <div class="card-body">
                         <?php if($errors->any()): ?>
@@ -80,9 +79,12 @@
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="icon-timer"></i></span>
                                             <input class="form-control" type="text" name="duration" value="<?php echo e(old('duration')); ?>" placeholder="Durée (HH:mm:ss)" pattern="\d{2}:\d{2}:\d{2}" title="Format: HH:mm:ss" required />
+                                                    <div class="invalid-feedback">Veuillez entrer une durée valide (HH:mm:ss).</div>
+
                                         </div>
-                                        <div class="invalid-feedback">Veuillez entrer une durée valide (HH:mm:ss).</div>
+
                                     </div>
+
                                 </div>
 
                                 <!-- Chapitre -->
@@ -105,9 +107,10 @@
                                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                     </select>
                                                 <?php endif; ?>
+                                                <div class="invalid-feedback">Veuillez sélectionner un chapitre valide.</div>
+
                                             </div>
                                         </div>
-                                        <div class="invalid-feedback">Veuillez sélectionner un chapitre valide.</div>
                                     </div>
                                 </div>
 
@@ -176,7 +179,7 @@
 <?php $__env->startPush('scripts'); ?>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="<?php echo e(asset('assets/js/dropzone/dropzone.js')); ?>"></script>
-
+<script src="<?php echo e(asset('assets/js/MonJs/dropzone-config.js')); ?>"></script>
 <script src="<?php echo e(asset('assets/js/MonJs/lecons/dropzone.js')); ?>"></script>
 <script src="<?php echo e(asset('assets/js/MonJs/lecons/file-preview.js')); ?>"></script>
 <script src="<?php echo e(asset('assets/js/MonJs/lecons/pdf-preview.js')); ?>"></script>
@@ -198,4 +201,6 @@
 <script src="https://cdn.jsdelivr.net/npm/pptx2html/dist/pptx2html.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 <?php $__env->stopPush(); ?>
+
+
 <?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\apprendre laravel\Centre_Formation-main\resources\views/admin/apps/lesson/lessoncreate.blade.php ENDPATH**/ ?>

@@ -1,4 +1,7 @@
-<?php $__env->startSection('title', 'Détails de la Formation'); ?>
+<?php $__env->startSection('title'); ?>
+Détails de la Formation <?php echo e($title); ?>
+
+<?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('css'); ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -16,7 +19,7 @@
     </div>
 <?php endif; ?>
 
-<div class="container-fluid training-detail-container">
+<div class="container-fluid training-detail-container <?php if(!auth()->check()): ?> not-logged-in <?php endif; ?>">
 
     <div class="formation-header">
         <div class="row align-items-center">
@@ -42,7 +45,6 @@
                         <strong>Description :</strong>
                         <span><?php echo $formation->description; ?></span>
                     </p>
-
                 </div>
 
                 <!-- Bloc Feedbacks -->
@@ -80,6 +82,7 @@
             </div>
         </div>
     </div>
+
     <div class="row">
         <!-- Zone de contenu principal -->
         <div class="col-lg-8">
@@ -152,7 +155,7 @@
 
                                     </small>
                                 </div>
-                               
+
                                 <?php if($canTakeQuiz): ?>
                                     <?php if($quiz->type == 'placement' ): ?>
 
@@ -209,6 +212,184 @@
         </div>
     </div>
 </div>
+<?php if(!auth()->check()): ?>
+    <?php ($hideAdminFooter = true); ?>
+    <style>
+    .footer .container {
+        padding-left: 50rem !important; /* Ajustez cette valeur selon vos besoins */
+        padding-right: -100rem !important;
+    }
+
+    .container {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 2rem !important;
+    }
+
+    .content-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 10rem !important; /* ⇨ pousse un peu à droite */
+    }
+    </style>
+
+    <style>
+        .formations-container {
+            margin-bottom: 0.6rem;
+            padding-bottom: 0.6rem;
+        }
+    </style>
+
+    <style>
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 2rem 0 2rem;
+            width: 100vw !important;
+            margin: 0 !important;
+            margin-left: -290px !important;
+            margin-right: 5px !important;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: #1a202c;
+            /* display: none;  */
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+            margin: 0 !important;
+            padding: 0 5rem !important;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #60a5fa;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #d1d5db;
+            text-decoration: none;
+            line-height: 1.8;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #60a5fa;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding: 1rem 2rem 0 2rem !important;
+            text-align: right;
+            color: #9ca3af;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-bottom-left {
+            flex: 1;
+            text-align: right;
+            min-width: 0;
+            padding-right: 2rem;
+        }
+
+        .footer-bottom-right {
+            flex: 1;
+            padding-right: -5rem;
+            margin-right: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                padding: 0 1rem;
+            }
+
+            .footer-bottom {
+                padding: 2rem 1rem 0 1rem;
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .footer-bottom-left,
+            .footer-bottom-right {
+                text-align: center;
+            }
+        }
+    </style>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>EMPOWERMENT LEARNING SUCCESS</h3>
+                <p>Votre partenaire pour l'excellence en formation. Nous vous accompagnons dans votre développement professionnel avec des formations de qualité.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Liens Rapides</h3>
+                <p><a href="accueil">Accueil</a></p>
+                <p><a href="ÀPropos">À propos</a></p>
+                <p><a href="formations">Formations</a></p>
+                <p><a href="politique">Politique de réservation</a></p>
+            </div>
+            <div class="footer-section">
+                <h3>Formations</h3>
+                <?php
+                // Récupérer les 4 premières catégories avec au moins une formation publiée
+                $categories = App\Models\Category::withCount(['trainings' => function ($query) {
+                    $query->where('status', 1);
+                }])
+                    ->whereHas('trainings', function ($query) {
+                        $query->where('status', 1);
+                    })
+                    ->take(4)
+                    ->get();
+
+                foreach ($categories as $category) {
+                    $categoryTitle = htmlspecialchars($category->title, ENT_QUOTES, 'UTF-8');
+                    $formationsUrl = url('formations') . '?category_title=' . urlencode($categoryTitle);
+                    // Solution simple : utiliser seulement le lien href sans JavaScript
+                    echo "<p><a href='{$formationsUrl}' class='footer-formation-link' data-category-title='{$categoryTitle}'>{$categoryTitle}</a></p>";
+                }
+                ?>
+            </div>
+            <div class="footer-section" id="contact">
+                <h3>Contact</h3>
+                <p>
+                    <i class="fas fa-envelope" style="margin-right: 8px; color: #60a5fa;"></i>
+                    <a href="mailto:els.center2022@gmail.com">els.center2022@gmail.com</a>
+                </p>
+                <p>
+                    <i class="fas fa-phone" style="margin-right: 8px; color: #60a5fa;"></i>
+                    <a href="tel:+21652450193">52450193</a> / <a href="tel:+21621272129">21272129</a>
+                </p>
+                <p>
+                    <i class="fas fa-map-marker-alt" style="margin-right: 8px; color: #60a5fa;"></i>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Rue+El+Farabi+Sousse+Tunisia" target="_blank">
+                        Rue farabi trocadéro, immeuble kraiem 1 étage
+                    </a>
+                </p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-bottom-left">
+                <span>Copyright 2025-2026 © ELS Centre de Formation en Ligne. Tous droits réservés.</span>
+            </div>
+            <div class="footer-bottom-right">
+                <span>Conçu avec passion pour votre réussite professionnelle</span>
+            </div>
+        </div>
+    </footer>
+<?php endif; ?>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('scripts'); ?>

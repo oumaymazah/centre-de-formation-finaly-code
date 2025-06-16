@@ -582,7 +582,12 @@ document.addEventListener('shown.bs.modal', function(event) {
         });
     }
 });
+
+
+
+
 function createFormationCard(formation, inCart = false, skipAsyncCheck = false) {
+    // Calcul des informations sur les places disponibles
     let initialIsComplete = false;
     if (formation.is_complete !== undefined) {
         initialIsComplete = Boolean(formation.is_complete);
@@ -600,6 +605,7 @@ function createFormationCard(formation, inCart = false, skipAsyncCheck = false) 
     const { totalSeats, remainingSeats, occupiedSeats, occupancyRate, progressClass, isComplete } = seatsInfo;
     console.log(`Formation ${formation.title}: Total=${totalSeats}, Restant=${remainingSeats}, Occupé=${occupiedSeats}, Taux=${occupancyRate}%, Complète=${isComplete}, Classe=${progressClass}`);
 
+    // Gestion du prix et des promotions
     let priceHtml = '';
     if (formation.type === 'payante') {
         if (formation.discount > 0) {
@@ -611,22 +617,30 @@ function createFormationCard(formation, inCart = false, skipAsyncCheck = false) 
             priceHtml = `${parseFloat(formation.price).toFixed(2)} Dt`;
         }
     }
+
     const detailUrl = `/training/${formation.id}`;
 
+    // Formatage des dates
     const startDate = new Date(formation.start_date);
     const endDate = new Date(formation.end_date);
     const formattedStartDate = `${startDate.getDate().toString().padStart(2, '0')}/${(startDate.getMonth()+1).toString().padStart(2, '0')}/${startDate.getFullYear()}`;
     const formattedEndDate = `${endDate.getDate().toString().padStart(2, '0')}/${(endDate.getMonth()+1).toString().padStart(2, '0')}/${endDate.getFullYear()}`;
+
+    // Informations supplémentaires
     const coursCount = formation.cours_count || (formation.courses ? formation.courses.length : 0);
     const userName = formation.user ? formation.user.name : '';
     const userLastname = formation.user ? formation.user.lastname : '';
     const totalFeedbacks = formation.total_feedbacks || 0;
     const averageRating = formation.average_rating || 0;
     const ratingStarsHtml = generateRatingStarsHtml ? generateRatingStarsHtml(averageRating, totalFeedbacks) : '';
+
+    // Vérification des rôles utilisateur
     const isAuthenticated = typeof userRoles !== 'undefined' && userRoles.length > 0;
     const isStudent = isAuthenticated && userRoles.includes('etudiant');
     const isAdminRole = isAuthenticated && (userRoles.includes('admin') || userRoles.includes('super-admin') || userRoles.includes('professeur'));
-const showCartButtons = !isAdminRole; // Ne pas afficher les boutons pour admin/super-admin/professeur
+    const showCartButtons = !isAdminRole; // Ne pas afficher les boutons pour admin/super-admin/professeur
+
+    // Gestion des rubans (ribbons)
     function getCompleteRibbonClass() {
         const hasGratuite = formation.type === 'gratuite';
         const hasDiscount = formation.discount > 0;
@@ -638,21 +652,44 @@ const showCartButtons = !isAdminRole; // Ne pas afficher les boutons pour admin/
             return '';
         }
     }
+
     const completeRibbonClass = getCompleteRibbonClass();
     const completeRibbonStyle = (formation.type === 'gratuite' || formation.discount > 0) && completeRibbonClass === ''
         ? 'style="top: 15px !important;"'
         : '';
 
+    // Attributs de données
     const dataAttributes = `
         data-category-id="${formation.category_id}"
         data-status="${formation.status}"
         data-id="${formation.id}"
         data-is-complete="${isComplete}"
         data-start-date="${formation.start_date}"
-
+        data-total-seats="${totalSeats}"
+        data-remaining-seats="${remainingSeats}"
         data-description="${(formation.description || '').replace(/"/g, '&quot;')}"
     `;
-  const cardHtml = `
+
+    // Fonction pour générer le bouton du panier selon l'état de réservation
+    function generateCartButtonHtml(containerId) {
+        if (!showCartButtons) return '';
+
+        return `
+            <div id="${containerId}">
+                <a class="btn ${inCart ? 'btn-primary' : (isComplete ? 'btn-secondary disabled' : 'btn-primary')}"
+                   id="cart-btn-${formation.id}"
+                   ${isComplete && !inCart ? 'disabled' : ''}
+                   ${inCart ? 'data-in-cart="true"' : ''}
+                   href="${isStudent ? '/panier' : 'javascript:void(0)'}"
+                   ${!isStudent && !isComplete ? 'onclick="showLoginPopup()"' : ''}>
+                    ${inCart ? 'Accéder au panier' : 'Ajouter au panier'}
+                </a>
+            </div>
+        `;
+    }
+
+    // Génération du HTML de la carte
+    const cardHtml = `
     <div class="col-xl-3 col-sm-6 xl-4 formation-item" ${dataAttributes}>
         <div class="card h-100">
             <div class="product-box d-flex flex-column h-100">
@@ -675,100 +712,91 @@ const showCartButtons = !isAdminRole; // Ne pas afficher les boutons pour admin/
                                 </a>
                             </li>
                             ` : ''}
-                          ${typeof userRoles !== 'undefined' && (userRoles.includes('admin') || userRoles.includes('super-admin') || userRoles.includes('professeur')) ? `
-<li>
-    <a href="javascript:void(0)" onclick="handleFormationEdit(${formation.id}, '${formation.end_date}')">
-        <i class="icon-pencil"></i>
-    </a>
-</li>
-<li>
-    <a href="javascript:void(0)" class="delete-formation" data-id="${formation.id}">
-        <i class="icon-trash"></i>
-    </a>
-</li>
-` : ''}
-                            </ul>
-                        </div>
+                            ${isAdminRole ? `
+                            <li>
+                                <a href="javascript:void(0)" onclick="handleFormationEdit(${formation.id}, '${formation.end_date}')">
+                                    <i class="icon-pencil"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)" class="delete-formation" data-id="${formation.id}">
+                                    <i class="icon-trash"></i>
+                                </a>
+                            </li>
+                            ` : ''}
+                        </ul>
                     </div>
-                   <div class="product-details flex-grow-1 d-flex flex-column p-3">
+                </div>
+                <div class="product-details flex-grow-1 d-flex flex-column p-3">
                     <div class="card-content flex-grow-1">
                         <a href="/admin/formation/${formation.id}">
                             <h4 class="formation-title" title="${formation.title}">${formation.title}</h4>
                         </a>
                         <p class="mb-1">Par ${userName} ${userLastname}</p>
                         <div class="rating-wrapper mb-2">
-                ${ratingStarsHtml} ${totalFeedbacks > 0 ? `<span>(${totalFeedbacks})</span>` : ''}
+                            ${ratingStarsHtml} ${totalFeedbacks > 0 ? `<span>(${totalFeedbacks})</span>` : ''}
                         </div>
-
-                    <div class="product-price-container">
-                        <div class="product-price mb-0">
-                            ${formation.type === 'payante' ? priceHtml : ''}
+                        <div class="product-price-container">
+                            <div class="product-price mb-0">
+                                ${formation.type === 'payante' ? priceHtml : ''}
+                            </div>
                         </div>
                     </div>
-                     </div>
+                </div>
+            </div>
+        </div>
 
-                    <!-- Modal for detailed view -->
-                    <div class="modal fade" id="formation-modal-${formation.id}">
-                        <div class="modal-dialog modal-lg modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">${formation.title}</h5>
-                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+        <!-- Modal for detailed view -->
+        <div class="modal fade" id="formation-modal-${formation.id}">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">${formation.title}</h5>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="product-box row">
+                            <div class="product-img col-lg-6" style="height: 300px; overflow: hidden; position: relative;">
+                                ${formation.type === 'gratuite' ? '<div class="ribbon ribbon-warning">Gratuite</div>' : ''}
+                                ${formation.discount > 0 ? `<div class="ribbon ribbon-success ribbon-right">${formation.discount}%</div>` : ''}
+                                ${isComplete ? `<div class="ribbon ribbon-danger ${completeRibbonClass}" ${completeRibbonStyle}>Complète</div>` : ''}
+                                <img class="img-fluid" src="${window.location.origin}/storage/${formation.image}" alt="${formation.title}" style="width: 100%; height: 100%; object-fit: cover;" />
+                            </div>
+                            <div class="product-details col-lg-6 text-start">
+                                <a href="/admin/formation/${formation.id}">
+                                    <h4>${formation.title}</h4>
+                                </a>
+                                <div class="rating-wrapper mb-2">
+                                    ${ratingStarsHtml}
                                 </div>
-                                <div class="modal-body">
-                                    <div class="product-box row">
-                                        <div class="product-img col-lg-6" style="height: 300px; overflow: hidden; position: relative;">
-                                            ${formation.type === 'gratuite' ? '<div class="ribbon ribbon-warning">Gratuite</div>' : ''}
-                                            ${formation.discount > 0 ? `<div class="ribbon ribbon-success ribbon-right">${formation.discount}%</div>` : ''}
-                                            ${isComplete ? `<div class="ribbon ribbon-danger ${completeRibbonClass}" ${completeRibbonStyle}>Complète</div>` : ''}
-                                            <img class="img-fluid" src="${window.location.origin}/storage/${formation.image}" alt="${formation.title}" style="width: 100%; height: 100%; object-fit: cover;" />
-                                        </div>
-                                        <div class="product-details col-lg-6 text-start">
-                                            <a href="/admin/formation/${formation.id}">
-                                                <h4>${formation.title}</h4>
-                                            </a>
-                                            <div class="rating-wrapper mb-2">
-                                                ${ratingStarsHtml}
-                                            </div>
-                                            <div class="product-price">
-                                                ${formation.type === 'payante' ? priceHtml : ''}
-                                            </div>
-                                            <div class="product-view">
-                                                <p class="mb-0">${formation.description || ''}</p>
-                                                <div class="mt-3">
-                                                    <p><strong>Places occupées:</strong>
-                                                        <span class="badge ${isComplete ? 'badge-danger' : (remainingSeats < totalSeats * 0.2 ? 'badge-warning' : 'badge-bleu')} text-white">
-                                                            ${occupiedSeats} / ${totalSeats}
-                                                        </span>
-                                                    </p>
-                                                    <div class="progress mb-3" style="height: 4px;">
-                                                        <div class="progress-bar ${progressClass}" role="progressbar"
-                                                            style="width: ${occupancyRate}%"
-                                                            aria-valuenow="${occupancyRate}"
-                                                            aria-valuemin="0"
-                                                            aria-valuemax="100">
-                                                        </div>
-                                                    </div>
-                                                    <p><strong>Durée:</strong> ${formation.duration || '0 heures'}</p>
-                                                    <p><strong>Date début:</strong> ${formattedStartDate}</p>
-                                                    <p><strong>Date fin:</strong> ${formattedEndDate}</p>
-                                                    <p><strong>Nombre de cours:</strong> ${coursCount}</p>
-                                                </div>
-                                            </div>
-                                            <div class="addcart-btn">
-                                                ${showCartButtons ? `
-                                                <a class="btn ${inCart ? 'btn-primary' : (isComplete ? 'btn-secondary disabled' : 'btn-primary')}"
-                                                   ${isComplete && !inCart ? 'disabled' : ''}
-                                                   ${inCart ? 'data-in-cart="true"' : ''}
-                                                   href="${isStudent ? '/panier' : 'javascript:void(0)'}"
-                                                   ${!isStudent && !isComplete ? 'onclick="showLoginPopup()"' : ''}>
-                                                    ${inCart ? 'Accéder au panier' : (isComplete ? 'Ajouter au panier' : 'Ajouter au panier')}
-                                                </a>
-                                                ` : ''}
-                                                    <a class="btn btn-primary" href="${detailUrl}">Voir détails</a>
+                                <div class="product-price">
+                                    ${formation.type === 'payante' ? priceHtml : ''}
+                                </div>
+                                <div class="product-view">
+                                    <p class="mb-0">${formation.description || ''}</p>
+                                    <div class="mt-3">
+                                        <p><strong>Places occupées:</strong>
+                                            <span class="badge ${isComplete ? 'badge-danger' : (remainingSeats < totalSeats * 0.2 ? 'badge-warning' : 'badge-bleu')} text-white">
+                                                ${occupiedSeats} / ${totalSeats}
+                                            </span>
+                                        </p>
+                                        <div class="progress mb-3" style="height: 4px;">
+                                            <div class="progress-bar ${progressClass}" role="progressbar"
+                                                style="width: ${occupancyRate}%"
+                                                aria-valuenow="${occupancyRate}"
+                                                aria-valuemin="0"
+                                                aria-valuemax="100">
                                             </div>
                                         </div>
+                                        <p><strong>Durée:</strong> ${formation.duration || '0 heures'}</p>
+                                        <p><strong>Date début:</strong> ${formattedStartDate}</p>
+                                        <p><strong>Date fin:</strong> ${formattedEndDate}</p>
+                                        <p><strong>Nombre de cours:</strong> ${coursCount}</p>
                                     </div>
+                                </div>
+                                <div class="addcart-btn d-flex gap-2">
+                                    ${generateCartButtonHtml(`modal-cart-container-${formation.id}`)}
+                                    <a class="btn btn-primary" href="${detailUrl}">Voir détails</a>
                                 </div>
                             </div>
                         </div>
@@ -776,9 +804,46 @@ const showCartButtons = !isAdminRole; // Ne pas afficher les boutons pour admin/
                 </div>
             </div>
         </div>
+    </div>
     `;
+
+    // Vérification asynchrone des réservations si nécessaire
+    if (!skipAsyncCheck && isAuthenticated && isStudent) {
+        // Vérifier d'abord si l'utilisateur a une réservation pour cette formation
+        checkUserReservationForFormation(formation.id).then(hasReservation => {
+            if (hasReservation) {
+                // Si l'utilisateur a une réservation, vérifier si elle est confirmée
+                checkFormationHasConfirmedReservation(formation.id).then(hasConfirmedReservation => {
+                    updateCartButtonForReservation(formation.id, hasConfirmedReservation);
+                });
+            }
+        });
+    }
+
     return cardHtml;
 }
+
+
+
+
+
+
+function updateCartButtonForReservation(formationId, hasConfirmedReservation) {
+    const cartButton = document.getElementById(`cart-btn-${formationId}`);
+    const modalCartContainer = document.getElementById(`modal-cart-container-${formationId}`);
+
+    if (hasConfirmedReservation) {
+
+        if (cartButton) {
+            cartButton.style.display = 'none';
+        }
+        if (modalCartContainer) {
+            modalCartContainer.style.display = 'none';
+        }
+    }
+}
+
+
 
 function handleResponse(response) {
     if (!response.ok) {
@@ -913,96 +978,96 @@ function handleFormationEdit(formationId, endDate) {
 window.isFormationEnded = isFormationEnded;
 window.showFormationEndedPopup = showFormationEndedPopup;
 window.handleFormationEdit = handleFormationEdit;
-function updateAddToCartButton(formationId, inCart, isComplete) {
-    console.log(`Mise à jour bouton pour formation #${formationId}: inCart=${inCart}, isComplete=${isComplete}`);
-    const isAuthenticated = typeof userRoles !== 'undefined' && userRoles.length > 0;
-    const isStudent = isAuthenticated && userRoles.includes('etudiant');
-    const formationElement = document.querySelector(`.formation-item[data-id="${formationId}"]`);
-    let isStarted = false;
+// function updateAddToCartButton(formationId, inCart, isComplete) {
+//     console.log(`Mise à jour bouton pour formation #${formationId}: inCart=${inCart}, isComplete=${isComplete}`);
+//     const isAuthenticated = typeof userRoles !== 'undefined' && userRoles.length > 0;
+//     const isStudent = isAuthenticated && userRoles.includes('etudiant');
+//     const formationElement = document.querySelector(`.formation-item[data-id="${formationId}"]`);
+//     let isStarted = false;
 
-    if (formationElement) {
-        const startDateStr = formationElement.getAttribute('data-start-date');
+//     if (formationElement) {
+//         const startDateStr = formationElement.getAttribute('data-start-date');
 
-        if (startDateStr) {
-            const startDate = new Date(startDateStr);
-            const currentDate = new Date();
-            isStarted = currentDate > startDate;
-            console.log(`Formation #${formationId} - Date de début: ${startDate}, Date actuelle: ${currentDate}, Commencée: ${isStarted}`);
-        }
-    }
+//         if (startDateStr) {
+//             const startDate = new Date(startDateStr);
+//             const currentDate = new Date();
+//             isStarted = currentDate > startDate;
+//             console.log(`Formation #${formationId} - Date de début: ${startDate}, Date actuelle: ${currentDate}, Commencée: ${isStarted}`);
+//         }
+//     }
 
-    const buttons = document.querySelectorAll(`.formation-item[data-id="${formationId}"] .addcart-btn .btn[href="/panier"],
-                                          .formation-item[data-id="${formationId}"] .addcart-btn .btn[href="javascript:void(0)"],
-                                          .formation-item[data-formation-id="${formationId}"] .addcart-btn .btn[href="/panier"],
-                                          .formation-item[data-formation-id="${formationId}"] .addcart-btn .btn[href="javascript:void(0)"],
-                                          .formation-item[data-category-id="${formationId}"] .addcart-btn .btn[href="/panier"],
-                                          .formation-item[data-category-id="${formationId}"] .addcart-btn .btn[href="javascript:void(0)"],
-                                          #formation-modal-${formationId} .addcart-btn .btn[href="/panier"],
-                                          #formation-modal-${formationId} .addcart-btn .btn[href="javascript:void(0)"]`);
+//     const buttons = document.querySelectorAll(`.formation-item[data-id="${formationId}"] .addcart-btn .btn[href="/panier"],
+//                                           .formation-item[data-id="${formationId}"] .addcart-btn .btn[href="javascript:void(0)"],
+//                                           .formation-item[data-formation-id="${formationId}"] .addcart-btn .btn[href="/panier"],
+//                                           .formation-item[data-formation-id="${formationId}"] .addcart-btn .btn[href="javascript:void(0)"],
+//                                           .formation-item[data-category-id="${formationId}"] .addcart-btn .btn[href="/panier"],
+//                                           .formation-item[data-category-id="${formationId}"] .addcart-btn .btn[href="javascript:void(0)"],
+//                                           #formation-modal-${formationId} .addcart-btn .btn[href="/panier"],
+//                                           #formation-modal-${formationId} .addcart-btn .btn[href="javascript:void(0)"]`);
 
-    if (buttons.length === 0) {
-        console.warn(`Aucun bouton trouvé pour la formation #${formationId}`);
-        return;
-    }
+//     if (buttons.length === 0) {
+//         console.warn(`Aucun bouton trouvé pour la formation #${formationId}`);
+//         return;
+//     }
 
-    // Vérifier si l'utilisateur a une réservation pour cette formation spécifique
-    checkUserReservationForFormation(formationId).then(hasReservation => {
-        console.log(`Formation #${formationId} - Utilisateur a une réservation: ${hasReservation}`);
+//     // Vérifier si l'utilisateur a une réservation pour cette formation spécifique
+//     checkUserReservationForFormation(formationId).then(hasReservation => {
+//         console.log(`Formation #${formationId} - Utilisateur a une réservation: ${hasReservation}`);
 
-        buttons.forEach((button, index) => {
-            console.log(`Traitement du bouton ${index + 1}/${buttons.length} pour formation #${formationId}`);
-            button.classList.remove('btn-secondary', 'disabled', 'btn-primary', 'btn-sky');
-            button.disabled = false;
-            button.removeAttribute('onclick');
+//         buttons.forEach((button, index) => {
+//             console.log(`Traitement du bouton ${index + 1}/${buttons.length} pour formation #${formationId}`);
+//             button.classList.remove('btn-secondary', 'disabled', 'btn-primary', 'btn-sky');
+//             button.disabled = false;
+//             button.removeAttribute('onclick');
 
-            if (hasReservation) {
-                // L'utilisateur a une réservation pour cette formation spécifique
-                console.log(`Formation #${formationId} - Utilisateur a une réservation. Configuration du bouton en "Voir mes réservations"`);
-                button.textContent = 'mes réservations';
-                button.classList.add('btn-primary');
-                button.href = '/mes-reservations';
-                button.removeAttribute('data-in-cart');
-            } else if (inCart && isStudent) {
-                console.log(`Formation #${formationId} dans le panier. Configuration du bouton en "Accéder au panier"`);
-                button.textContent = 'Accéder au panier';
-                button.setAttribute('data-in-cart', 'true');
-                button.href = '/panier';
-                button.classList.add('btn-primary');
-            } else if (isComplete) {
-                console.log(`Formation #${formationId} complète. Configuration du bouton en "Ajouter au panier"`);
-                button.textContent = 'Ajouter au panier';
-                button.classList.add('btn-secondary', 'disabled');
-                button.disabled = true;
-                button.removeAttribute('data-in-cart');
-                button.href = 'javascript:void(0)';
-            } else if (isStarted && !inCart) {
-                console.log(`Formation #${formationId} déjà commencée. Configuration du bouton en "Ajouter au panier" (désactivé)`);
-                button.textContent = 'Ajouter au panier';
-                button.classList.remove('btn-primary', 'btn-secondary', 'btn-success', 'btn-danger', 'btn-warning');
-                button.classList.add('btn-sky', 'disabled');
-                button.disabled = true;
-                button.removeAttribute('data-in-cart');
-                button.href = 'javascript:void(0)';
-            } else {
-                console.log(`Formation #${formationId} disponible. Configuration du bouton en "Ajouter au panier"`);
-                button.textContent = 'Ajouter au panier';
-                button.removeAttribute('data-in-cart');
-                if (isStudent) {
-                    button.href = '/panier';
-                    button.classList.add('btn-primary');
-                } else {
-                    button.href = 'javascript:void(0)';
-                    button.setAttribute('onclick', 'showLoginPopup()');
-                    button.classList.add('btn-primary');
-                }
-            }
-            console.log(`État final du bouton ${index + 1}: texte="${button.textContent}", disabled=${button.disabled}, classes="${button.className}"`);
-        });
-    }).catch(error => {
-        console.error(`Erreur lors de la vérification de réservation pour formation ${formationId}:`, error);
+//             if (hasReservation) {
+//                 // L'utilisateur a une réservation pour cette formation spécifique
+//                 console.log(`Formation #${formationId} - Utilisateur a une réservation. Configuration du bouton en "Voir mes réservations"`);
+//                 button.textContent = 'mes réservations';
+//                 button.classList.add('btn-primary');
+//                 button.href = '/mes-reservations';
+//                 button.removeAttribute('data-in-cart');
+//             } else if (inCart && isStudent) {
+//                 console.log(`Formation #${formationId} dans le panier. Configuration du bouton en "Accéder au panier"`);
+//                 button.textContent = 'Accéder au panier';
+//                 button.setAttribute('data-in-cart', 'true');
+//                 button.href = '/panier';
+//                 button.classList.add('btn-primary');
+//             } else if (isComplete) {
+//                 console.log(`Formation #${formationId} complète. Configuration du bouton en "Ajouter au panier"`);
+//                 button.textContent = 'Ajouter au panier';
+//                 button.classList.add('btn-secondary', 'disabled');
+//                 button.disabled = true;
+//                 button.removeAttribute('data-in-cart');
+//                 button.href = 'javascript:void(0)';
+//             } else if (isStarted && !inCart) {
+//                 console.log(`Formation #${formationId} déjà commencée. Configuration du bouton en "Ajouter au panier" (désactivé)`);
+//                 button.textContent = 'Ajouter au panier';
+//                 button.classList.remove('btn-primary', 'btn-secondary', 'btn-success', 'btn-danger', 'btn-warning');
+//                 button.classList.add('btn-sky', 'disabled');
+//                 button.disabled = true;
+//                 button.removeAttribute('data-in-cart');
+//                 button.href = 'javascript:void(0)';
+//             } else {
+//                 console.log(`Formation #${formationId} disponible. Configuration du bouton en "Ajouter au panier"`);
+//                 button.textContent = 'Ajouter au panier';
+//                 button.removeAttribute('data-in-cart');
+//                 if (isStudent) {
+//                     button.href = '/panier';
+//                     button.classList.add('btn-primary');
+//                 } else {
+//                     button.href = 'javascript:void(0)';
+//                     button.setAttribute('onclick', 'showLoginPopup()');
+//                     button.classList.add('btn-primary');
+//                 }
+//             }
+//             console.log(`État final du bouton ${index + 1}: texte="${button.textContent}", disabled=${button.disabled}, classes="${button.className}"`);
+//         });
+//     }).catch(error => {
+//         console.error(`Erreur lors de la vérification de réservation pour formation ${formationId}:`, error);
 
-    });
-}
+//     });
+// }
 function showLoginPopup() {
     console.log('Affichage du popup de connexion');
     let popup = document.getElementById('login-popup');

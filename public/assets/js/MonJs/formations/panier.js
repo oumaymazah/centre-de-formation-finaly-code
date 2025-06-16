@@ -95,19 +95,19 @@ function checkFormationsInCart() {
         return;
     }
     // Gérer la formation récemment ajoutée
-    if (lastAddedFormation) {
-        console.log('Formation précédemment ajoutée:', lastAddedFormation);
-        updateAddToCartButton(lastAddedFormation, true, false);
-        if (!cartFormations.includes(lastAddedFormation)) {
-            cartFormations.push(lastAddedFormation);
-            localStorage.setItem('cartFormations', JSON.stringify(cartFormations));
-        }
-        localStorage.removeItem('lastAddedFormation');
-    }
-    // Mettre à jour les boutons pour les formations dans le panier
-    cartFormations.forEach(formationId => {
-        updateAddToCartButton(formationId, true, false);
-    });
+    // if (lastAddedFormation) {
+    //     console.log('Formation précédemment ajoutée:', lastAddedFormation);
+    //     updateAddToCartButton(lastAddedFormation, true, false);
+    //     if (!cartFormations.includes(lastAddedFormation)) {
+    //         cartFormations.push(lastAddedFormation);
+    //         localStorage.setItem('cartFormations', JSON.stringify(cartFormations));
+    //     }
+    //     localStorage.removeItem('lastAddedFormation');
+    // }
+    // // Mettre à jour les boutons pour les formations dans le panier
+    // cartFormations.forEach(formationId => {
+    //     updateAddToCartButton(formationId, true, false);
+    // });
     // Récupérer les données du panier depuis le serveur
     fetch('/panier/data', {
         method: 'GET',
@@ -862,6 +862,7 @@ function updateAddToCartButton(formationId, inCart, isComplete = false) {
         }
     });
 }
+
 function addToCart(formationId, redirectToCart = false, callback = null) {
     const cartFormations = JSON.parse(localStorage.getItem('cartFormations') || '[]');
     if (cartFormations.includes(formationId.toString())) {

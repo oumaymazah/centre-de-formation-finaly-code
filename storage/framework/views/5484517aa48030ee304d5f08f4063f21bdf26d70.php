@@ -14,7 +14,7 @@
         </div>
 
         <a style="color:  #2B6ED4">
-            <h6 class="mt-3 f-14 f-w-600"><?php echo e(auth()->user()->name); ?> </h6>
+            <h6 class="mt-3 f-14 f-w-600"><?php echo e(auth()->user()->name); ?> <?php echo e(auth()->user()->lastname); ?> </h6>
         </a>
     </div>
     <nav>
@@ -88,19 +88,19 @@
                         <?php endif; ?>
 
                     </li>
+                    <?php if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('super-admin')): ?>
 
-                    <li class="sidebar-main-title">
-                        <div>
-                            <h6 style="font-size: 16px; ">Administration des comptes</h6>
-                        </div>
-                    </li>
-                    <li class="dropdown">
-                            <?php if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('super-admin')): ?>
+                        <li class="sidebar-main-title">
+                            <div>
+                                <h6 style="font-size: 16px; ">Administration des comptes</h6>
+                            </div>
+                        </li>
+                        <li class="dropdown">
 
-                        <a class="nav-link menu-title link-nav <?php echo e(routeActive('contacts')); ?>" href="<?php echo e(route('contacts')); ?>"><i data-feather="list"></i><span>Gestion des utilisateurss</span></a>
-                        <?php endif; ?>
-                    </li>
+                                <a class="nav-link menu-title link-nav <?php echo e(routeActive('contacts')); ?>" href="<?php echo e(route('contacts')); ?>"><i data-feather="list"></i><span>Gestion des utilisateurss</span></a>
 
+                        </li>
+                    <?php endif; ?>
 
 
 

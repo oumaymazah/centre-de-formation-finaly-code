@@ -14,7 +14,7 @@
         </div>
 
         <a style="color:  #2B6ED4">
-            <h6 class="mt-3 f-14 f-w-600">{{auth()->user()->name}} </h6>
+            <h6 class="mt-3 f-14 f-w-600">{{auth()->user()->name}} {{auth()->user()->lastname}} </h6>
         </a>
     </div>
     <nav>
@@ -88,19 +88,19 @@
                         @endhasanyrole
 
                     </li>
+                    @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('super-admin'))
 
-                    <li class="sidebar-main-title">
-                        <div>
-                            <h6 style="font-size: 16px; ">Administration des comptes</h6>
-                        </div>
-                    </li>
-                    <li class="dropdown">
-                            @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('super-admin'))
+                        <li class="sidebar-main-title">
+                            <div>
+                                <h6 style="font-size: 16px; ">Administration des comptes</h6>
+                            </div>
+                        </li>
+                        <li class="dropdown">
 
-                        <a class="nav-link menu-title link-nav {{routeActive('contacts')}}" href="{{ route('contacts') }}"><i data-feather="list"></i><span>Gestion des utilisateurss</span></a>
-                        @endif
-                    </li>
+                                <a class="nav-link menu-title link-nav {{routeActive('contacts')}}" href="{{ route('contacts') }}"><i data-feather="list"></i><span>Gestion des utilisateurss</span></a>
 
+                        </li>
+                    @endif
 
 
 

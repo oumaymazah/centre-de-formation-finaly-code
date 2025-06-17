@@ -15,9 +15,9 @@ class CreateChaptersTable extends Migration
     {
         Schema::create('chapters', function (Blueprint $table) {
             $table->id();
-            $table->longText('description');
+            $table->longText('description')->nullable();
             $table->string('title');
-            $table->string('duration'); 
+            $table->string('duration');
             $table->unsignedBigInteger('course_id');
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
             $table->timestamps();

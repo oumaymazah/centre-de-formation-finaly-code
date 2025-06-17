@@ -149,16 +149,16 @@
                                         <td><?php echo e($categorie->title); ?></td>
                                         <td class="actions-cell">
                                             
-                                        <button onclick="window.location.href='<?php echo e(route('categorieedit', $categorie->id)); ?>'" 
-                                                class="action-btn edit-btn" 
+                                        <button onclick="window.location.href='<?php echo e(route('categorieedit', $categorie->id)); ?>'"
+                                                class="action-btn edit-btn"
                                                 title="Modifier">
                                             <i class="fa fa-pencil-alt"></i>
                                         </button>
 
-                                            <button type="button" class="action-btn delete-btn delete-action" 
-                                                data-delete-url="<?php echo e(route('categoriedestroy', $categorie->id)); ?>" 
-                                                data-type="catégorie" 
-                                                data-name="<?php echo e($categorie->title); ?>" 
+                                            <button type="button" class="action-btn delete-btn delete-action"
+                                                data-delete-url="<?php echo e(route('categoriedestroy', $categorie->id)); ?>"
+                                                data-type="catégorie"
+                                                data-name="<?php echo e($categorie->title); ?>"
                                                 data-csrf="<?php echo e(csrf_token()); ?>"
                                                 title="Supprimer">
                                                 <i class="fa fa-times"></i>
@@ -194,12 +194,12 @@
         $(document).ready(function() {
     $('.delete-action').on('click', function(e) {
         e.preventDefault();
-        
+
         var deleteUrl = $(this).data('delete-url');
         var itemType = $(this).data('type');
         var itemName = $(this).data('name');
         var csrf = $(this).data('csrf');
-        
+
         Swal.fire({
             title: 'Êtes-vous sûr ?',
             text: 'Voulez-vous vraiment supprimer la ' + itemType + ' "' + itemName + '" ?',
@@ -241,7 +241,7 @@
             }
         });
     });
-    
+
     // Initialisation de DataTables avec pagination et recherche
     $('#categories-table').DataTable({
         "language": {
@@ -256,7 +256,7 @@
         "autoWidth": false,     // Désactiver l'ajustement automatique de la largeur
         "responsive": true      // Rendre le tableau responsive
     });
-    
+
     // Initialiser Feather Icons
     if (typeof feather !== 'undefined') {
         feather.replace();
@@ -265,4 +265,5 @@
     </script>
 <?php $__env->stopPush(); ?>
 <?php $__env->stopSection(); ?>
+
 <?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\apprendre laravel\Centre_Formation-main\resources\views/admin/apps/categorie/categories.blade.php ENDPATH**/ ?>

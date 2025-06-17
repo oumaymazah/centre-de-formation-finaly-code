@@ -13,7 +13,7 @@
         // // Récupérer la valeur du cours depuis l'URL OU la session OU old()
         // $selectedCoursId = request()->query('cours_id') ?? session('cours_id') ?? old('course_id');
         // $hasChapitreId = session()->has('chapitre_id');
-        
+
     ?>
 
 
@@ -45,12 +45,12 @@
                             <strong>Note:</strong>La durée sera calculée automatiquement à partir des leçons ajoutées à ce chapitre.
                         </div>
                         </div>
-                            
+
 
                         <div class="form theme-form">
                             <form id="create-chapitre-form" class="needs-validation" action="<?php echo e(route('chapitrestore')); ?>" method="POST" novalidate>
                                 <?php echo csrf_field(); ?>
-     
+
                                 <!-- Titre -->
                                 <div class="mb-3 row">
                                     <label class="col-sm-2 col-form-label">Titre <span class="text-danger">*</span></label>
@@ -77,28 +77,28 @@
                                 </div>
 
                                 <!-- Message informatif sur la durée -->
-                              
-                            
+
+
 <?php
     // Déterminer la source du cours (URL ou sélection manuelle)
     $hasCoursIdFromUrl = request()->has('cours_id');
     $coursIdFromUrl = request()->query('cours_id');
-    
+
     // Récupérer le coursId depuis différentes sources
     $coursIdFromSession = session('cours_id');
     $coursIdFromOld = old('course_id');
-    
+
     // Déterminer la source du cours (important pour le comportement après redirection)
     $coursSource = $hasCoursIdFromUrl ? 'url' : session('cours_source', 'manual');
-    
+
     // Si le cours vient de l'URL OU si la source enregistrée est URL, il doit être readonly
-    $shouldBeReadonly = ($coursSource === 'url') && 
-                        (!empty($coursIdFromUrl) || !empty($coursIdFromSession)) && 
+    $shouldBeReadonly = ($coursSource === 'url') &&
+                        (!empty($coursIdFromUrl) || !empty($coursIdFromSession)) &&
                         isset($cours);
-    
+
     // La valeur à utiliser pour le select ou l'affichage
     $selectedCoursId = $coursIdFromUrl ?? $coursIdFromSession ?? $coursIdFromOld;
-    
+
     // Détecter si une SweetAlert va s'afficher (chapitre créé récemment)
     $hasChapitreId = session()->has('chapitre_id');
 ?>
@@ -171,16 +171,16 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="<?php echo e(asset('assets/js/tinymce/js/tinymce/tinymce.min.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/MonJs/description/description.js')); ?>"></script>
-    <script src="https://cdn.tiny.cloud/1/ivqx4rg9mkp3j7b0kjhnttlk4jwpkp1ay6dw3twe5jjabyss/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
- 
+    <script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
     // Votre code existant pour Select2...
-    
+
     // Récupérer l'ID du chapitre et du cours depuis la session
     let chapitreId = "<?php echo e(session('chapitre_id')); ?>";
     let coursId = "<?php echo e(session('cours_id')); ?>";
-    
+
     // Vérifier si l'ID du chapitre existe en session
     if (chapitreId) {
         Swal.fire({

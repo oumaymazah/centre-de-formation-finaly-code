@@ -32,7 +32,7 @@ class LessonController extends Controller
             'duration' => 'required|date_format:H:i:s', // Modifié pour inclure les secondes
             'chapter_id' => 'required|exists:chapters,id',
             'uploaded_files' => 'required|json',
-            'link' => 'required|string',
+            'link' => 'nullable|string',
         ]);
 
         // Décodage des fichiers téléchargés

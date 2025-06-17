@@ -321,11 +321,7 @@ Formations | ELS-Centre de Formation en Ligne
                         </div>
                     </div>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                    <div class="col-12">
-                        <div class="alert alert-info">
-                            Aucune formation disponible.
-                        </div>
-                    </div>
+                    
                 <?php endif; ?>
             </div>
         </div>
@@ -333,13 +329,17 @@ Formations | ELS-Centre de Formation en Ligne
 </div>
 
 <!-- Modal de confirmation de suppression -->
-<?php if(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('super-admin') || auth()->user()->hasRole('professeur'))): ?>
+
+
+
+<?php if(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('super-admin'))): ?>
+<!-- Modal de confirmation de suppression normale -->
 <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header text-black">
                 <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirmer la suppression</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 Êtes-vous sûr de vouloir supprimer cette formation ? Cette action est irréversible.
@@ -348,15 +348,194 @@ Formations | ELS-Centre de Formation en Ligne
                 <form id="deleteFormationForm" method="POST">
                     <?php echo csrf_field(); ?>
                     <?php echo method_field('DELETE'); ?>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non, annuler</button>
+                    <button type="submit" class="btn btn-danger">Oui, Supprimer</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal pour réservations confirmées seulement -->
+<div class="modal fade" id="deleteWithConfirmedReservationsModal" tabindex="-1" role="dialog" aria-labelledby="deleteWithConfirmedReservationsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-black">
+                <h5 class="modal-title text-black" id="deleteWithConfirmedReservationsModalLabel">
+                    Cette formation a des réservations confirmées
+                </h5>
+                <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+                    <div class="text-center">
+
+                    <strong>Attention !</strong><br>
+                    Des utilisateurs ont déjà réservé cette formation avec un statut confirmé.</br>
+                   <br> Voulez-vous supprimer la formation malgré cela ?</br>
+                    </div>
+
+                
+            </div>
+            <div class="modal-footer">
+                <form id="deleteFormationWithConfirmedReservationsForm" method="POST">
+                    <?php echo csrf_field(); ?>
+                    <?php echo method_field('DELETE'); ?>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non, annuler</button>
+                    <button type="submit" class="btn btn-danger">Oui, supprimer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="deleteWithCombinedReservationsModal" tabindex="-1" role="dialog" aria-labelledby="deleteWithCombinedReservationsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-black">
+                <h5 class="modal-title" id="deleteWithCombinedReservationsModalLabel">
+                    Cette formation a des réservations multiples
+                </h5>
+                <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <strong>Attention !</strong>
+                    <br>Cette formation contient à la fois des réservations confirmées et des réservations en attente.</br>
+                    <br>Voulez-vous supprimer la formation malgré cela ?</br>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <form id="deleteFormationWithCombinedReservationsForm" method="POST">
+                    <?php echo csrf_field(); ?>
+                    <?php echo method_field('DELETE'); ?>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non, annuler</button>
+                    <button type="submit" class="btn btn-danger">Oui, supprimer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal pour réservations en attente seulement -->
+<div class="modal fade" id="deleteWithPendingReservationsModal" tabindex="-1" role="dialog" aria-labelledby="deleteWithPendingReservationsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-black">
+                <h5 class="modal-title" id="deleteWithPendingReservationsModalLabel">
+                    Cette formation a des réservations en attente
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+
+                
+                    <strong>Attention !</strong>
+                    <br>Cette formation contient des réservations pas encore validées (en attente).</br>
+                    <br>Voulez-vous supprimer la formation malgré cela ?</br>
+                    <div></div>
+                
+            </div>
+            <div class="modal-footer">
+                <form id="deleteFormationWithPendingReservationsForm" method="POST">
+                    <?php echo csrf_field(); ?>
+                    <?php echo method_field('DELETE'); ?>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non, annuler</button>
+                    <button type="submit" class="btn btn-danger">Oui, supprimer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteWithCombinedReservationsModal" tabindex="-1" role="dialog" aria-labelledby="deleteWithCombinedReservationsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title text-black" id="deleteWithCombinedReservationsModalLabel">
+                    <i class="fa fa-exclamation-triangle me-2"></i>
+                    ATTENTION - Formation avec réservations multiples
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-custom">
+                    <h6 class="alert-heading">
+                        <i class="fa fa-warning me-2"></i>
+                        <strong>SUPPRESSION CRITIQUE</strong>
+                    </h6>
+                    <hr>
+                    <p class="mb-3">
+                        Cette formation contient <strong>à la fois</strong> des réservations confirmées et des réservations en attente :
+                    </p>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card reservation-card mb-2">
+                                <div class="card-body p-3">
+                                    <h6 class="card-title mb-1">
+                                        <i class="fa fa-check-circle me-1"></i>
+                                        Réservations confirmées
+                                    </h6>
+                                    <small class="text-muted">Des utilisateurs ont déjà validé leur inscription</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card reservation-card mb-2">
+                                <div class="card-body p-3">
+                                    <h6 class="card-title mb-1">
+                                        <i class="fa fa-clock me-1"></i>
+                                        Réservations en attente
+                                    </h6>
+                                    <small class="text-muted">Des demandes d'inscription sont en cours de validation</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 p-3 impact-section rounded">
+                        <strong class="text-dark">⚠️ Impact de la suppression :</strong>
+                        <ul class="mt-2 mb-0 text-dark">
+                            <li>Les utilisateurs avec réservations confirmées perdront leur inscription</li>
+                            <li>Les demandes en attente seront automatiquement annulées</li>
+                            <li>Cette action est <strong>irréversible</strong></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="text-center mt-3">
+                    <p class="confirmation-text mb-0">
+                        Êtes-vous absolument certain de vouloir supprimer cette formation ?
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">
+                    <i class="fa fa-times me-1"></i>
+                    Non, conserver la formation
+                </button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteCombinedReservations">
+                    <i class="fa fa-trash me-1"></i>
+                    Oui, supprimer définitivement
+                </button>
+
+                <!-- Formulaire pour la suppression avec tokens CSRF -->
+                <form id="deleteFormationWithCombinedReservationsForm" method="POST" style="display: none;">
+                    <?php echo csrf_field(); ?>
+                    <?php echo method_field('DELETE'); ?>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal pour réservations combinées (confirmées + en attente) -->
+
+
 <?php endif; ?>
 
+ 
 <!-- Footer conditionnel selon l'authentification -->
 <?php if(!auth()->check()): ?>
     <?php ($hideAdminFooter = true); ?>

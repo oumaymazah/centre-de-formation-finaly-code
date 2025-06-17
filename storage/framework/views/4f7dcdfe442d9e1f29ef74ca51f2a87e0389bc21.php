@@ -6,6 +6,8 @@
 <?php $__env->startPush('css'); ?>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/prism.css')); ?>">
+ <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/MonCss/table.css')); ?>">
+
 <style>
     .highlighted {
         background-color: #ffeb3b !important; /* Couleur de surbrillance */
@@ -82,9 +84,21 @@
 
                                             </a>
                                         </td>
+                                        
+
                                         <td>
-                                            <i class="icofont icofont-edit edit-icon action-icon" data-edit-url="<?php echo e(route('chapitreedit', $chapitre->id)); ?>" style="cursor: pointer;"></i>
-                                            <i class="icofont icofont-ui-delete delete-icon action-icon" data-delete-url="<?php echo e(route('chapitredestroy', $chapitre->id)); ?>" data-csrf="<?php echo e(csrf_token()); ?>" style="cursor: pointer; color: rgb(204, 28, 28);"></i>
+                                             <span class="edit-icon action-icon"
+              data-edit-url="<?php echo e(route('chapitreedit', $chapitre->id)); ?>"
+              title="Modifier le chapitre"
+              data-bs-toggle="tooltip"></span>
+
+        <!-- Icône Supprimer -->
+        <span class="delete-icon action-icon"
+              data-delete-url="<?php echo e(route('chapitredestroy', $chapitre->id)); ?>"
+              data-csrf="<?php echo e(csrf_token()); ?>"
+              title="Supprimer le chapitre"
+              data-bs-toggle="tooltip"
+              data-chapitre-title="<?php echo e($chapitre->title); ?>"></span>
                                         </td>
                                     </tr>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -103,7 +117,7 @@
 <script src="<?php echo e(asset('assets/js/clipboard/clipboard.min.js')); ?>"></script>
 <script src="<?php echo e(asset('assets/js/custom-card/custom-card.js')); ?>"></script>
 <script src="<?php echo e(asset('assets/js/height-equal.js')); ?>"></script>
-<script src="<?php echo e(asset('assets/js/MonJs//actions-icon/actions-icon.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/js/MonJs/actions-icon/actions-icon.js')); ?>"></script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
@@ -126,6 +140,7 @@
 </script>
 <?php $__env->stopPush(); ?>
 <?php $__env->stopSection(); ?>
+
 
 
 

@@ -61,7 +61,7 @@
 
                                 <!-- Description -->
                                 <div class="mb-3 row">
-                                    <label class="col-sm-2 col-form-label">Description <span class="text-danger">*</span></label>
+                                    <label class="col-sm-2 col-form-label">Description </label>
                                     <div class="col-sm-10">
                                         <div class="input-group" style="flex-wrap: nowrap;">
                                             <div class="input-group-text d-flex align-items-stretch" style="height: auto;">
@@ -195,9 +195,9 @@
     <script src="{{ asset('assets/js/MonJs/form-validation/form-validation.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('assets/js/MonJs/description/description.js') }}"></script>
-    <script src="https://cdn.tiny.cloud/1/ivqx4rg9mkp3j7b0kjhnttlk4jwpkp1ay6dw3twe5jjabyss/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 
-    <script src="https://cdn.tiny.cloud/1/ivqx4rg9mkp3j7b0kjhnttlk4jwpkp1ay6dw3twe5jjabyss/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
     <script src="{{ asset('assets/js/MonJs/calendar/custom-calendar.js') }}"></script>
@@ -434,4 +434,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-@endpush 
+@endpush

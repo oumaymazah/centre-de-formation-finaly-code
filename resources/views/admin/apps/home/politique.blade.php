@@ -14,22 +14,13 @@
         <title>Politique de Réservation</title>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <style>
-            /* Ajoutez cette règle CSS dans votre section <style> de la page "À propos" */
 
-/* Décalage du contenu du footer vers la droite */
 .footer .container {
     padding-left: 6rem !important; /* Ajustez cette valeur selon vos besoins */
     padding-right: -20rem !important;
 }
 
 
-/* Alternative avec margin si vous préférez */
-/*
-.footer .container {
-    margin-left: 4rem !important;
-    margin-right: 2rem !important;
-}
-*/
 
 /* Responsive - réduire le décalage sur mobile */
 @media (max-width: 768px) {
@@ -47,17 +38,7 @@
 }
         </style>
         <style>
-            /* Reset pour forcer la pleine largeur */
-           /* .fullwidth-container {
-                margin: 0 !important;
-                padding: 0 !important;
-                width: 100vw !important;
-                position: relative;
-                left: 50%;
-                right: 100%;
-                margin-left: -60vw !important;
-                margin-right: -80vw !important;
-            } */
+
               .fullwidth-container {
                 margin: 0 !important;
                 padding: 0 !important;
@@ -70,14 +51,10 @@
             }
 
 
-            /* * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            } */
+
 
             body {
-                /* font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+
                 line-height: 1.7;
                 color: #1a202c;
                 background: #e8e4f0;
@@ -233,13 +210,11 @@
                 font-size: 1.1rem;
                 transition: none;
 
-                /* transition: all 0.3s ease; */
-                /* box-shadow: 0 4px 15px rgba(76, 110, 245, 0.3); */
+
             }
 
             .cta-button:hover {
-                /* transform: translateY(-2px); */
-                /* box-shadow: 0 8px 25px rgba(76, 110, 245, 0.4); */
+               
                 color: white;
                 text-decoration: none;
             }

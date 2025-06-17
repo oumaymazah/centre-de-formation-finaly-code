@@ -190,7 +190,7 @@
 <script src="<?php echo e(asset('assets/js/MonJs/description/description.js')); ?>"></script>
 <script src="<?php echo e(asset('assets/js/MonJs/lecons/link-validation.js')); ?>"></script>
 
-    <script src="https://cdn.tiny.cloud/1/ivqx4rg9mkp3j7b0kjhnttlk4jwpkp1ay6dw3twe5jjabyss/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 

@@ -41,7 +41,7 @@
                             <strong>Note:</strong>La durée sera calculée automatiquement à partir des leçons ajoutées à ce chapitre.
                         </div>
                         </div>
-                            
+
 
                         <div class="form theme-form">
                             <form id="create-chapitre-form" class="needs-validation" action="<?php echo e(route('chapitrestore')); ?>" method="POST" novalidate>
@@ -168,7 +168,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="<?php echo e(asset('assets/js/tinymce/js/tinymce/tinymce.min.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/MonJs/description/description.js')); ?>"></script>
-    <script src="https://cdn.tiny.cloud/1/ivqx4rg9mkp3j7b0kjhnttlk4jwpkp1ay6dw3twe5jjabyss/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {

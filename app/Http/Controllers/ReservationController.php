@@ -11,6 +11,129 @@ use Illuminate\Support\Facades\Mail;
 class ReservationController extends Controller
 {
 
+    private function hasReservationWithStatus($formationId, $status) {
+    try {
+        // Vérifier avec les requêtes LIKE pour une recherche rapide
+        $hasReservation = Reservation::where('status', $status)
+            ->where(function($query) use ($formationId) {
+                $query->where('training_data', 'LIKE', '%"' . $formationId . '"%')
+                      ->orWhere('training_data', 'LIKE', '%[' . $formationId . ']%')
+                      ->orWhere('training_data', 'LIKE', '%[' . $formationId . ',%')
+                      ->orWhere('training_data', 'LIKE', '%,' . $formationId . ']%')
+                      ->orWhere('training_data', 'LIKE', '%,' . $formationId . ',%')
+                      ->orWhere('training_data', '=', $formationId)
+                      ->orWhere('training_data', '=', '"' . $formationId . '"');
+            })
+            ->exists();
+
+        // Vérification supplémentaire pour les données JSON si pas trouvé avec LIKE
+        if (!$hasReservation) {
+            $reservations = Reservation::where('status', $status)
+                ->whereNotNull('training_data')
+                ->where('training_data', '!=', '')
+                ->get();
+
+            foreach ($reservations as $reservation) {
+                if (!empty($reservation->training_data)) {
+                    $trainingIds = $reservation->training_data;
+
+                    // Si c'est une chaîne, essayer de la décoder
+                    if (is_string($trainingIds)) {
+                        // Vérifier si c'est juste un nombre
+                        if (is_numeric($trainingIds) && (int)$trainingIds == $formationId) {
+                            $hasReservation = true;
+                            break;
+                        }
+
+                        // Essayer de décoder JSON
+                        try {
+                            $decoded = json_decode($trainingIds, true);
+                            if (json_last_error() === JSON_ERROR_NONE) {
+                                $trainingIds = $decoded;
+                            } else {
+                                // Si ce n'est pas un JSON valide, continuer
+                                continue;
+                            }
+                        } catch (\Exception $e) {
+                            continue;
+                        }
+                    }
+
+                    // Vérifier dans le tableau
+                    if (is_array($trainingIds)) {
+                        foreach ($trainingIds as $id) {
+                            if (is_numeric($id) && (int)$id == $formationId) {
+                                $hasReservation = true;
+                                break 2; // Sortir des deux boucles
+                            }
+                        }
+                    } elseif (is_numeric($trainingIds) && (int)$trainingIds == $formationId) {
+                        $hasReservation = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Logger le résultat pour débogger
+        Log::debug("Recherche réservations avec status $status pour formation $formationId", [
+            'found' => $hasReservation,
+            'formation_id' => $formationId,
+            'status' => $status
+        ]);
+
+        return $hasReservation;
+
+    } catch (\Exception $e) {
+        Log::error("Erreur dans hasReservationWithStatus pour formation $formationId, status $status: " . $e->getMessage());
+        return false;
+    }
+}
+
+    public function checkReservationStatus($formationId) {
+    try {
+        // Vérifier les réservations confirmées (status=1)
+        $hasConfirmedReservation = $this->hasReservationWithStatus($formationId, 1);
+
+        // Vérifier les réservations en attente (status=0)
+        $hasPendingReservation = $this->hasReservationWithStatus($formationId, 0);
+
+        // Déterminer le type de réservation pour le logging
+        $reservationType = 'none';
+        if ($hasConfirmedReservation && $hasPendingReservation) {
+            $reservationType = 'both';
+        } elseif ($hasConfirmedReservation) {
+            $reservationType = 'confirmed_only';
+        } elseif ($hasPendingReservation) {
+            $reservationType = 'pending_only';
+        }
+
+        // Logger pour déboguer
+        Log::info("Vérification des réservations pour formation $formationId", [
+            'has_confirmed' => $hasConfirmedReservation,
+            'has_pending' => $hasPendingReservation,
+            'type' => $reservationType
+        ]);
+
+        return response()->json([
+            'has_confirmed_reservation' => $hasConfirmedReservation,
+            'has_pending_reservation' => $hasPendingReservation,
+            'formation_id' => $formationId,
+            'reservation_type' => $reservationType // Ajout du type pour faciliter le déboggage côté client
+        ]);
+
+    } catch (\Exception $e) {
+        Log::error("Erreur lors de la vérification des réservations pour formation $formationId: " . $e->getMessage());
+        return response()->json([
+            'has_confirmed_reservation' => false,
+            'has_pending_reservation' => false,
+            'formation_id' => $formationId,
+            'reservation_type' => 'error',
+            'error' => 'Erreur lors de la vérification'
+        ], 500);
+    }
+}
+
     public function getRemainingPlaces($trainingId)
     {
         $training = Training::findOrFail($trainingId);
@@ -40,7 +163,7 @@ class ReservationController extends Controller
 
         return response()->json(['has_complete_formations' => $hasComplete]);
     }
-   
+
     public function checkConfirmedReservation($formationId)
 {
     try {

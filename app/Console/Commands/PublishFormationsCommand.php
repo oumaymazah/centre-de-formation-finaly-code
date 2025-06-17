@@ -13,8 +13,8 @@ class PublishFormationsCommand extends Command
     {
         // Obtenir la date actuelle (sans l'heure) au fuseau horaire de Tunis
         $today = Carbon::now('Africa/Tunis')->startOfDay();
-        $this->info("Exécution pour la date : ".$today->format('Y-m-d'));
-   
+        $this->info("Exécution pour la date : ".$today->format('Y/m/d'));
+
         // Récupérer les formations non publiées dont la date de publication est aujourd'hui ou avant
         $formations = Training::where('status', 0)
             ->where(function($query) use ($today) {
@@ -22,7 +22,7 @@ class PublishFormationsCommand extends Command
                      ->orWhereDate('publish_date', '<=', $today);
             })
             ->get();
-   
+
         $this->table(
             ['ID', 'Titre', 'Date publication', 'Statut'],
             $formations->map(function($f) {
@@ -34,7 +34,7 @@ class PublishFormationsCommand extends Command
                 ];
             })->toArray()
         );
-        
+
         $publishedCount = 0;
         foreach ($formations as $formation) {
             try {

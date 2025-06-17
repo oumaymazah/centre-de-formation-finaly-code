@@ -4,11 +4,7 @@
         <div class="col-lg-6">
           <?php echo e($breadcrumb_title ?? ''); ?>
 
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?php echo e(route('index')); ?>">Accueil</a></li>
-              <?php echo e($slot ?? ''); ?>
-
-          </ol>
+          
         </div>
         <div class="col-lg-6">
           <!-- Bookmark Start-->

@@ -197,7 +197,7 @@
 
                          <!-- Liens -->
                          <div class="mb-3 row">
-                             <label class="col-sm-2 col-form-label">Liens <span class="text-danger">*</span></label>
+                             <label class="col-sm-2 col-form-label">Liens </label>
                              <div class="col-sm-10">
                                  <div id="links-container">
                                      @php
@@ -253,7 +253,7 @@
  <script src="{{ asset('assets/js/MonJs/select2-init/single-select.js') }}"></script>
 <script src="{{ asset('assets/js/MonJs/description/description.js') }}"></script>
 <script src="{{ asset('assets/js/tinymce/js/tinymce/tinymce.min.js') }}"></script>
-    <script src="https://cdn.tiny.cloud/1/ivqx4rg9mkp3j7b0kjhnttlk4jwpkp1ay6dw3twe5jjabyss/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 
 
  @endpush

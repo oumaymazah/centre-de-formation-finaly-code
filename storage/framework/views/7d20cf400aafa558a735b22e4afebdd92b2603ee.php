@@ -17,8 +17,8 @@
   <div class="main-header-right row m-0 <?php echo e(auth()->check() ? 'authenticated-main-header' : ''); ?>">
     <div class="main-header-left <?php echo e(auth()->check() ? 'authenticated-left' : ''); ?>">
       <!-- Unified logo for both authenticated and non-authenticated users -->
-      <div class="logo-wrapper"><a href="<?php echo e(route('index')); ?>"><img class="img-fluid <?php echo e(auth()->check() ? 'authenticated-logo' : 'nav-logo-img'); ?>" src="<?php echo e(asset('assets/images/logo/elsEMPO-removebg-preview.png')); ?>" alt="Logo"></a></div>
-      <div class="dark-logo-wrapper"><a href="<?php echo e(route('index')); ?>"><img class="img-fluid <?php echo e(auth()->check() ? 'authenticated-logo' : 'nav-logo-img'); ?>" src="<?php echo e(asset('assets/images/logo/elsEMPO-removebg-preview.png')); ?>" alt="Dark Logo"></a></div>
+      <div class="logo-wrapper"><img class="img-fluid <?php echo e(auth()->check() ? 'authenticated-logo' : 'nav-logo-img'); ?>" src="<?php echo e(asset('assets/images/logo/elsEMPO-removebg-preview.png')); ?>" alt="Logo"></div>
+      <div class="dark-logo-wrapper"><img class="img-fluid <?php echo e(auth()->check() ? 'authenticated-logo' : 'nav-logo-img'); ?>" src="<?php echo e(asset('assets/images/logo/elsEMPO-removebg-preview.png')); ?>" alt="Dark Logo"></div>
       <!-- Toggle only for authenticated users -->
       <?php if(auth()->guard()->check()): ?>
       <div class="toggle-sidebar"><i class="status_toggle middle" data-feather="align-center" id="sidebar-toggle"></i></div>

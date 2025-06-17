@@ -40,6 +40,12 @@ class Training extends Model
         'total_seats',
     ];
 
+     protected $dates = [
+       'start_date',
+        'end_date',
+        
+        'publish_date',
+    ];
     // Relations
     public function user()
     {

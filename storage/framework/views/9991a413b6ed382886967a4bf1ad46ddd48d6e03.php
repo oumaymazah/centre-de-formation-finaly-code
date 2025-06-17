@@ -54,7 +54,7 @@
                                 </div>
 
                                 <!-- Description -->
-                              
+
                                 <div class="mb-3 row">
                                     <label class="col-sm-2 col-form-label">Description <span class="text-danger">*</span></label>
                                     <div class="col-sm-10">
@@ -68,7 +68,7 @@
                                     </div>
                                 </div>
 
-                            
+
                                 <div class="mb-3 row">
                                     <label class="col-sm-2 col-form-label">Périodes <span class="text-danger">*</span></label>
                                     <div class="col-sm-10">
@@ -76,7 +76,7 @@
                                             <div class="col-md-5">
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                                    <input class="form-control datepicker" type="text" id="start_date" name="start_date" 
+                                                    <input class="form-control datepicker" type="text" id="start_date" name="start_date"
                                                         value="<?php echo e(old('start_date', \Carbon\Carbon::parse($cours->start_date)->format('d/m/Y'))); ?>" required />
                                                 </div>
                                                 <small class="text-muted">Date de début</small>
@@ -84,7 +84,7 @@
                                             <div class="col-md-5">
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                                    <input class="form-control datepicker" type="text" id="end_date" name="end_date" 
+                                                    <input class="form-control datepicker" type="text" id="end_date" name="end_date"
                                                         value="<?php echo e(old('end_date', \Carbon\Carbon::parse($cours->end_date)->format('d/m/Y'))); ?>" required />
                                                 </div>
                                                 <small class="text-muted">Date de fin</small>
@@ -118,7 +118,7 @@
                                     </div>
                                 </div>
 
-                                
+
 
                                 <!-- Boutons de soumission -->
                                 <div class="row">
@@ -148,11 +148,11 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     <script src="<?php echo e(asset('assets/js/MonJs/select2-init/single-select.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/MonJs/form-validation/form-validation.js')); ?>"></script>
-        <script src="https://cdn.tiny.cloud/1/ivqx4rg9mkp3j7b0kjhnttlk4jwpkp1ay6dw3twe5jjabyss/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+        <script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="<?php echo e(asset('assets/js/MonJs/description/description.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/MonJs/calendar/edit-calendar.js')); ?>"></script>
 
-   
+
 <?php $__env->stopPush(); ?>
 <?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\hibah\P_Plateforme_ELS\resources\views/admin/apps/cours/coursedit.blade.php ENDPATH**/ ?>

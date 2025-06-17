@@ -809,7 +809,9 @@ progress {
     -webkit-box-flex: 0;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
-    width: 50%; }
+    width: 50%;
+
+}
   .col-sm-7 {
     -webkit-box-flex: 0;
         -ms-flex: 0 0 auto;
@@ -1307,7 +1309,9 @@ progress {
     -webkit-box-flex: 0;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
-    width: 50%; }
+    width: 50%;
+
+}
   .col-xl-7 {
     -webkit-box-flex: 0;
         -ms-flex: 0 0 auto;
@@ -4573,7 +4577,8 @@ textarea.form-control-lg {
   z-index: 1040;
   width: 100vw;
   height: 100vh;
-  background-color: #000; }
+  background-color: #000;
+}
   .modal-backdrop.fade {
     opacity: 0; }
   .modal-backdrop.show {

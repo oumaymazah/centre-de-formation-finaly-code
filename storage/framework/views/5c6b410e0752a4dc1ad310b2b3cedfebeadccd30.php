@@ -1,4 +1,4 @@
- 
+
 
 <?php $__env->startSection('title'); ?> Ajouter un Cours <?php $__env->stopSection(); ?>
 
@@ -15,7 +15,7 @@
 <?php
     $selectedFormationId = request()->query('training_id', old('training_id'));
 ?>
- 
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
@@ -35,7 +35,7 @@
                                 </ul>
                             </div>
                         <?php endif; ?>
-                        
+
                         <!-- Alerte d'information sur le calcul automatique de la durée -->
                         <div class="alert alert-info">
                             <i class="fa fa-info-circle me-2"></i>
@@ -73,7 +73,7 @@
                                 </div>
 
                                 <!-- Dates de début et de fin -->
-                                
+
                                 <div class="mb-3 row">
                                     <label class="col-sm-2 col-form-label">Périodes <span class="text-danger">*</span></label>
                                     <div class="col-sm-10">
@@ -111,7 +111,7 @@
                                                 <?php
                                                     $fromUrl = session('from_url') ?? request()->has('from_url');
                                                 ?>
-                                                
+
                                                 <?php if($selectedFormationId && ($fromUrl || request()->has('training_id'))): ?>
                                                     <?php
                                                         $selectedFormation = $formations->firstWhere('id', $selectedFormationId);
@@ -149,7 +149,7 @@
                                         <div class="invalid-feedback">Veuillez sélectionner une formation valide.</div>
                                     </div>
                                 </div>
-                               
+
                                 <!-- Boutons de soumission -->
                                 <div class="row">
                                     <div class="col">
@@ -180,9 +180,9 @@
     <script src="<?php echo e(asset('assets/js/MonJs/form-validation/form-validation.js')); ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="<?php echo e(asset('assets/js/MonJs/description/description.js')); ?>"></script>
-    <script src="https://cdn.tiny.cloud/1/ivqx4rg9mkp3j7b0kjhnttlk4jwpkp1ay6dw3twe5jjabyss/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 
-    <script src="https://cdn.tiny.cloud/1/ivqx4rg9mkp3j7b0kjhnttlk4jwpkp1ay6dw3twe5jjabyss/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
     <script src="<?php echo e(asset('assets/js/MonJs/calendar/custom-calendar.js')); ?>"></script>
@@ -192,11 +192,11 @@
     const urlParams = new URLSearchParams(window.location.search);
     const trainingIdFromUrl = urlParams.get('training_id');
     const fromUrl = urlParams.get('from_url');
-    
+
     // Gestion de la notification après l'ajout du cours
     let coursId = "<?php echo e(session('cours_id')); ?>";
     let fromUrlSession = "<?php echo e(session('from_url')); ?>";
-    
+
     if (coursId) {
         Swal.fire({
             title: "Cours ajouté avec succès !",
@@ -256,7 +256,7 @@
         });
     }
 });
-   
+
 </script>
-<?php $__env->stopPush(); ?> 
+<?php $__env->stopPush(); ?>
 <?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\hibah\P_Plateforme_ELS\resources\views/admin/apps/cours/courscreate.blade.php ENDPATH**/ ?>

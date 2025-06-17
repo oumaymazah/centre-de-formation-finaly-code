@@ -2,7 +2,7 @@
 
 <?php $__env->startPush('breadcrumb'); ?>
 <li class="breadcrumb-item">Pages</li>
-<li class="breadcrumb-item active">Sample Page</li>
+<li class="breadcrumb-item active">Sample Page< /li>
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startPush('css'); ?>
@@ -26,7 +26,7 @@
 
             </div>
         <?php endif; ?>
-        
+
       <?php echo $__env->yieldContent('breadcrumb-list'); ?>
       <!-- Container-fluid starts-->
       <div class="container-fluid dashboard-default-sec">

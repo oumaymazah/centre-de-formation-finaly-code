@@ -150,7 +150,7 @@
                                     <div class="col-sm-10">
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="fa fa-link"></i></span>
-                                            <textarea class="form-control" name="link" id="link" rows="5" placeholder="Entrez un lien par ligne" required>{{ old('link') }}</textarea>
+                                            <textarea class="form-control" name="link" id="link" rows="5" placeholder="Entrez un lien par ligne" >{{ old('link') }}</textarea>
                                         </div>
                                         <small class="form-text text-muted">Entrez des liens valides, un par ligne.</small>
                                     </div>
@@ -192,7 +192,7 @@
 <script src="{{ asset('assets/js/MonJs/description/description.js') }}"></script>
 <script src="{{ asset('assets/js/MonJs/lecons/link-validation.js') }}"></script>
 {{-- <script src="https://cdn.tiny.cloud/1/cwjxs6s7k08kvxb3t6udodzrwpomhxtehiozsu4fem2igekf/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script> --}}
-    <script src="https://cdn.tiny.cloud/1/ivqx4rg9mkp3j7b0kjhnttlk4jwpkp1ay6dw3twe5jjabyss/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 

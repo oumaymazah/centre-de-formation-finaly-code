@@ -309,7 +309,7 @@
 
 <script src="<?php echo e(asset('assets/js/tinymce/js/tinymce/tinymce.min.js')); ?>"></script>
 <script src="<?php echo e(asset('assets/js/MonJs/description/description.js')); ?>"></script>
-    <script src="https://cdn.tiny.cloud/1/ivqx4rg9mkp3j7b0kjhnttlk4jwpkp1ay6dw3twe5jjabyss/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
 <script src="<?php echo e(asset('assets/js/MonJs/calendar/custom-calendar.js')); ?>"></script>
@@ -321,11 +321,11 @@
         const publishLater = document.getElementById('publishLater');
         const publishNow = document.getElementById('publishNow');
         const publishDateContainer = document.getElementById('publishDateContainer');
-        
+
         // Type de formation (payante/gratuite)
         const typeSelect = document.getElementById('type');
         const priceContainer = document.getElementById('priceContainer');
-        
+
         // Gestion de l'affichage du conteneur de date de publication
         function togglePublishDateContainer() {
             if (publishLater.checked) {
@@ -334,7 +334,7 @@
                 publishDateContainer.style.display = 'none';
             }
         }
-        
+
         // Gestion de l'affichage du champ prix
         function togglePriceContainer() {
             if (typeSelect.value === 'payante') {
@@ -345,16 +345,16 @@
                 document.getElementById('price').removeAttribute('required');
             }
         }
-        
+
         // Initial toggle
         togglePublishDateContainer();
         togglePriceContainer();
-        
+
         // Event listeners
         publishLater.addEventListener('change', togglePublishDateContainer);
         publishNow.addEventListener('change', togglePublishDateContainer);
         typeSelect.addEventListener('change', togglePriceContainer);
-        
+
         // Réinitialiser les Select2 après chargement des valeurs
         if (window.jQuery && $.fn.select2) {
             $('.select2-categorie').select2();
@@ -371,12 +371,12 @@
         // Vérifiez si une formation vient d'être créée (via session)
         const formationCreated = "<?php echo e(session('success') && session('formation_id')); ?>";
         const formationId = "<?php echo e(session('formation_id')); ?>";
-        
+
         console.log("Vérification de création de formation:", {
             formationCreated: formationCreated,
             formationId: formationId
         });
-        
+
         if (formationCreated && formationId) {
             Swal.fire({
                 title: "Formation ajoutée avec succès !",
@@ -405,6 +405,6 @@
             });
         }
     });
-</script> 
+</script>
 <?php $__env->stopPush(); ?>
 <?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\hibah\P_Plateforme_ELS\resources\views/admin/apps/formation/formationcreate.blade.php ENDPATH**/ ?>

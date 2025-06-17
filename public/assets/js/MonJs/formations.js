@@ -881,55 +881,282 @@ function updateFormationsDisplay(data) {
     });
 
     $(document).on('click', '.delete-formation', function() {
-        const formationId = $(this).data('id');
+    const formationId = $(this).data('id');
 
-        console.log("ID de formation à supprimer:", formationId);
+    console.log("ID de formation à supprimer:", formationId);
 
-        if (!formationId) {
-            console.error("Erreur: data-id manquant sur le bouton de suppression");
-            return;
-        }
+    if (!formationId) {
+        console.error("Erreur: data-id manquant sur le bouton de suppression");
+        return;
+    }
 
-        window.formationIdToDelete = formationId;
-        $('#deleteConfirmationModal').modal('show');
-    });
+    window.formationIdToDelete = formationId;
 
-    $('#deleteFormationForm').on('submit', function(e) {
-        e.preventDefault();
+    // Vérifier le statut des réservations
+    $.ajax({
+        url: `/check-reservation-status/${formationId}`,
+        type: 'GET',
+        beforeSend: function() {
+            console.log("Vérification du statut des réservations...");
+        },
+        success: function(response) {
+            console.log("Réponse de vérification:", response);
+            console.log("Type de réservation détecté:", response.reservation_type);
 
-        const formationId = window.formationIdToDelete;
-        const token = $('input[name="_token"]', this).val();
+            const hasConfirmed = response.has_confirmed_reservation;
+            const hasPending = response.has_pending_reservation;
+            const reservationType = response.reservation_type;
 
-        console.log("Tentative de suppression de la formation avec ID:", formationId);
+            // Déterminer quel modal afficher selon les cas
+            if (hasConfirmed && hasPending) {
+                // CAS SPÉCIAL: Réservations confirmées ET en attente - MODAL COMBINÉ
+                console.log("🚨 Formation avec réservations CONFIRMÉES ET EN ATTENTE - Modal combiné");
+                $('#deleteWithCombinedReservationsModal').modal('show');
+                setupDeleteForm('#deleteFormationWithCombinedReservationsForm', formationId);
 
-        if (!formationId) {
-            console.error("ID de formation non disponible pour la suppression");
-            return;
-        }
+            } else if (hasConfirmed && !hasPending) {
+                // Cas 2: Seulement des réservations confirmées
+                console.log("Formation avec réservations confirmées uniquement");
+                $('#deleteWithConfirmedReservationsModal').modal('show');
+                setupDeleteForm('#deleteFormationWithConfirmedReservationsForm', formationId);
 
-        const url = `/formation/${formationId}`;
+            } else if (!hasConfirmed && hasPending) {
+                // Cas 3: Seulement des réservations en attente
+                console.log("Formation avec réservations en attente uniquement");
+                $('#deleteWithPendingReservationsModal').modal('show');
+                setupDeleteForm('#deleteFormationWithPendingReservationsForm', formationId);
 
-        $('#deleteConfirmationModal').modal('hide');
-
-        $.ajax({
-            url: url,
-            type: 'DELETE',
-            data: { _token: token },
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader('X-CSRF-TOKEN', token);
-            },
-            success: function(response) {
-                console.log("Suppression réussie:", response);
-                showNotification('success', 'Formation supprimée avec succès');
-                loadFilteredFormations();
-            },
-            error: function(xhr, status, error) {
-                console.error("Détails de l'erreur:", xhr.status, xhr.responseText);
-                showNotification('error', 'Erreur lors de la suppression de la formation');
+            } else {
+                // Cas 4: Aucune réservation
+                console.log("Formation sans réservations");
+                $('#deleteConfirmationModal').modal('show');
+                setupDeleteForm('#deleteFormationForm', formationId);
             }
-        });
-    });
+        },
+        error: function(xhr, status, error) {
+            console.error("Erreur lors de la vérification des réservations:", error);
+            console.error("Détails de l'erreur:", xhr.responseText);
 
+            // En cas d'erreur, afficher le modal normal par défaut
+            if (typeof showNotification === 'function') {
+                showNotification('warning', 'Impossible de vérifier les réservations. Procédure de suppression normale.');
+            }
+            $('#deleteConfirmationModal').modal('show');
+            setupDeleteForm('#deleteFormationForm', formationId);
+        }
+    });
+});
+
+// NOUVEAU: Gestionnaire pour le bouton du modal combiné
+$(document).on('click', '#confirmDeleteCombinedReservations', function() {
+    console.log("Confirmation de suppression avec réservations combinées");
+
+    // Récupérer l'ID de la formation stocké
+    const formationId = window.formationIdToDelete;
+
+    if (!formationId) {
+        console.error("Erreur: ID de formation manquant");
+        return;
+    }
+
+    // Configurer et soumettre le formulaire
+    setupDeleteForm('#deleteFormationWithCombinedReservationsForm', formationId);
+
+    // Soumettre le formulaire
+    $('#deleteFormationWithCombinedReservationsForm').submit();
+
+    // Fermer le modal
+    $('#deleteWithCombinedReservationsModal').modal('hide');
+});
+
+// Fonction helper pour configurer le formulaire de suppression
+function setupDeleteForm(formSelector, formationId) {
+    const deleteUrl = `/formation/${formationId}`;
+    $(formSelector).attr('action', deleteUrl);
+
+    console.log(`Formulaire ${formSelector} configuré avec l'URL: ${deleteUrl}`);
+}
+
+// Debug: Fonction pour tester manuellement les modals
+function testModals() {
+    console.log("Test des modals disponibles:");
+    console.log("- deleteConfirmationModal:", $('#deleteConfirmationModal').length > 0);
+    console.log("- deleteWithConfirmedReservationsModal:", $('#deleteWithConfirmedReservationsModal').length > 0);
+    console.log("- deleteWithPendingReservationsModal:", $('#deleteWithPendingReservationsModal').length > 0);
+    console.log("- deleteWithCombinedReservationsModal:", $('#deleteWithCombinedReservationsModal').length > 0);
+}
+//     $(document).on('click', '.delete-formation', function() {
+//     const formationId = $(this).data('id');
+
+//     console.log("ID de formation à supprimer:", formationId);
+
+//     if (!formationId) {
+//         console.error("Erreur: data-id manquant sur le bouton de suppression");
+//         return;
+//     }
+
+//     window.formationIdToDelete = formationId;
+
+//     // Vérifier le statut des réservations
+//     $.ajax({
+//         url: `/check-reservation-status/${formationId}`,
+//         type: 'GET',
+//         beforeSend: function() {
+//             console.log("Vérification du statut des réservations...");
+//         },
+//         success: function(response) {
+//             console.log("Réponse de vérification:", response);
+//             console.log("Type de réservation détecté:", response.reservation_type);
+
+//             const hasConfirmed = response.has_confirmed_reservation;
+//             const hasPending = response.has_pending_reservation;
+//             const reservationType = response.reservation_type;
+
+//             // Déterminer quel modal afficher selon les cas
+//             if (hasConfirmed && hasPending) {
+//                 // CAS SPÉCIAL: Réservations confirmées ET en attente - MODAL COMBINÉ
+//                 console.log("🚨 Formation avec réservations CONFIRMÉES ET EN ATTENTE - Modal combiné");
+//                 $('#deleteWithCombinedReservationsModal').modal('show');
+//                 setupDeleteForm('#deleteFormationWithCombinedReservationsForm', formationId);
+
+//             } else if (hasConfirmed && !hasPending) {
+//                 // Cas 2: Seulement des réservations confirmées
+//                 console.log("Formation avec réservations confirmées uniquement");
+//                 $('#deleteWithConfirmedReservationsModal').modal('show');
+//                 setupDeleteForm('#deleteFormationWithConfirmedReservationsForm', formationId);
+
+//             } else if (!hasConfirmed && hasPending) {
+//                 // Cas 3: Seulement des réservations en attente
+//                 console.log("Formation avec réservations en attente uniquement");
+//                 $('#deleteWithPendingReservationsModal').modal('show');
+//                 setupDeleteForm('#deleteFormationWithPendingReservationsForm', formationId);
+
+//             } else {
+//                 // Cas 4: Aucune réservation
+//                 console.log("Formation sans réservations");
+//                 $('#deleteConfirmationModal').modal('show');
+//                 setupDeleteForm('#deleteFormationForm', formationId);
+//             }
+//         },
+//         error: function(xhr, status, error) {
+//             console.error("Erreur lors de la vérification des réservations:", error);
+//             console.error("Détails de l'erreur:", xhr.responseText);
+
+//             // En cas d'erreur, afficher le modal normal par défaut
+//             if (typeof showNotification === 'function') {
+//                 showNotification('warning', 'Impossible de vérifier les réservations. Procédure de suppression normale.');
+//             }
+//             $('#deleteConfirmationModal').modal('show');
+//             setupDeleteForm('#deleteFormationForm', formationId);
+//         }
+//     });
+// });
+
+// // Fonction helper pour configurer le formulaire de suppression
+// function setupDeleteForm(formSelector, formationId) {
+//     const deleteUrl = `/formation/${formationId}`;
+//     $(formSelector).attr('action', deleteUrl);
+
+//     console.log(`Formulaire ${formSelector} configuré avec l'URL: ${deleteUrl}`);
+// }
+
+// Debug: Fonction pour tester manuellement les modals
+// function testModals() {
+//     console.log("Test des modals disponibles:");
+//     console.log("- deleteConfirmationModal:", $('#deleteConfirmationModal').length > 0);
+//     console.log("- deleteWithConfirmedReservationsModal:", $('#deleteWithConfirmedReservationsModal').length > 0);
+//     console.log("- deleteWithPendingReservationsModal:", $('#deleteWithPendingReservationsModal').length > 0);
+//     console.log("- deleteWithCombinedReservationsModal:", $('#deleteWithCombinedReservationsModal').length > 0);
+// }
+
+// $(document).on('click', '.delete-formation', function() {
+//     const formationId = $(this).data('id');
+
+//     console.log("ID de formation à supprimer:", formationId);
+
+//     if (!formationId) {
+//         console.error("Erreur: data-id manquant sur le bouton de suppression");
+//         return;
+//     }
+
+//     window.formationIdToDelete = formationId;
+
+//     // Vérifier le statut des réservations
+//     $.ajax({
+//         url: `/check-reservation-status/${formationId}`,
+//         type: 'GET',
+//         beforeSend: function() {
+//             console.log("Vérification du statut des réservations...");
+//         },
+//         success: function(response) {
+//             console.log("Réponse de vérification:", response);
+
+//             const hasConfirmed = response.has_confirmed_reservation;
+//             const hasPending = response.has_pending_reservation;
+
+//             // Déterminer quel modal afficher selon les cas
+//             if (hasConfirmed && hasPending) {
+//                 // Cas 1: Réservations confirmées ET en attente
+//                 console.log("Formation avec réservations confirmées et en attente");
+//                 $('#deleteWithMixedReservationsModal').modal('show');
+//                 setupDeleteForm('#deleteFormationWithMixedReservationsForm', formationId);
+
+//             } else if (hasConfirmed && !hasPending) {
+//                 // Cas 2: Seulement des réservations confirmées
+//                 console.log("Formation avec réservations confirmées uniquement");
+//                 $('#deleteWithConfirmedReservationsModal').modal('show');
+//                 setupDeleteForm('#deleteFormationWithConfirmedReservationsForm', formationId);
+
+//             } else if (!hasConfirmed && hasPending) {
+//                 // Cas 3: Seulement des réservations en attente
+//                 console.log("Formation avec réservations en attente uniquement");
+//                 $('#deleteWithPendingReservationsModal').modal('show');
+//                 setupDeleteForm('#deleteFormationWithPendingReservationsForm', formationId);
+
+//             } else {
+//                 // Cas 4: Aucune réservation
+//                 console.log("Formation sans réservations");
+//                 $('#deleteConfirmationModal').modal('show');
+//                 setupDeleteForm('#deleteFormationForm', formationId);
+//             }
+//         },
+//         error: function(xhr, status, error) {
+//             console.error("Erreur lors de la vérification des réservations:", error);
+
+//             // En cas d'erreur, afficher le modal normal par défaut
+//             showNotification('warning', 'Impossible de vérifier les réservations. Procédure de suppression normale.');
+//             $('#deleteConfirmationModal').modal('show');
+//             setupDeleteForm('#deleteFormationForm', formationId);
+//         }
+//     });
+// });
+
+// // Fonction helper pour configurer le formulaire de suppression
+// function setupDeleteForm(formSelector, formationId) {
+//     const deleteUrl = `/formations/${formationId}`;
+//     $(formSelector).attr('action', deleteUrl);
+
+//     console.log(`Formulaire ${formSelector} configuré avec l'URL: ${deleteUrl}`);
+// }
+
+// Optionnel: Ajouter des logs pour le debugging
+$(document).ready(function() {
+    // Debug: Vérifier que tous les modals sont présents
+    const modals = [
+        '#deleteConfirmationModal',
+        '#deleteWithConfirmedReservationsModal',
+        '#deleteWithPendingReservationsModal',
+        // '#deleteWithMixedReservationsModal'
+                '#deleteWithCombinedReservationsModal'
+
+    ];
+
+    modals.forEach(function(modalId) {
+        if ($(modalId).length === 0) {
+            console.warn(`Modal ${modalId} non trouvé dans le DOM`);
+        }
+    });
+});
     function applyUrlFilters() {
         const urlParams = new URLSearchParams(window.location.search);
 
@@ -982,4 +1209,3 @@ function updateFormationsDisplay(data) {
     applyUrlFilters();
     loadFilteredFormations();
 });
-

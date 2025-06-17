@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/MonCss/formationedit.css')); ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/MonCss/custom-calendar.css')); ?>">
 
-    
+
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -45,7 +45,7 @@
                                             </div>
                                         </div>
 
-                                        <!-- Description -->            
+                                        <!-- Description -->
                                         <div class="mb-3 row">
                                             <label class="col-sm-2 col-form-label">Description <span class="text-danger">*</span></label>
                                             <div class="col-sm-10">
@@ -66,7 +66,7 @@
                                                     <div class="date-input-container">
                                                         <div class="input-group">
                                                             <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                                            <input class="form-control datepicker" type="text" id="start_date" name="start_date" 
+                                                            <input class="form-control datepicker" type="text" id="start_date" name="start_date"
                                                                 value="<?php echo e(old('start_date', \Carbon\Carbon::parse($formation->start_date)->format('d/m/Y'))); ?>" required />
                                                         </div>
                                                         <small class="text-muted">Date de début</small>
@@ -74,7 +74,7 @@
                                                     <div class="date-input-container">
                                                         <div class="input-group">
                                                             <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                                            <input class="form-control datepicker" type="text" id="end_date" name="end_date" 
+                                                            <input class="form-control datepicker" type="text" id="end_date" name="end_date"
                                                                 value="<?php echo e(old('end_date', \Carbon\Carbon::parse($formation->end_date)->format('d/m/Y'))); ?>" required />
                                                         </div>
                                                         <small class="text-muted">Date de fin</small>
@@ -104,12 +104,12 @@
                                             <div class="col-sm-10">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Dt</span>
-                                                    <input class="form-control" 
-                                                           type="number" 
-                                                           id="price" 
-                                                           name="price" 
-                                                           placeholder="Ex: 50.000" 
-                                                           step="0.001" 
+                                                    <input class="form-control"
+                                                           type="number"
+                                                           id="price"
+                                                           name="price"
+                                                           placeholder="Ex: 50.000"
+                                                           step="0.001"
                                                            min="0"
                                                            value="<?php echo e(old('price', $formation->price)); ?>" />
                                                 </div>
@@ -124,12 +124,12 @@
                                             <div class="col-sm-10">
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="fa fa-percent"></i></span>
-                                                    <input class="form-control" 
-                                                           type="number" 
-                                                           id="discount" 
-                                                           name="discount" 
-                                                           placeholder="Ex: 10" 
-                                                           min="0" 
+                                                    <input class="form-control"
+                                                           type="number"
+                                                           id="discount"
+                                                           name="discount"
+                                                           placeholder="Ex: 10"
+                                                           min="0"
                                                            max="100"
                                                            value="<?php echo e(old('discount', $formation->discount ?? 0)); ?>" />
                                                 </div>
@@ -180,7 +180,7 @@
                                                         <select id="user_id" class="form-select select2-professeur" name="user_id" required>
                                                             <option value="" disabled>Choisir un professeur</option>
                                                             <?php $__currentLoopData = $professeurs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $professeur): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                                <option value="<?php echo e($professeur->id); ?>" 
+                                                                <option value="<?php echo e($professeur->id); ?>"
                                                                     <?php echo e($formation->user_id == $professeur->id ? 'selected' : ''); ?>>
                                                                     <?php echo e($professeur->name); ?> <?php echo e($professeur->lastname ?? ''); ?>
 
@@ -197,13 +197,13 @@
                                             <div class="col-sm-10">
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="fa fa-users"></i></span>
-                                                    <input class="form-control" 
-                                                           type="number" 
-                                                           id="total_seats" 
-                                                           name="total_seats" 
-                                                           placeholder="Ex: 20" 
-                                                           min="1" 
-                                                           value="<?php echo e(old('total_seats', $formation->total_seats)); ?>" 
+                                                    <input class="form-control"
+                                                           type="number"
+                                                           id="total_seats"
+                                                           name="total_seats"
+                                                           placeholder="Ex: 20"
+                                                           min="1"
+                                                           value="<?php echo e(old('total_seats', $formation->total_seats)); ?>"
                                                            required />
                                                 </div>
                                                 <small class="text-muted">Nombre maximum de participants</small>
@@ -262,7 +262,7 @@
         <div class="d-flex justify-content-center mt-3">
             <div class="form-group m-t-15 m-checkbox-inline mb-0 custom-radio-ml">
                 <div class="radio radio-primary mx-2">
-                    <input id="publishNow" type="radio" name="publication_type" value="now" 
+                    <input id="publishNow" type="radio" name="publication_type" value="now"
                         <?php echo e((old('publication_type', $formation->status ? 'now' : ($formation->publish_date ? 'later' : 'now'))) == 'now' ? 'checked' : ''); ?>>
                     <label class="mb-0" for="publishNow">
                         <?php echo e($formation->status ? 'Maintenir publiée' : 'Publier immédiatement'); ?>
@@ -270,7 +270,7 @@
                     </label>
                 </div>
                 <div class="radio radio-primary mx-2">
-                    <input id="publishLater" type="radio" name="publication_type" value="later" 
+                    <input id="publishLater" type="radio" name="publication_type" value="later"
                         <?php echo e((old('publication_type', $formation->status ? 'now' : ($formation->publish_date ? 'later' : 'now'))) == 'later' ? 'checked' : ''); ?>>
                     <label class="mb-0" for="publishLater">
                         <?php echo e($formation->status ? 'Dépublier' : 'Programmer la publication'); ?>
@@ -281,24 +281,24 @@
         </div>
 
         <!-- Publication Date Container -->
-<div id="publishDateContainer" class="mt-3 text-center" 
+<div id="publishDateContainer" class="mt-3 text-center"
     style="<?php echo e((old('publication_type', $formation->status ? 'now' : ($formation->publish_date ? 'later' : 'now'))) == 'later' ? 'display: block;' : 'display: none;'); ?>">
     <div class="d-flex justify-content-center">
         <div class="input-group" style="max-width:500px;">
             <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-            <input class="form-control datepicker" 
-                   type="text" 
-                   id="publish_date" 
-                   name="publish_date" 
+            <input class="form-control datepicker"
+                   type="text"
+                   id="publish_date"
+                   name="publish_date"
                    value="<?php echo e(old('publish_date', $formation->publish_date ? \Carbon\Carbon::parse($formation->publish_date)->format('d/m/Y') : \Carbon\Carbon::now()->format('d/m/Y'))); ?>"
                    placeholder="JJ/MM/AAAA">
         </div>
     </div>
     <small class="text-muted">Sélectionnez la date de publication</small>
 </div>
-                                        
+
                                         <!-- Publication Section -->
-                                        
+
 
                                         <!-- Boutons de soumission -->
                                         <div class="row">
@@ -335,11 +335,11 @@
     <script src="<?php echo e(asset('assets/js/tinymce/js/tinymce/tinymce.min.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/MonJs/description/description.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/MonJs/toast/toast.js')); ?>"></script>
-    
+
 
 <script src="<?php echo e(asset('assets/js/MonJs/calendar/custom-calendar.js')); ?>"></script>
 
-        <script src="https://cdn.tiny.cloud/1/ivqx4rg9mkp3j7b0kjhnttlk4jwpkp1ay6dw3twe5jjabyss/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+        <script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
         // Script pour afficher le toast si un message de succès est présent
         document.addEventListener('DOMContentLoaded', function() {
@@ -349,8 +349,8 @@
         });
     </script>
 
-    
 
-    
+
+
 <?php $__env->stopPush(); ?>
 <?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\hibah\P_Plateforme_ELS\resources\views/admin/apps/formation/formationedit.blade.php ENDPATH**/ ?>

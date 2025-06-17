@@ -29,7 +29,7 @@ public function store(Request $request)
 {
     $request->validate([
         'title' => 'required|string|max:255',
-        'description' => 'required|string',
+'description' => 'nullable|string',
         'course_id' => 'required|exists:Courses,id',
     ]);
 
@@ -69,7 +69,7 @@ public function store(Request $request)
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'required|string',
+'description' => 'nullable|string',
             'course_id' => 'required|exists:courses,id',
         ]);
 

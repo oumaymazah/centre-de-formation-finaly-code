@@ -1,6 +1,3 @@
-
-
-
 @extends('layouts.admin.master')
 
 @section('title') Liste des Chapitres
@@ -10,6 +7,8 @@
 @push('css')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/prism.css') }}">
+ <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/MonCss/table.css') }}">
+
 <style>
     .highlighted {
         background-color: #ffeb3b !important; /* Couleur de surbrillance */
@@ -83,9 +82,24 @@
                                                 {{ $chapitre->Course->title }}
                                             </a>
                                         </td>
-                                        <td>
+                                        {{-- <td>
                                             <i class="icofont icofont-edit edit-icon action-icon" data-edit-url="{{ route('chapitreedit', $chapitre->id) }}" style="cursor: pointer;"></i>
                                             <i class="icofont icofont-ui-delete delete-icon action-icon" data-delete-url="{{ route('chapitredestroy', $chapitre->id) }}" data-csrf="{{ csrf_token() }}" style="cursor: pointer; color: rgb(204, 28, 28);"></i>
+                                        </td> --}}
+
+                                        <td>
+                                             <span class="edit-icon action-icon"
+              data-edit-url="{{ route('chapitreedit', $chapitre->id) }}"
+              title="Modifier le chapitre"
+              data-bs-toggle="tooltip"></span>
+
+        <!-- Icône Supprimer -->
+        <span class="delete-icon action-icon"
+              data-delete-url="{{ route('chapitredestroy', $chapitre->id) }}"
+              data-csrf="{{ csrf_token() }}"
+              title="Supprimer le chapitre"
+              data-bs-toggle="tooltip"
+              data-chapitre-title="{{ $chapitre->title }}"></span>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -104,7 +118,7 @@
 <script src="{{ asset('assets/js/clipboard/clipboard.min.js') }}"></script>
 <script src="{{ asset('assets/js/custom-card/custom-card.js') }}"></script>
 <script src="{{ asset('assets/js/height-equal.js') }}"></script>
-<script src="{{ asset('assets/js/MonJs//actions-icon/actions-icon.js') }}"></script>
+<script src="{{ asset('assets/js/MonJs/actions-icon/actions-icon.js') }}"></script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
@@ -129,9 +143,9 @@
 @endsection
 
 
-{{-- La directive {!! !!} est utilisée pour 
+{{-- La directive {!! !!} est utilisée pour
 
-afficher le contenu de la description sans échapper les balises HTML. 
+afficher le contenu de la description sans échapper les balises HTML.
 Cela permet de conserver le style (comme les sauts de ligne, les listes,
- les balises <strong>, etc.) qui pourrait 
+ les balises <strong>, etc.) qui pourrait
     être présent dans la description. --}}

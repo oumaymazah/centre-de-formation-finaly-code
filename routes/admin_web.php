@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/check-confirmed-reservation/{formationId}', [ReservationController::class, 'checkConfirmedReservation'])->middleware('auth');
 
+Route::get('/check-reservation-status/{formationId}', action: [ReservationController::class, 'checkReservationStatus']);
 
 Route::get('/formation-status/{formationId}', [FormationController::class, 'checkFormationStatus'])->name('formation.status');
 Route::get('/categories', [FormationController::class, 'getCategories']);

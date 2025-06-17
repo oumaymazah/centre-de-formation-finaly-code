@@ -1,9 +1,9 @@
- 
 
- <?php $__env->startSection('title'); ?> 
-     Modifier une Leçon 
+
+ <?php $__env->startSection('title'); ?>
+     Modifier une Leçon
  <?php $__env->stopSection(); ?>
- 
+
  <?php $__env->startPush('css'); ?>
  <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/MonCss/dropzone.css')); ?>">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -58,7 +58,7 @@
      }
  </style>
  <?php $__env->stopPush(); ?>
- 
+
  <?php $__env->startSection('content'); ?>
  <div class="container-fluid">
      <div class="row">
@@ -78,23 +78,23 @@
                              </ul>
                          </div>
                      <?php endif; ?>
- 
+
                      <form action="<?php echo e(route('lessonupdate', $lesson->id)); ?>" method="POST" enctype="multipart/form-data" id="lesson-form">
                          <?php echo csrf_field(); ?>
                          <?php echo method_field('PUT'); ?>
                          <input type="hidden" id="uploadRoute" value="<?php echo e(route('upload.temp')); ?>">
                          <input type="hidden" id="deleteRoute" value="<?php echo e(route('delete.temp')); ?>">
                          <input type="hidden" name="deleted_files" id="deleted_files" value="">
- 
+
                          <!-- Titre -->
                          <div class="mb-3 row">
                              <label class="col-sm-2 col-form-label">Titre <span class="text-danger">*</span></label>
                              <div class="col-sm-10">
-                                 <input class="form-control" type="text" name="title" 
+                                 <input class="form-control" type="text" name="title"
                                         value="<?php echo e(old('title', $lesson->title)); ?>" required>
                              </div>
                          </div>
- 
+
                         <div class="mb-3 row">
                             <label class="col-sm-2 col-form-label">Description <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
@@ -112,8 +112,8 @@
                          <div class="mb-3 row">
                             <label class="col-sm-2 col-form-label">Durée (HH:mm:ss) <span class="text-danger">*</span></label>
                             <div class="col-sm-10">
-                                <input class="form-control" type="text" name="duration" 
-                                       value="<?php echo e(old('duration', $lesson->duration)); ?>" 
+                                <input class="form-control" type="text" name="duration"
+                                       value="<?php echo e(old('duration', $lesson->duration)); ?>"
                                        pattern="\d{2}:\d{2}:\d{2}" required>
                             </div>
                         </div>
@@ -124,7 +124,7 @@
                                  <select class="form-select select2-chapitre" name="chapter_id" required>
                                      <option value="">Sélectionnez un chapitre</option>
                                      <?php $__currentLoopData = $chapitres; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $chapitre): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                         <option value="<?php echo e($chapitre->id); ?>" 
+                                         <option value="<?php echo e($chapitre->id); ?>"
                                              <?php echo e(old('chapter_id', $lesson->chapter_id) == $chapitre->id ? 'selected' : ''); ?>>
                                              <?php echo e($chapitre->title); ?>
 
@@ -133,7 +133,7 @@
                                  </select>
                              </div>
                          </div>
- 
+
                          <!-- Fichiers existants -->
                          <div class="mb-3 row">
                              <label class="col-sm-2 col-form-label">Fichiers existants</label>
@@ -151,8 +151,8 @@
                                                      <small class="text-muted ms-2"><?php echo e(formatFileSize($file->file_size)); ?></small>
                                                  </div>
                                                  <div class="file-actions">
-                                                     
-                                                     <button type="button" class="btn btn-sm btn-danger delete-existing-file" 
+
+                                                     <button type="button" class="btn btn-sm btn-danger delete-existing-file"
                                                              data-file-id="<?php echo e($file->id); ?>"
                                                              title="Supprimer">
                                                          <i class="fas fa-trash"></i>
@@ -167,7 +167,7 @@
                                  </div>
                              </div>
                          </div>
- 
+
                          <!-- Nouveaux fichiers -->
                          <div class="mb-3 row">
                              <label class="col-sm-2 col-form-label">Ajouter des fichiers</label>
@@ -189,7 +189,7 @@
         </div>
     </div>
 </div>
- 
+
                          <!-- Liens -->
                          <div class="mb-3 row">
                              <label class="col-sm-2 col-form-label">Liens <span class="text-danger">*</span></label>
@@ -203,8 +203,8 @@
                                      ?>
                                      <?php $__currentLoopData = $links; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $link): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                          <div class="link-item input-group mb-2">
-                                             <input type="url" name="links[]" class="form-control" 
-                                                    value="<?php echo e(old('links.'.$index, $link)); ?>" 
+                                             <input type="url" name="links[]" class="form-control"
+                                                    value="<?php echo e(old('links.'.$index, $link)); ?>"
                                                     placeholder="https://example.com">
                                              <?php if($index > 0): ?>
                                                  <button type="button" class="btn btn-danger remove-link">
@@ -219,7 +219,7 @@
                                  </button>
                              </div>
                          </div>
- 
+
                          <!-- Boutons -->
                          <div class="row mt-4">
                              <div class="col text-end">
@@ -238,7 +238,7 @@
      </div>
  </div>
  <?php $__env->stopSection(); ?>
- 
+
  <?php $__env->startPush('scripts'); ?>
  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"></script>
@@ -248,11 +248,11 @@
  <script src="<?php echo e(asset('assets/js/MonJs/select2-init/single-select.js')); ?>"></script>
 <script src="<?php echo e(asset('assets/js/MonJs/description/description.js')); ?>"></script>
 <script src="<?php echo e(asset('assets/js/tinymce/js/tinymce/tinymce.min.js')); ?>"></script>
-    <script src="https://cdn.tiny.cloud/1/ivqx4rg9mkp3j7b0kjhnttlk4jwpkp1ay6dw3twe5jjabyss/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 
 
  <?php $__env->stopPush(); ?>
- 
+
  <?php
  function getFileIcon($type) {
      $icons = [
@@ -272,7 +272,7 @@
      ];
      return $icons[strtolower($type)] ?? 'fa-file';
  }
- 
+
  function formatFileSize($bytes) {
      if ($bytes >= 1073741824) {
          return number_format($bytes / 1073741824, 2) . ' GB';
@@ -288,7 +288,7 @@
          return '0 bytes';
      }
  }
- ?> 
+ ?>
 
 
 

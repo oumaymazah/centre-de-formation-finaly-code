@@ -1,4 +1,4 @@
-<?php $__env->startSection('title'); ?> Modifier une Formation <?php echo e($title); ?> <?php $__env->stopSection(); ?>
+<?php $__env->startSection('title'); ?> Modifier une Formation <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('css'); ?>
     <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/dropzone.css')); ?>">
@@ -40,9 +40,8 @@
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="fa fa-tag"></i></span>
                                                     <input class="form-control" type="text" id="title" name="title" placeholder="Titre" value="<?php echo e(old('title', $formation->title)); ?>" required />
-                                                    <div class="invalid-feedback">Veuillez entrer un Titre valide.</div>
-
                                                 </div>
+                                                <div class="invalid-feedback">Veuillez entrer un Titre valide.</div>
                                             </div>
                                         </div>
 
@@ -80,9 +79,8 @@
                                                         </div>
                                                         <small class="text-muted">Date de fin</small>
                                                     </div>
-                                                    <div class="invalid-feedback">Veuillez entrer des dates valides (la date de fin doit être après la date de début).</div>
-
                                                 </div>
+                                                <div class="invalid-feedback">Veuillez entrer des dates valides (la date de fin doit être après la date de début).</div>
                                             </div>
                                         </div>
                                         <!-- Type -->
@@ -95,9 +93,8 @@
                                                         <option value="payante" <?php echo e(old('type', $formation->type) == 'payante' ? 'selected' : ''); ?>>Payante</option>
                                                         <option value="gratuite" <?php echo e(old('type', $formation->type) == 'gratuite' ? 'selected' : ''); ?>>Gratuite</option>
                                                     </select>
-                                                    <div class="invalid-feedback">Veuillez sélectionner un type.</div>
-
                                                 </div>
+                                                <div class="invalid-feedback">Veuillez sélectionner un type.</div>
                                             </div>
                                         </div>
 
@@ -215,66 +212,110 @@
                                         </div>
 
                                         <!-- Image -->
+                                        <div class="mb-3 row">
+                                            <label class="col-sm-2 col-form-label">Image <span class="text-danger">*</span></label>
+                                            <div class="col-sm-10">
+                                                <?php if($formation->image): ?>
+                                                    <div id="currentImageContainer" class="image-container">
+                                                        <img src="<?php echo e(asset('storage/' . $formation->image)); ?>?v=<?php echo e(time()); ?>" alt="image" class="centered-image" id="currentImage" />
+                                                        <div class="image-actions">
+                                                            <button type="button" class="btn" id="deleteImage">
+                                                                <i class="fa fa-trash trash-icon" title="Supprimer l'image"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                <?php endif; ?>
+                                                <div id="newImagePreview" class="image-preview-container" style="display: none;">
+                                                    <img id="previewImage" src="#" alt="Prévisualisation de la nouvelle image" class="image-preview" />
+                                                </div>
+                                                <div class="input-group">
+                                                    <span class="input-group-text" id="imageIcon" style="<?php echo e($formation->image ? 'display: none;' : ''); ?>">
+                                                        <i class="fa fa-image"></i>
+                                                    </span>
+                                                    <input class="form-control" type="file" id="imageUpload" name="image" accept="image/*" style="<?php echo e($formation->image ? 'display: none;' : ''); ?>">
+                                                </div>
+                                                <small class="text-muted d-block text-center my-2">Formats acceptés: JPG, PNG, GIF. Taille max: 2Mo</small>
+                                                <button id="restoreImage" type="button" class="btn" style="display: none;">
+                                                    <i class="fa fa-undo"></i> Revenir à l'image actuelle
+                                                </button>
+                                                <input type="hidden" name="delete_image" id="deleteImageInput" value="0">
+                                            </div>
+                                        </div>
+                                        <!-- Publication Section -->
 <div class="mb-3 row">
-    <label class="col-sm-2 col-form-label">Image <span class="text-danger">*</span></label>
-    <div class="col-sm-10">
-        <?php if($formation->image): ?>
-            <div id="currentImageContainer" class="image-container">
-                <img src="<?php echo e(asset('storage/' . $formation->image)); ?>?v=<?php echo e(time()); ?>" alt="image" class="centered-image" id="currentImage" />
-                <div class="image-actions">
-                    <button type="button" class="btn" id="deleteImage">
-                        <i class="fa fa-trash trash-icon" title="Supprimer l'image"></i>
-                    </button>
-                </div>
-            </div>
-        <?php endif; ?>
-        <div class="input-group">
-            <span class="input-group-text" id="imageIcon" style="<?php echo e($formation->image ? 'display: none;' : ''); ?>">
-                <i class="fa fa-image"></i>
-            </span>
-            <input class="form-control" type="file" id="imageUpload" name="image" accept="image/*" style="<?php echo e($formation->image ? 'display: none;' : ''); ?>">
-        </div>
-        <small class="text-muted d-block text-center my-2">Formats acceptés: JPG, PNG, GIF. Taille max: 2Mo</small>
-        <div id="newImagePreview" class="image-preview-container" style="display: none;">
-            <img id="previewImage" src="#" alt="Prévisualisation de la nouvelle image" class="image-preview" />
-        </div>
-        <button id="restoreImage" type="button" class="btn" style="display: none;">
-            <i class="fa fa-undo"></i> Revenir à l'image actuelle
-        </button>
-        <input type="hidden" name="delete_image" id="deleteImageInput" value="0">
-    </div>
-</div>
-
-<!-- Statut de publication -->
-<?php if($formation->status): ?>
-    <div class="mb-3 row">
-        <div class="col-12">
-            <div class="publication-status text-success-bleu text-center">
+    <div class="col-12">
+        <?php if($formation->status): ?>
+            <!-- Formation déjà publiée - Afficher seulement le statut -->
+            <div class="publication-status  text-center">
                 <i class="fa fa-check-circle"></i> Formation publiée
                 <?php if($formation->publish_date): ?>
                     le <?php echo e(\Carbon\Carbon::parse($formation->publish_date)->format('d/m/Y')); ?>
 
                 <?php endif; ?>
             </div>
-        </div>
-    </div>
-<?php endif; ?>
+        <?php else: ?>
+            <!-- Formation non publiée - Afficher les options -->
+            <?php if($formation->publish_date): ?>
+                <div class="publication-status  text-center">
+                    <i class="fa fa-clock"></i> Publication programmée pour le <?php echo e(\Carbon\Carbon::parse($formation->publish_date)->format('d/m/Y')); ?>
 
-<!-- Boutons de soumission -->
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="text-end mt-4">
-                                                <button class="btn btn-primary" type="submit">
-                                                    <i class="fa fa-save"></i> Enregistrer
-                                                </button>
-                                                <button class="btn btn-danger" type="button" onclick="window.location.href='<?php echo e(route('formations')); ?>'">
-                                                    <i class="fa fa-times"></i> Annuler
-                                                </button>
+                </div>
+            <?php endif; ?>
+
+            <div class="d-flex justify-content-center mt-3">
+                <div class="form-group m-t-15 m-checkbox-inline mb-0 custom-radio-ml">
+                    <div class="radio radio-primary mx-2">
+                        <input id="publishNow" type="radio" name="publication_type" value="now"
+                            <?php echo e((old('publication_type', $formation->publish_date ? 'later' : 'now')) == 'now' ? 'checked' : ''); ?>>
+                        <label class="mb-0" for="publishNow">
+                            Publier immédiatement
+                        </label>
+                    </div>
+
+                    <div class="radio radio-primary mx-2">
+    <input id="publishLater" type="radio" name="publication_type" value="later"
+        <?php echo e((old('publication_type', 'later')) == 'later' ? 'checked' : ''); ?>>
+    <label class="mb-0" for="publishLater">
+        Programmer la publication
+    </label>
+</div>
+                </div>
+            </div>
+
+            <!-- Publication Date Container -->
+            <div id="publishDateContainer" class="mt-3 text-center"
+                style="<?php echo e((old('publication_type', $formation->publish_date ? 'later' : 'now')) == 'later' ? 'display: block;' : 'display: none;'); ?>">
+                <div class="d-flex justify-content-center">
+                    <div class="input-group" style="max-width:500px;">
+                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        <input class="form-control datepicker"
+                               type="text"
+                               id="publish_date"
+                               name="publish_date"
+                               value=""
+                               placeholder="<?php echo e($formation->publish_date ? \Carbon\Carbon::parse($formation->publish_date)->format('d/m/Y') : 'JJ/MM/AAAA'); ?>">
+                    </div>
+                </div>
+                <small class="text-muted">Sélectionnez la date de publication</small>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
+
+                                        <!-- Boutons de soumission -->
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="text-end mt-4">
+                                                    <button class="btn btn-primary" type="submit">
+                                                        <i class="fa fa-save"></i> Enregistrer
+                                                    </button>
+                                                    <button class="btn btn-danger" type="button" onclick="window.location.href='<?php echo e(route('formations')); ?>'">
+                                                        <i class="fa fa-times"></i> Annuler
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                </div>
                                 </div>
                             </form>
                         </div>
@@ -296,10 +337,11 @@
     <script src="<?php echo e(asset('assets/js/tinymce/js/tinymce/tinymce.min.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/MonJs/description/description.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/MonJs/toast/toast.js')); ?>"></script>
-    <script src="<?php echo e(asset('assets/js/MonJs/calendar/edit-calendar.js')); ?>"></script>
+    
 
 <script src="<?php echo e(asset('assets/js/MonJs/calendar/custom-calendar.js')); ?>"></script>
-    <script src="https://cdn.tiny.cloud/1/ivqx4rg9mkp3j7b0kjhnttlk4jwpkp1ay6dw3twe5jjabyss/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
+<script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
         // Script pour afficher le toast si un message de succès est présent
         document.addEventListener('DOMContentLoaded', function() {

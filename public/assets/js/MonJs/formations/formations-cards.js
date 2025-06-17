@@ -827,7 +827,6 @@ function createFormationCard(formation, inCart = false, skipAsyncCheck = false) 
 
 
 
-
 function updateCartButtonForReservation(formationId, hasConfirmedReservation) {
     const cartButton = document.getElementById(`cart-btn-${formationId}`);
     const modalCartContainer = document.getElementById(`modal-cart-container-${formationId}`);
@@ -1405,41 +1404,174 @@ function initUnauthenticatedLeftShiftWithRetry() {
     tryInit();
 }
 
+
+
 function showConfirmedReservationModal(formationId) {
-    console.log('Affichage du modal pour réservation confirmée');
-    let popup = document.getElementById('confirmed-reservation-popup');
-    if (!popup) {
-        popup = document.createElement('div');
-        popup.id = 'confirmed-reservation-popup';
-        popup.innerHTML = `
-            <div class="modal fade" id="confirmedReservationModal" tabindex="-1" aria-labelledby="confirmedReservationModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header bg-warning">
-                            <h5 class="modal-title text-white" id="confirmedReservationModalLabel">
-                                <i class="icon-warning"></i> Réservation Confirmée
-                            </h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    // Supprimer les modals existants s'ils existent
+    const existingModal = document.getElementById('confirmedReservationModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+
+    const modalHtml = `
+        <div class="modal fade" id="confirmedReservationModal" tabindex="-1" aria-labelledby="confirmedReservationModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="confirmedReservationModalLabel">
+                            <i class="icon-check-circle me-2"></i>Formation avec réservations confirmées
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center">
+                            <i class="icon-users text-danger mb-3" style="font-size: 3rem;"></i>
+                            <h6 class="mb-3">Attention !</h6>
+                            <p class="mb-3">Cette formation a des <strong>réservations confirmées</strong>. Des participants sont déjà inscrits.</p>
+                            <p class="text-muted small">La modifier pourrait affecter les participants inscrits. Voulez-vous vraiment continuer ?</p>
                         </div>
-                        <div class="modal-body text-center">
-                            <div class="mb-3">
-                                <i class="icon-calendar" style="font-size: 48px; color: #f39c12;"></i>
-                            </div>
-                            <h6 class="mb-3">Cette formation a des réservations confirmées</h6>
-                            <p class="text-muted">Des utilisateurs ont déjà réservé cette formation avec un statut confirmé. Voulez-vous modifier la formation malgré cela ?</p>
-                        </div>
-                        <div class="modal-footer justify-content-center">
-                            <button type="button" class="btn btn-primary" onclick="window.location.href='/formation/${formationId}/edit'">Oui, modifier quand même</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
-                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="button" class="btn btn-danger" onclick="proceedWithEdit(${formationId})">
+                            <i class="icon-edit me-1"></i>Continuer la modification
+                        </button>
                     </div>
                 </div>
             </div>
-        `;
-        document.body.appendChild(popup);
-    }
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
     const modal = new bootstrap.Modal(document.getElementById('confirmedReservationModal'));
     modal.show();
+
+    // Nettoyer le modal après fermeture
+    document.getElementById('confirmedReservationModal').addEventListener('hidden.bs.modal', function () {
+        this.remove();
+    });
+}
+
+// Modal pour les réservations en attente uniquement (status=0)
+function showPendingReservationModal(formationId) {
+    // Supprimer les modals existants s'ils existent
+    const existingModal = document.getElementById('pendingReservationModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+
+    const modalHtml = `
+        <div class="modal fade" id="pendingReservationModal" tabindex="-1" aria-labelledby="pendingReservationModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-warning text-dark">
+                        <h5 class="modal-title" id="pendingReservationModalLabel">
+                            <i class="icon-clock me-2" style="color: white;"></i>
+                            <span style="color: white;">Formation avec réservations en attente</span>
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center">
+                            <i class="icon-clock text-warning mb-3" style="font-size: 3rem;"></i>
+                            <p class="mb-3">Cette formation a des <strong>réservations en attente</strong> de confirmation.</p>
+                            <p class="text-muted small">La modification est possible mais peut affecter les demandes en cours.</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="button" class="btn btn-warning" onclick="proceedWithEdit(${formationId})">
+                            <i class="icon-edit me-1"></i>Continuer la modification
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    const modal = new bootstrap.Modal(document.getElementById('pendingReservationModal'));
+    modal.show();
+
+
+
+    // Nettoyer le modal après fermeture
+    document.getElementById('pendingReservationModal').addEventListener('hidden.bs.modal', function () {
+        this.remove();
+    });
+}
+
+ function proceedWithEdit(formationId) {
+    console.log(`Début de proceedWithEdit pour formation ${formationId}`);
+
+    try {
+        // Fermer tous les modals de réservation
+        const modalIds = ['combinedReservationModal', 'confirmedReservationModal', 'pendingReservationModal'];
+
+        modalIds.forEach(modalId => {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                const modalInstance = bootstrap.Modal.getInstance(modal);
+                if (modalInstance) {
+                    console.log(`Fermeture du modal: ${modalId}`);
+                    modalInstance.hide();
+                }
+            }
+        });
+
+        // Méthode de backup pour fermer tous les modals ouverts
+        const openModals = document.querySelectorAll('.modal.show');
+        console.log(`Nombre de modals ouverts trouvés: ${openModals.length}`);
+
+        openModals.forEach((modal, index) => {
+            console.log(`Fermeture du modal ${index + 1}: ${modal.id}`);
+            const modalInstance = bootstrap.Modal.getInstance(modal);
+            if (modalInstance) {
+                modalInstance.hide();
+            } else {
+                // Forcer la fermeture si l'instance Bootstrap n'est pas trouvée
+                modal.classList.remove('show');
+                modal.style.display = 'none';
+                document.body.classList.remove('modal-open');
+
+                // Supprimer les backdrops
+                const backdrops = document.querySelectorAll('.modal-backdrop');
+                backdrops.forEach(backdrop => backdrop.remove());
+            }
+        });
+
+        // Attendre un court délai avant la redirection
+        setTimeout(() => {
+            console.log(`Redirection vers /formation/${formationId}/edit`);
+
+            const redirectUrl = `/formation/${formationId}/edit`;
+            console.log(`URL de redirection: ${redirectUrl}`);
+
+            try {
+                window.location.href = redirectUrl;
+
+                // Backup: Si la redirection ne fonctionne pas après 2 secondes
+                setTimeout(() => {
+                    console.warn('Redirection lente, tentative avec window.location.assign');
+                    window.location.assign(redirectUrl);
+                }, 2000);
+
+            } catch (redirectError) {
+                console.error('Erreur lors de la redirection:', redirectError);
+                // Dernière tentative avec window.open
+                window.open(redirectUrl, '_self');
+            }
+
+        }, 300); // Délai de 300ms pour s'assurer que les modals sont fermés
+
+    } catch (error) {
+        console.error('Erreur dans proceedWithEdit:', error);
+
+        // En cas d'erreur, forcer la redirection
+        const fallbackUrl = `/formation/${formationId}/edit`;
+        console.log(`Redirection de secours vers: ${fallbackUrl}`);
+        window.location.href = fallbackUrl;
+    }
 }
 function removeLeftShiftStyles() {
     const shiftStyle = document.getElementById('unauthenticated-left-shift-styles');
@@ -1470,6 +1602,8 @@ if (typeof userRoles !== 'undefined') {
         }
     });
 }
+
+
 window.applyLeftShiftForUnauthenticated = applyLeftShiftForUnauthenticated;
 window.applyLeftShiftStyles = applyLeftShiftStyles;
 window.setAuthenticationBodyClass = setAuthenticationBodyClass;

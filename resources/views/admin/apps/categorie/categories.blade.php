@@ -1,4 +1,4 @@
-{{-- 
+{{--
 @extends('layouts.admin.master')
 
 @section('title') Liste des Catégories
@@ -77,7 +77,7 @@
                                                         <i class="icofont icofont-ui-edit"></i>
                                                     </a>
                                                     <a class="dropdown-item text-danger delete-action" href="javascript:void(0);" data-delete-url="{{ route('categoriedestroy', $categorie->id) }}" data-type="catégorie" data-name="{{ $categorie->title }}" data-csrf="{{ csrf_token() }}">
-                                                        <i class="icofont icofont-ui-delete"></i> 
+                                                        <i class="icofont icofont-ui-delete"></i>
                                                     </a>
                                                 </div>
                                             </div>
@@ -129,12 +129,12 @@
         }
 
         .dropdown-toggle.no-caret {
-            background: none !important; 
+            background: none !important;
             padding: 0 !important;
-            color: black !important; 
+            color: black !important;
         }
 
-     
+
         .dropdown-toggle.no-caret:hover,
         .dropdown-toggle.no-caret:focus {
             background: none !important;
@@ -142,17 +142,17 @@
             box-shadow: none !important;
         }
 
-        
+
         .dropdown-toggle.no-caret:focus {
-            outline: none !important; 
+            outline: none !important;
             box-shadow: none !important;
-            border-color: transparent !important; 
+            border-color: transparent !important;
         }
 
         .dropdown-toggle.no-caret i.fa-ellipsis-v {
             display: inline-block;
             vertical-align: middle;
-            transform: rotate(90deg); 
+            transform: rotate(90deg);
         }
 
         .dropdown-menu {
@@ -443,16 +443,16 @@
                                             {{-- <a href="{{ route('categorieshow', $categorie->id) }}" class="action-btn view-btn" title="Voir">
                                                 <i class="fa fa-eye"></i>
                                             </a> --}}
-                                        <button onclick="window.location.href='{{ route('categorieedit', $categorie->id) }}'" 
-                                                class="action-btn edit-btn" 
+                                        <button onclick="window.location.href='{{ route('categorieedit', $categorie->id) }}'"
+                                                class="action-btn edit-btn"
                                                 title="Modifier">
                                             <i class="fa fa-pencil-alt"></i>
                                         </button>
 
-                                            <button type="button" class="action-btn delete-btn delete-action" 
-                                                data-delete-url="{{ route('categoriedestroy', $categorie->id) }}" 
-                                                data-type="catégorie" 
-                                                data-name="{{ $categorie->title }}" 
+                                            <button type="button" class="action-btn delete-btn delete-action"
+                                                data-delete-url="{{ route('categoriedestroy', $categorie->id) }}"
+                                                data-type="catégorie"
+                                                data-name="{{ $categorie->title }}"
                                                 data-csrf="{{ csrf_token() }}"
                                                 title="Supprimer">
                                                 <i class="fa fa-times"></i>
@@ -487,12 +487,12 @@
         $(document).ready(function() {
             $('.delete-action').on('click', function(e) {
                 e.preventDefault();
-                
+
                 var deleteUrl = $(this).data('delete-url');
                 var itemType = $(this).data('type');
                 var itemName = $(this).data('name');
                 var csrf = $(this).data('csrf');
-                
+
                 if (confirm('Êtes-vous sûr de vouloir supprimer ' + itemType + ' "' + itemName + '" ?')) {
                     $.ajax({
                         url: deleteUrl,
@@ -512,7 +512,7 @@
                     });
                 }
             });
-            
+
             // Initialisation de DataTables avec pagination et recherche
             $('#categories-table').DataTable({
                 "language": {
@@ -527,7 +527,7 @@
                 "autoWidth": false,     // Désactiver l'ajustement automatique de la largeur
                 "responsive": true      // Rendre le tableau responsive
             });
-            
+
             // Initialiser Feather Icons
             if (typeof feather !== 'undefined') {
                 feather.replace();
@@ -539,12 +539,12 @@
         $(document).ready(function() {
     $('.delete-action').on('click', function(e) {
         e.preventDefault();
-        
+
         var deleteUrl = $(this).data('delete-url');
         var itemType = $(this).data('type');
         var itemName = $(this).data('name');
         var csrf = $(this).data('csrf');
-        
+
         Swal.fire({
             title: 'Êtes-vous sûr ?',
             text: 'Voulez-vous vraiment supprimer la ' + itemType + ' "' + itemName + '" ?',
@@ -586,7 +586,7 @@
             }
         });
     });
-    
+
     // Initialisation de DataTables avec pagination et recherche
     $('#categories-table').DataTable({
         "language": {
@@ -601,7 +601,7 @@
         "autoWidth": false,     // Désactiver l'ajustement automatique de la largeur
         "responsive": true      // Rendre le tableau responsive
     });
-    
+
     // Initialiser Feather Icons
     if (typeof feather !== 'undefined') {
         feather.replace();

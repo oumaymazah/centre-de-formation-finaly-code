@@ -1209,5 +1209,102 @@ public function checkCompleteReservationStatus()
 
     return response()->json($response);
 }
+public function removeTrainingFromReservations($trainingId)
+{
+    try {
+        Log::info("Début de la suppression de la formation {$trainingId} des réservations");
 
+        // Récupérer toutes les réservations qui contiennent cette formation
+        $reservations = Reservation::whereNotNull('training_data')
+            ->where('training_data', '!=', '')
+            ->where('training_data', '!=', '[]')
+            ->get();
+
+        $updatedReservations = 0;
+        $deletedReservations = 0;
+
+        foreach ($reservations as $reservation) {
+            $trainingData = $reservation->training_data;
+            $hasChanged = false;
+            $newTrainingData = [];
+
+            // Si c'est une chaîne JSON, la décoder
+            if (is_string($trainingData)) {
+                try {
+                    $trainingData = json_decode($trainingData, true);
+                } catch (\Exception $e) {
+                    // Si ce n'est pas du JSON, traiter comme un ID simple
+                    if (is_numeric($trainingData) && (int)$trainingData == $trainingId) {
+                        // Cette réservation ne contient que cette formation, la supprimer
+                        $reservation->delete();
+                        $deletedReservations++;
+                        continue;
+                    }
+                }
+            }
+
+            // Traiter le tableau d'IDs
+            if (is_array($trainingData)) {
+                foreach ($trainingData as $id) {
+                    $numericId = is_numeric($id) ? (int)$id : null;
+
+                    // Ne garder que les IDs qui ne correspondent pas à la formation supprimée
+                    if ($numericId && $numericId != $trainingId) {
+                        $newTrainingData[] = (string)$id; // Conserver en string comme dans votre code
+                    } elseif ($numericId == $trainingId) {
+                        $hasChanged = true;
+                    }
+                }
+            } elseif (is_numeric($trainingData) && (int)$trainingData == $trainingId) {
+                $hasChanged = true;
+                $newTrainingData = [];
+            }
+
+            // Si des changements ont été effectués
+            if ($hasChanged) {
+                if (empty($newTrainingData)) {
+                    // Si il ne reste plus de formations, supprimer la réservation
+                    $reservation->delete();
+                    $deletedReservations++;
+                    Log::info("Réservation {$reservation->id} supprimée car elle ne contenait que la formation {$trainingId}");
+                } else {
+                    // Mettre à jour avec les nouvelles données
+                    $reservation->training_data = $newTrainingData;
+                    $reservation->save();
+                    $updatedReservations++;
+                    Log::info("Réservation {$reservation->id} mise à jour, formation {$trainingId} supprimée");
+                }
+            }
+        }
+
+        Log::info("Suppression terminée: {$updatedReservations} réservations mises à jour, {$deletedReservations} réservations supprimées");
+
+        return [
+            'success' => true,
+            'updated_reservations' => $updatedReservations,
+            'deleted_reservations' => $deletedReservations,
+            'message' => "Formation supprimée de {$updatedReservations} réservations, {$deletedReservations} réservations vides supprimées"
+        ];
+
+    } catch (\Exception $e) {
+        Log::error("Erreur lors de la suppression de la formation des réservations: " . $e->getMessage());
+        return [
+            'success' => false,
+            'message' => 'Erreur lors de la suppression: ' . $e->getMessage()
+        ];
+    }
+}
+public function destroy(Reservation $reservation)
+{
+    if($reservation->status == 1) {
+        return response()->json(['message' => 'Vous ne pouvez pas supprimer une réservation confirmée.'], 422);
+    }
+
+
+    // Supprimer la réservation
+    $reservation->delete();
+    return response()->json(['success' => 'Réservation supprimée avec succès']);
+
+
+}
 }

@@ -180,7 +180,30 @@
                                         </div>
 
                                         <!-- Professeur -->
-                                        
+                                        <div class="mb-3 row">
+                                            <label class="col-sm-2 col-form-label">Professeur</label>
+                                            <div class="col-sm-10">
+                                                <div class="row">
+                                                    <div class="col-auto">
+                                                        <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                                    </div>
+                                                    <div class="col">
+                                                        <select id="user_id" class="form-select select2-professeur" name="user_id" required>
+                                                            <option value="" disabled selected>Sélectionnez un professeur</option>
+                                                            <?php $__currentLoopData = $professeurs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $professeur): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                <option value="<?php echo e($professeur->id); ?>" <?php echo e((session('form_data.user_id') == $professeur->id || old('user_id') == $professeur->id) ? 'selected' : ''); ?>>
+                                                                    <?php echo e($professeur->name); ?> <?php echo e($professeur->lastname ?? ''); ?>
+
+                                                                </option>
+                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+                                                        </select>
+                                                        <div class="invalid-feedback">Veuillez sélectionner un professeur valide.</div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="mb-3 row">
                                             <label class="col-sm-2 col-form-label">Nombre de places <span class="text-danger">*</span></label>
                                             <div class="col-sm-10">
@@ -311,9 +334,7 @@
 
 <script src="<?php echo e(asset('assets/js/tinymce/js/tinymce/tinymce.min.js')); ?>"></script>
 <script src="<?php echo e(asset('assets/js/MonJs/description/description.js')); ?>"></script>
-<script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
-
-
+    <script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
 <script src="<?php echo e(asset('assets/js/MonJs/calendar/custom-calendar.js')); ?>"></script>

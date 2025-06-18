@@ -1,4 +1,5 @@
-<?php $__env->startSection('title'); ?> S'inscrire
+<?php $__env->startSection('title'); ?> S'inscrire <?php echo e($title); ?>
+
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('css'); ?>
@@ -614,8 +615,10 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" type="password" name="password" required placeholder="***" value="<?php echo e(old('password')); ?>" />
-                                            <div class="show-hide"><span class="show"> </span></div>
+unset($__errorArgs, $__bag); ?>" type="password" name="password" required placeholder="***" id="passwordField" value="<?php echo e(old('password')); ?>" />
+                                            <div class="show-hide" onclick="togglePassword()">
+                                                <i class="fa fa-eye" id="eyeIcon"></i>
+                                            </div>
                                             <div class="invalid-feedback js-error">Le mot de passe doit contenir au moins 8 caractères.</div>
                                             <?php $__errorArgs = ['password'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -671,6 +674,23 @@ unset($__errorArgs, $__bag); ?>
 <?php $__env->startPush('scripts'); ?>
     <script src="<?php echo e(asset('assets/js/sweet-alert/sweetalert.min.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/form-validation/form_validation2.js')); ?>"></script>
+    <script>
+        function togglePassword() {
+            const passwordField = document.getElementById('passwordField');
+            const eyeIcon = document.getElementById('eyeIcon');
+
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        }
+
+    </script>
 <?php $__env->stopPush(); ?>
 
 <?php $__env->stopSection(); ?>

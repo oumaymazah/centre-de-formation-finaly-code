@@ -213,7 +213,7 @@
                                                         <span class="input-group-text"><i class="fa fa-user"></i></span>
                                                     </div>
                                                     <div class="col">
-                                                        <select id="user_id" class="form-select select2-professeur" name="user_id" >
+                                                        <select id="user_id" class="form-select select2-professeur" name="user_id" required>
                                                             <option value="" disabled selected>Sélectionnez un professeur</option>
                                                             @foreach($professeurs as $professeur)
                                                                 <option value="{{ $professeur->id }}" {{ (session('form_data.user_id') == $professeur->id || old('user_id') == $professeur->id) ? 'selected' : '' }}>
@@ -358,9 +358,7 @@
 
 <script src="{{ asset('assets/js/tinymce/js/tinymce/tinymce.min.js') }}"></script>
 <script src="{{ asset('assets/js/MonJs/description/description.js') }}"></script>
-<script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
-
-{{-- <script src="https://cdn.tiny.cloud/1/ivqx4rg9mkp3j7b0kjhnttlk4jwpkp1ay6dw3twe5jjabyss/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script> --}}
+    <script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
 <script src="{{ asset('assets/js/MonJs/calendar/custom-calendar.js') }}"></script>

@@ -61,13 +61,13 @@
 
                                 <!-- Description -->
                                 <div class="mb-3 row">
-                                    <label class="col-sm-2 col-form-label">Description </label>
+                                    <label class="col-sm-2 col-form-label">Description <span class="text-danger">*</span></label>
                                     <div class="col-sm-10">
                                         <div class="input-group" style="flex-wrap: nowrap;">
                                             <div class="input-group-text d-flex align-items-stretch" style="height: auto;">
                                                 <i class="fa fa-align-left align-self-center"></i>
                                             </div>
-                                            <textarea class="form-control" id="description" name="description" placeholder="Description" required>{{ old('description') }}</textarea>
+                                            <textarea class="form-control" id="description" name="description" placeholder="Description" >{{ old('description') }}</textarea>
                                         </div>
                                         <div class="invalid-feedback">Veuillez entrer une description valide.</div>
                                     </div>
@@ -197,7 +197,6 @@
     <script src="{{ asset('assets/js/MonJs/description/description.js') }}"></script>
     <script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 
-    <script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
     <script src="{{ asset('assets/js/MonJs/calendar/custom-calendar.js') }}"></script>
@@ -273,7 +272,7 @@
 });
 
 </script>
-
+{{--
 <script>
     // Initialisation des datepickers avec validation
 $(document).ready(function() {
@@ -433,5 +432,5 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-</script>
+</script> --}}
 @endpush

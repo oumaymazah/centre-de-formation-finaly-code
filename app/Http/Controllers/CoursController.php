@@ -40,8 +40,8 @@ class CoursController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'start_date' => 'required|date_format:Y-m-d',
-            'end_date' => 'required|date_format:Y-m-d|after_or_equal:start_date',
+            'start_date' => 'date_format:Y-m-d',
+            'end_date' => 'date_format:Y-m-d|after_or_equal:start_date',
             'training_id' => 'required|exists:trainings,id',
         ]);
 
@@ -89,7 +89,7 @@ class CoursController extends Controller
         }
         $request->validate([
             'title' => 'required|string|max:255',
-'description' => 'nullable|string',
+            'description' => 'required|string',
             'start_date' => 'required|date_format:Y-m-d',
             'end_date' => 'required|date_format:Y-m-d|after_or_equal:start_date',
             'training_id' => 'required|exists:trainings,id',

@@ -9,7 +9,7 @@
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startSection('content'); ?>
- 
+
 
     <div class="container-fluid">
         <div class="row">
@@ -55,20 +55,20 @@
                                 </div>
 
                                 <!-- Description -->
-                           
+
                                 <div class="mb-3 row">
-                                    <label class="col-sm-2 col-form-label">Description <span class="text-danger">*</span></label>
+                                    <label class="col-sm-2 col-form-label">Description </label>
                                     <div class="col-sm-10">
                                         <div class="input-group" style="flex-wrap: nowrap;">
                                             <div class="input-group-text d-flex align-items-stretch" style="height: auto;">
                                                 <i class="fa fa-align-left align-self-center"></i>
                                             </div>
-                                            <textarea class="form-control" id="description" name="description" placeholder="Description" required><?php echo e(old('description',$chapitre->description)); ?></textarea>
+                                            <textarea class="form-control" id="description" name="description" placeholder="Description" ><?php echo e(old('description',$chapitre->description)); ?></textarea>
                                         </div>
                                         <div class="invalid-feedback">Veuillez entrer une description valide.</div>
                                     </div>
                                 </div>
-                            
+
 
                                 <!-- Cours -->
                                 <div class="mb-3 row">
@@ -114,7 +114,7 @@
             </div>
         </div>
     </div>
-    
+
 <?php $__env->startPush('scripts'); ?>
     <script src="<?php echo e(asset('assets/js/dropzone/dropzone.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/dropzone/dropzone-script.js')); ?>"></script>
@@ -124,9 +124,10 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="<?php echo e(asset('assets/js/tinymce/js/tinymce/tinymce.min.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/MonJs/description/description.js')); ?>"></script>
-    <script src="https://cdn.tiny.cloud/1/8icondvsqzdfghi1bvctqkb2xdyxslqqmopagikz1byhtwuk/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 
 <?php $__env->stopPush(); ?>
 
-<?php $__env->stopSection(); ?> 
+<?php $__env->stopSection(); ?>
+
 <?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\apprendre laravel\Centre_Formation-main\resources\views/admin/apps/chapitre/chapitreedit.blade.php ENDPATH**/ ?>

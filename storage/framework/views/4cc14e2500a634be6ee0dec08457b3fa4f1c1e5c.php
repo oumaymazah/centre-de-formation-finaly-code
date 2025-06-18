@@ -7,8 +7,8 @@
         <meta name="description" content="viho admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities." />
         <meta name="keywords" content="admin template, viho admin template, dashboard template, flat admin template, responsive admin template, web app" />
         <meta name="author" content="pixelstrap" />
-        <link rel="icon" href="<?php echo e(asset('assets/images/favicon.png')); ?>" type="image/x-icon" />
-        <link rel="shortcut icon" href="<?php echo e(asset('assets/images/favicon.png')); ?>" type="image/x-icon" />
+        <link rel="icon" href="<?php echo e(asset('assets/images/favicon1.png')); ?>" type="image/x-icon">
+        <link rel="shortcut icon" href="<?php echo e(asset('assets/images/favicon1.png')); ?>" type="image/x-icon">
         <title><?php echo $__env->yieldContent('title'); ?></title>
         <!-- Google font-->
         <?php if ($__env->exists('admin.authentication.partials.css')) echo $__env->make('admin.authentication.partials.css', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>

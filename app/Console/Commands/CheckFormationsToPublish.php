@@ -9,6 +9,8 @@ use Illuminate\Console\Command;
 
 class CheckFormationsToPublish extends Command
 {
+
+    //signature bsh tnedi beha el commande hedhy (pour verifier si la formation est publi manuellement=)
     protected $signature = 'formations:check';
     protected $description = 'Affiche toutes les formations avec leur statut de publication';
 
@@ -21,7 +23,7 @@ class CheckFormationsToPublish extends Command
 
         $formations->transform(function ($formation) use ($nowUTC) {
             $pubDateUTC = $formation->publish_date ? Carbon::parse($formation->publish_date, 'UTC') : null;
-            
+
             // Déterminer le statut
             if ($formation->status == 1) {
                 if (!$formation->publish_date) {

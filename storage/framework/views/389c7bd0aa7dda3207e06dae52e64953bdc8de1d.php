@@ -67,7 +67,7 @@
                                             <div class="input-group-text d-flex align-items-stretch" style="height: auto;">
                                                 <i class="fa fa-align-left align-self-center"></i>
                                             </div>
-                                            <textarea class="form-control" id="description" name="description" placeholder="Description" required><?php echo e(old('description')); ?></textarea>
+                                            <textarea class="form-control" id="description" name="description" placeholder="Description" ><?php echo e(old('description')); ?></textarea>
                                         </div>
                                         <div class="invalid-feedback">Veuillez entrer une description valide.</div>
                                     </div>
@@ -199,7 +199,6 @@
     <script src="<?php echo e(asset('assets/js/MonJs/description/description.js')); ?>"></script>
     <script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 
-    <script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js"></script>
     <script src="<?php echo e(asset('assets/js/MonJs/calendar/custom-calendar.js')); ?>"></script>
@@ -276,166 +275,6 @@
 
 </script>
 
-<script>
-    // Initialisation des datepickers avec validation
-$(document).ready(function() {
-    // Configuration des datepickers
-    $('.datepicker').datepicker({
-        format: 'dd/mm/yyyy',
-        language: 'fr',
-        autoclose: true,
-        todayHighlight: true,
-        startDate: new Date(),
-        orientation: 'bottom auto'
-    }).on('changeDate', function(e) {
-        // Déclencher la validation quand une date est sélectionnée
-        const input = e.target;
-
-        // Forcer la mise à jour de la validation
-        setTimeout(function() {
-            // Supprimer les classes de validation existantes
-            input.classList.remove('is-invalid', 'is-valid');
-
-            // Ajouter la classe de succès si une valeur existe
-            if (input.value && input.value.trim() !== '') {
-                input.classList.add('is-valid');
-            } else {
-                input.classList.add('is-invalid');
-            }
-
-            // Validation spéciale pour les dates de début et de fin
-            validateDateRange();
-        }, 50);
-    }).on('hide', function(e) {
-        // Validation quand le datepicker se ferme
-        const input = e.target;
-        setTimeout(function() {
-            if (input.value && input.value.trim() !== '') {
-                input.classList.remove('is-invalid');
-                input.classList.add('is-valid');
-            } else {
-                input.classList.remove('is-valid');
-                input.classList.add('is-invalid');
-            }
-            validateDateRange();
-        }, 50);
-    });
-
-    // Fonction pour valider la plage de dates
-    function validateDateRange() {
-        const startDateInput = document.getElementById('start_date');
-        const endDateInput = document.getElementById('end_date');
-
-        if (startDateInput && endDateInput && startDateInput.value && endDateInput.value) {
-            const startDate = parseDate(startDateInput.value);
-            const endDate = parseDate(endDateInput.value);
-
-            if (startDate && endDate && startDate >= endDate) {
-                endDateInput.classList.remove('is-valid');
-                endDateInput.classList.add('is-invalid');
-
-                // Mettre à jour le message d'erreur
-                const errorMsg = endDateInput.closest('.col-md-6').querySelector('.invalid-feedback');
-                if (errorMsg) {
-                    errorMsg.textContent = 'La date de fin doit être postérieure à la date de début.';
-                }
-            } else if (startDate && endDate) {
-                // Si les dates sont valides, s'assurer que les deux champs sont marqués comme valides
-                if (endDateInput.classList.contains('is-invalid')) {
-                    endDateInput.classList.remove('is-invalid');
-                    endDateInput.classList.add('is-valid');
-
-                    // Restaurer le message d'erreur original
-                    const errorMsg = endDateInput.closest('.col-md-6').querySelector('.invalid-feedback');
-                    if (errorMsg) {
-                        errorMsg.textContent = 'Veuillez sélectionner une date de fin valide.';
-                    }
-                }
-            }
-        }
-    }
-
-    // Fonction utilitaire pour parser les dates au format dd/mm/yyyy
-    function parseDate(dateString) {
-        if (!dateString) return null;
-        const parts = dateString.split('/');
-        if (parts.length !== 3) return null;
-
-        const day = parseInt(parts[0], 10);
-        const month = parseInt(parts[1], 10) - 1; // Les mois sont indexés à partir de 0
-        const year = parseInt(parts[2], 10);
-
-        return new Date(year, month, day);
-    }
-});
-
-// Script pour la gestion de la validation en temps réel (sans jQuery)
-document.addEventListener('DOMContentLoaded', function() {
-    // Fonction de validation pour les champs de date
-    function validateDateInput(input) {
-        const value = input.value ? input.value.trim() : '';
-
-        if (value && value !== '') {
-            input.classList.remove('is-invalid');
-            input.classList.add('is-valid');
-            return true;
-        } else {
-            input.classList.remove('is-valid');
-            input.classList.add('is-invalid');
-            return false;
-        }
-    }
-
-    // Écouter les changements sur les champs de date
-    const dateInputs = document.querySelectorAll('.datepicker');
-
-    dateInputs.forEach(function(input) {
-        // Créer un observer pour surveiller les changements de l'attribut value
-        const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
-                    validateDateInput(input);
-                }
-            });
-        });
-
-        // Observer les changements d'attributs
-        observer.observe(input, {
-            attributes: true,
-            attributeFilter: ['value']
-        });
-
-        // Vérification périodique comme fallback
-        let lastValue = input.value;
-        const checkValue = setInterval(function() {
-            if (input.value !== lastValue) {
-                lastValue = input.value;
-                validateDateInput(input);
-            }
-        }, 200);
-
-        // Nettoyer l'interval quand l'élément est supprimé
-        input.addEventListener('DOMNodeRemoved', function() {
-            clearInterval(checkValue);
-        });
-
-        // Écouter l'événement focus pour une validation immédiate
-        input.addEventListener('focus', function() {
-            // Petite temporisation pour laisser le datepicker s'initialiser
-            setTimeout(function() {
-                validateDateInput(input);
-            }, 100);
-        });
-
-        // Écouter l'événement blur
-        input.addEventListener('blur', function() {
-            setTimeout(function() {
-                validateDateInput(input);
-            }, 100);
-        });
-    });
-});
-</script>
 <?php $__env->stopPush(); ?>
 
 <?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\apprendre laravel\Centre_Formation-main\resources\views/admin/apps/cours/courscreate.blade.php ENDPATH**/ ?>

@@ -67,6 +67,8 @@ public function edit($id)
 
     return view('admin.apps.formation.formationedit', compact('formation', 'professeurs', 'categories'));
 }
+
+
 public function store(Request $request)
 {
     // Convertir les dates du format DD/MM/YYYY au format YYYY-MM-DD
@@ -94,7 +96,7 @@ public function store(Request $request)
             'description' => 'required|string',
             'type' => 'required|in:payante,gratuite',
             'category_id' => 'required|exists:categories,id',
-'user_id' => 'nullable|exists:users,id',
+            'user_id' => 'nullable|exists:users,id',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'publication_type' => 'required|in:now,later',
@@ -269,256 +271,6 @@ public function store(Request $request)
         return back()->withErrors('Erreur lors de la création de la formation: ' . $e->getMessage())->withInput();
     }
 }
-
-
-// public function store(Request $request)
-// {
-//     try {
-//         // dd($request);
-
-
-
-
-//         // ✅ Validation des données
-//         $rules = [
-//             'title' => 'required|string|max:255',
-//             'description' => 'required|string',
-//             'type' => 'required|in:payante,gratuite',
-//             'category_id' => 'required|exists:categories,id',
-//             'user_id' => 'required|exists:users,id',
-//             'start_date' => ['required', 'date_format:d/m/Y'],
-//             'end_date' => ['required', 'date_format:d/m/Y', 'after_or_equal:start_date'],
-//             'publication_type' => 'required|in:now,later',
-//             'total_seats' => 'required|integer|min:1',
-//             'image' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048',
-//         ];
-
-//         if ($request->type === 'payante') {
-//             $rules['price'] = 'required|numeric|min:0';
-//         }
-
-//         if ($request->publication_type === 'later') {
-//             $rules['publish_date'] = 'required|date';
-//         } else {
-//             $rules['publish_date'] = 'nullable|date';
-//         }
-
-//         if ($request->has('discount')) {
-//             $rules['discount'] = 'nullable|numeric|min:0|max:100';
-//         }
-
-//         $validator = Validator::make($request->all(), $rules);
-//         if ($validator->fails()) {
-//             return back()->withErrors($validator)->withInput();
-//         }
-
-//         $validated = $validator->validated();
-
-//         // ✅ Gestion de l'image
-//         if ($request->hasFile('image')) {
-//             if (!Storage::disk('public')->exists('formations')) {
-//                 Storage::disk('public')->makeDirectory('formations');
-//             }
-
-//             $file = $request->file('image');
-//             $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
-//             $imagePath = $file->storeAs('formations', $fileName, 'public');
-
-//             if (!Storage::disk('public')->exists($imagePath)) {
-//                 throw new \Exception('Échec de l\'enregistrement de l\'image');
-//             }
-//         } else {
-//             throw new \Exception('Image requise');
-//         }
-
-//         // ✅ Préparer les données
-//         $formationData = [
-//             'title' => $validated['title'],
-//             'description' => $validated['description'],
-//             'type' => $validated['type'],
-//             'category_id' => $validated['category_id'],
-//             'user_id' => $validated['user_id'],
-//             'image' => $imagePath,
-//             'start_date' => $validated['start_date'],
-//             'end_date' => $validated['end_date'],
-//             'is_bestseller' => $request->has('is_bestseller') ? 1 : 0,
-//             'total_seats' => $validated['total_seats'],
-//             'price' => $validated['type'] === 'payante' ? $validated['price'] : 0,
-//             'discount' => $request->discount ?? 0,
-//         ];
-
-//         $formationData['final_price'] = $formationData['type'] === 'payante'
-//             ? $formationData['price'] * (1 - $formationData['discount'] / 100)
-//             : 0;
-
-//         // ✅ Publication
-//         if ($validated['publication_type'] === 'later') {
-//             $publishDate = Carbon::parse($validated['publish_date'])->startOfDay();
-
-//             if ($publishDate->greaterThanOrEqualTo(Carbon::today())) {
-//                 $formationData['publish_date'] = $publishDate->format('Y/m/d');
-//                 $formationData['status'] = 0;
-//             } else {
-//                 return back()->withErrors(['publish_date' => 'La date de publication doit être égale ou postérieure à aujourd\'hui.'])->withInput();
-//             }
-//         } else {
-//             $formationData['status'] = 1;
-//             $formationData['publish_date'] = null;
-//         }
-
-//         // ✅ Créer la formation
-//         DB::beginTransaction();
-//         $formation = Training::create($formationData);
-
-//         if (!$formation || !$formation->exists) {
-//             throw new \Exception('La création de la formation a échoué');
-//         }
-
-//         DB::commit();
-
-//         Log::info('Formation créée avec succès', [
-//             'formation_id' => $formation->id,
-//             'title' => $formation->title,
-//             'user_id' => Auth::id()
-//         ]);
-
-//         session()->flash('formation_id', $formation->id);
-//         session()->flash('from_formation', true);
-
-//         if ($request->ajax() || $request->wantsJson() || $request->header('X-Requested-With') === 'XMLHttpRequest') {
-//             return response()->json([
-//                 'success' => true,
-//                 'message' => 'Formation créée avec succès',
-//                 'formation_id' => $formation->id
-//             ]);
-//         }
-
-//         return redirect()->route('formationcreate')
-//             ->with('success', 'Formation créée avec succès')
-//             ->with('formation_id', $formation->id)
-//             ->with('form_data', $request->except(['image']));
-
-//     } catch (\Exception $e) {
-//         if (DB::transactionLevel() > 0) {
-//             DB::rollBack();
-//         }
-
-//         Log::error('Erreur lors de la création de la formation', [
-//             'error' => $e->getMessage(),
-//             'trace' => $e->getTraceAsString(),
-//             'user_id' => Auth::id(),
-//             'request_data' => $request->all()
-//         ]);
-
-//         if (isset($imagePath) && $imagePath && !$request->has('current_image')) {
-//             Storage::disk('public')->delete($imagePath);
-//         }
-
-//         if ($request->ajax() || $request->wantsJson() || $request->header('X-Requested-With') === 'XMLHttpRequest') {
-//             return response()->json([
-//                 'success' => false,
-//                 'message' => 'Erreur lors de la création de la formation: ' . $e->getMessage()
-//             ], 500);
-//         }
-
-//         return back()->withErrors('Erreur lors de la création de la formation: ' . $e->getMessage())->withInput();
-//     }
-// }
-
-// public function update(Request $request, $id)
-// {
-//     $formation = Training::findOrFail($id);
-
-//     // Validation rules
-//     $rules = [
-//         'title' => 'required|string|max:255',
-//         'description' => 'required',
-//         'start_date' => 'required|date_format:d/m/Y',
-//         'end_date' => 'required|date_format:d/m/Y|after_or_equal:start_date',
-//         'type' => 'required|in:payante,gratuite',
-//         'category_id' => 'required|exists:categories,id',
-//         'user_id' => 'required|exists:users,id',
-//         'total_seats' => 'required|integer|min:1',
-//         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-//     ];
-
-//     // Add conditional rules for price and discount if type is 'payante'
-//     if ($request->type == 'payante') {
-//         $rules['price'] = 'required|numeric|min:0';
-//         $rules['discount'] = 'nullable|numeric|min:0|max:100';
-//     }
-
-//     // Handle publish date validation differently based on publication type
-//     if ($request->publication_type == 'later') {
-//         $rules['publish_date'] = 'required|date_format:d/m/Y';
-//     }
-
-//     // Validate the request data
-//     $validatedData = $request->validate($rules);
-
-//     // Format dates for database
-//     $startDate = \Carbon\Carbon::createFromFormat('d/m/Y', $validatedData['start_date'])->format('Y-m-d');
-//     $endDate = \Carbon\Carbon::createFromFormat('d/m/Y', $validatedData['end_date'])->format('Y-m-d');
-
-//     // Update formation with validated data
-//     $formation->title = $validatedData['title'];
-//     $formation->description = $validatedData['description'];
-//     $formation->start_date = $startDate;
-//     $formation->end_date = $endDate;
-//     $formation->type = $validatedData['type'];
-//     $formation->category_id = $validatedData['category_id'];
-//     $formation->user_id = $validatedData['user_id'];
-//     $formation->total_seats = $validatedData['total_seats'];
-
-//     // Handle price and discount if type is 'payante'
-//     if ($validatedData['type'] == 'payante') {
-//         $formation->price = $validatedData['price'];
-//         $formation->discount = $validatedData['discount'] ?? 0;
-//         $formation->final_price = $request->final_price;
-//     } else {
-//         $formation->price = 0;
-//         $formation->discount = 0;
-//         $formation->final_price = 0;
-//     }
-
-//     // Handle publication status and date
-//     if ($request->publication_type == 'now') {
-//         $formation->status = true;
-//         $formation->publish_date = now();
-//     } else {
-//         // Use createFromFormat to properly convert the date string to a Carbon date
-//         $formation->status = false;
-//         if ($request->publish_date) {
-//             $formation->publish_date = \Carbon\Carbon::createFromFormat('d/m/Y', $request->publish_date)->format('Y-m-d');
-//         } else {
-//             $formation->publish_date = null;
-//         }
-//     }
-
-//     // Handle image upload
-//     if ($request->hasFile('image')) {
-//         // Delete the old image if it exists
-//         if ($formation->image && Storage::disk('public')->exists($formation->image)) {
-//             Storage::disk('public')->delete($formation->image);
-//         }
-
-//         // Store the new image
-//         $imagePath = $request->file('image')->store('formations', 'public');
-//         $formation->image = $imagePath;
-//     } elseif ($request->delete_image == 1) {
-//         // Delete the image if requested
-//         if ($formation->image && Storage::disk('public')->exists($formation->image)) {
-//             Storage::disk('public')->delete($formation->image);
-//         }
-//         $formation->image = null;
-//     }
-
-//     // Save the formation
-//     $formation->save();
-
-//     // Redirect with success message
-//     return redirect()->route('formations')->with('success', 'Formation mise à jour avec succès.');
-// }
 public function update(Request $request, $id)
 {
     $formation = Training::findOrFail($id);
@@ -531,8 +283,8 @@ public function update(Request $request, $id)
         'end_date' => 'required|date_format:d/m/Y|after_or_equal:start_date',
         'type' => 'required|in:payante,gratuite',
         'category_id' => 'required|exists:categories,id',
-'user_id' => 'nullable|exists:users,id',
-'total_seats' => 'required|integer|min:1',
+        'user_id' => 'nullable|exists:users,id',
+        'total_seats' => 'required|integer|min:1',
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
     ];
 
@@ -613,6 +365,7 @@ public function update(Request $request, $id)
     // Redirect with success message
     return redirect()->route('formations')->with('success', 'Formation mise à jour avec succès.');
 }
+
 public function destroy($id)
 {
     try {
@@ -758,7 +511,6 @@ private function removeFromAllCarts($trainingId)
             ], 500);
         }
     }
-
 public function index(Request $request)
 {
     $userIsAdmin = auth()->check() && (
@@ -992,6 +744,4 @@ public function checkFormationStatus(Request $request, $formationId)
         ], 500);
     }
 }
-
-
 }

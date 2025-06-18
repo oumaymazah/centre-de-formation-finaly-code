@@ -41,7 +41,7 @@
                             <strong>Note:</strong>La durée sera calculée automatiquement à partir des leçons ajoutées à ce chapitre.
                         </div>
                         </div>
-
+                            
 
                         <div class="form theme-form">
                             <form id="create-chapitre-form" class="needs-validation" action="<?php echo e(route('chapitrestore')); ?>" method="POST" novalidate>
@@ -61,13 +61,13 @@
                                 </div>
 
                                 <div class="mb-3 row">
-                                    <label class="col-sm-2 col-form-label">Description <span class="text-danger">*</span></label>
+                                    <label class="col-sm-2 col-form-label">Description</label>
                                     <div class="col-sm-10">
                                         <div class="input-group" style="flex-wrap: nowrap;">
                                             <div class="input-group-text d-flex align-items-stretch" style="height: auto;">
                                                 <i class="fa fa-align-left align-self-center"></i>
                                             </div>
-                                            <textarea class="form-control" id="description" name="description" placeholder="Description" required><?php echo e(old('description')); ?></textarea>
+                                            <textarea class="form-control" id="description" name="description" placeholder="Description" ><?php echo e(old('description')); ?></textarea>
                                         </div>
                                         <div class="invalid-feedback">Veuillez entrer une description valide.</div>
                                     </div>

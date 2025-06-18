@@ -123,11 +123,10 @@
         .footer {
             background: #1f2937;
             color: white;
-            /* padding: 2rem 0 2rem; */
+           
             width: 100vw !important;
             margin: 0 !important;
-            /* margin-left: -290px !important; */
-            /* margin-right: 5px !important; */
+
             font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.7;
             color: #1a202c;

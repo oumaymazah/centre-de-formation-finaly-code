@@ -56,13 +56,13 @@
                                 <!-- Description -->
 
                                 <div class="mb-3 row">
-                                    <label class="col-sm-2 col-form-label">Description <span class="text-danger">*</span></label>
+                                    <label class="col-sm-2 col-form-label">Description</label>
                                     <div class="col-sm-10">
                                         <div class="input-group" style="flex-wrap: nowrap;">
                                             <div class="input-group-text d-flex align-items-stretch" style="height: auto;">
                                                 <i class="fa fa-align-left align-self-center"></i>
                                             </div>
-                                            <textarea class="form-control" id="description" name="description" placeholder="Description" required><?php echo e(old('description',$cours->description)); ?></textarea>
+                                            <textarea class="form-control" id="description" name="description" placeholder="Description" ><?php echo e(old('description',$cours->description)); ?></textarea>
                                         </div>
                                         <div class="invalid-feedback">Veuillez entrer une description valide.</div>
                                     </div>
@@ -77,7 +77,7 @@
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                                     <input class="form-control datepicker" type="text" id="start_date" name="start_date"
-                                                        value="<?php echo e(old('start_date', \Carbon\Carbon::parse($cours->start_date)->format('d/m/Y'))); ?>" required />
+                                                        value="<?php echo e(old('start_date', \Carbon\Carbon::parse($cours->start_date)->format('Y-m-d'))); ?>" required />
                                                 </div>
                                                 <small class="text-muted">Date de début</small>
                                             </div>
@@ -85,7 +85,7 @@
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                                     <input class="form-control datepicker" type="text" id="end_date" name="end_date"
-                                                        value="<?php echo e(old('end_date', \Carbon\Carbon::parse($cours->end_date)->format('d/m/Y'))); ?>" required />
+                                                        value="<?php echo e(old('end_date', \Carbon\Carbon::parse($cours->end_date)->format('Y-m-d'))); ?>" required />
                                                 </div>
                                                 <small class="text-muted">Date de fin</small>
                                             </div>

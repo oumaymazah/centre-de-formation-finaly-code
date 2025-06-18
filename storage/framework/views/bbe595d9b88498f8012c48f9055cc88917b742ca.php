@@ -148,7 +148,7 @@
                                     <div class="col-sm-10">
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="fa fa-link"></i></span>
-                                            <textarea class="form-control" name="link" id="link" rows="5" placeholder="Entrez un lien par ligne" required><?php echo e(old('link')); ?></textarea>
+                                            <textarea class="form-control" name="link" id="link" rows="5" placeholder="Entrez un lien par ligne" ><?php echo e(old('link')); ?></textarea>
                                         </div>
                                         <small class="form-text text-muted">Entrez des liens valides, un par ligne.</small>
                                     </div>

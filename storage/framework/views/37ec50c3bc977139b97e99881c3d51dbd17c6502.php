@@ -1,4 +1,4 @@
-<?php $__env->startSection('title'); ?> Connexion  <?php $__env->stopSection(); ?>
+<?php $__env->startSection('title'); ?> Connexion <?php echo e($title); ?> <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('css'); ?>
 <style>

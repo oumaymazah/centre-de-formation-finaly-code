@@ -358,7 +358,13 @@ Route::group(['middleware' => 'auth'], function () {
 	});
 
 	Route::view('knowledgebase', 'admin.miscellaneous.knowledgebase')->name('knowledgebase');
+    Route::prefix('feedbacks')->group(function () {
+		Route::get('/', [FeedbackController::class, 'index'])->name('feedbacks');
 
+		Route::delete('/{id}', [FeedbackController::class, 'destroy'])->name('feedbackdestroy');
+		Route::post('/deleteSelected', [FeedbackController::class, 'deleteSelected'])->name('deleteSelected');
+
+	});
 
 		// Routes Catégorie
 		Route::prefix('categorie')->group(function () {
@@ -510,9 +516,7 @@ Route::post('/formations/button-states', [App\Http\Controllers\PanierController:
             Route::put('{id}', [FormationController::class, 'update'])->name('formationupdate');
             Route::delete('{id}', [FormationController::class, 'destroy'])->name('formationdestroy');
         });
-        Route::prefix('admin')->name('admin.')->group(function () {
-           Route::get('/quizzes/{quiz}', [QuizController::class, 'show'])->name('quizzes.show');
-        });
+
 
         Route::prefix('cours')->group(function () {
 			Route::get('cours', [CoursController::class, 'index'])->name('cours');
@@ -571,8 +575,11 @@ Route::middleware(['auth', 'role:admin|super-admin'])->name('admin.')->prefix('a
     Route::delete('/users/{user}/permissions/{permission}',[UserController::class,'revokePermission'])->name('users.permissions.revoke');
     Route::patch('/users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggleStatus');
      // Quiz
-    //  Route::resource('quizzes', QuizController::class)->except(['edit', 'update']);
-    Route::resource('quizzes', QuizController::class)->except(['edit', 'update','show']);
+     Route::resource('quizzes', QuizController::class)->except(['edit', 'update']);
+    // Route::resource('quizzes', QuizController::class)->except(['edit', 'update','show']);
+
+    // Route::get('quizzes/create', [QuizController::class,'create'])->name('quizzes.create');
+
      Route::post('/quizzes/{quiz}/publish', [QuizController::class, 'publish'])->name('quizzes.publish');
      Route::post('/quizzes/{quiz}/toggle', [QuizController::class, 'toggle'])->name('quizzes.toggle');
      Route::get('/quizzes/template/{type}', [QuizController::class, 'downloadTemplate'])->name('quizzes.download-template');
@@ -585,8 +592,8 @@ Route::middleware(['auth', 'role:admin|super-admin'])->name('admin.')->prefix('a
       Route::get('/quiz-attempts', [AdminQuizController::class, 'index'])
           ->name('quiz-attempts.index');
 
-    Route::get('/quiz-attempts/{attempt}', [AdminQuizController::class, 'show'])
-          ->name('quiz-attempts.show');
+    // Route::get('/quiz-attempts/{attempt}', [AdminQuizController::class, 'show'])
+    //       ->name('quiz-attempts.show');
     Route::delete('/quiz-attempts/{attempt}', [AdminQuizController::class, 'destroy'])
           ->name('quiz-attempts.destroy');
 	Route::delete('/reservation/{reservation}', [ReservationController::class, 'destroy'])->name('reservations.destroy');

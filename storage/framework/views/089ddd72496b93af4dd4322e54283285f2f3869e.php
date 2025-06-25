@@ -125,8 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Sert à avertir l'étudiant visuellement qu'il est surveillé
-    // après qu'il ait changé d'onglet plus d'une fois
     const updateWarningDisplay = () => {
         if (config.switchCount >= config.warningThreshold) {
             elements.warning.style.display = 'block';
@@ -158,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    // Gestion du timer
+
     let timeLeft = <?php echo e($timeLeft); ?>;
 
     const timerInterval = setInterval(() => {

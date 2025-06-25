@@ -188,7 +188,7 @@
                                                         <span class="input-group-text"><i class="fa fa-user"></i></span>
                                                     </div>
                                                     <div class="col">
-                                                        <select id="user_id" class="form-select select2-professeur" name="user_id" required>
+                                                        <select id="user_id" class="form-select select2-professeur" name="user_id" >
                                                             <option value="" disabled selected>Sélectionnez un professeur</option>
                                                             <?php $__currentLoopData = $professeurs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $professeur): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                 <option value="<?php echo e($professeur->id); ?>" <?php echo e((session('form_data.user_id') == $professeur->id || old('user_id') == $professeur->id) ? 'selected' : ''); ?>>

@@ -69,27 +69,272 @@ public function edit($id)
 }
 
 
+// public function store(Request $request)
+// {
+//     // Convertir les dates du format DD/MM/YYYY au format YYYY-MM-DD
+//     if ($request->has('start_date')) {
+//         $request->merge(['start_date' => Carbon::createFromFormat('d/m/Y', $request->start_date)->format('Y-m-d')]);
+//     }
+
+//     if ($request->has('end_date')) {
+//         $request->merge(['end_date' => Carbon::createFromFormat('d/m/Y', $request->end_date)->format('Y-m-d')]);
+//     }
+
+//     // Convertir également la date de publication si elle existe
+//     if ($request->has('publish_date') && $request->publish_date) {
+//         try {
+//             $request->merge(['publish_date' => Carbon::createFromFormat('d/m/Y', $request->publish_date)->format('Y-m-d')]);
+//         } catch (\Exception $e) {
+//             return back()->withErrors(['publish_date' => 'Format de date invalide. Utilisez le format JJ/MM/AAAA.'])->withInput();
+//         }
+//     }
+
+//     try {
+
+//         // Définir les règles de validation
+//         $rules = [
+//             'title' => 'required|string|max:255',
+//             'description' => 'required|string',
+//             'type' => 'required|in:payante,gratuite',
+//             'category_id' => 'required|exists:categories,id',
+//             'user_id' => 'nullable|exists:users,id',
+//             'start_date' => 'required|date',
+//             'end_date' => 'required|date|after_or_equal:start_date',
+//             'publication_type' => 'required|in:now,later',
+//             'total_seats' => 'required|integer|min:1',
+//         ];
+
+//         // Ajouter validation conditionnelle pour publish_date
+//         if ($request->publication_type === 'later') {
+//             $rules['publish_date'] = 'required|date';
+//         } else {
+//             $rules['publish_date'] = 'nullable|date';
+//         }
+
+//         // Modification de la règle d'image pour prendre en compte l'option "keep_image"
+//         if ($request->has('keep_image') && $request->has('current_image')) {
+//             $rules['image'] = 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048';
+//         } else {
+//             $rules['image'] = 'required|image|mimes:jpg,jpeg,png,gif|max:2048';
+//         }
+
+//         // Ajout conditionnel de règles pour le prix
+//         if ($request->type === 'payante') {
+//             $rules['price'] = 'required|numeric|min:0';
+//         }
+
+//         // Valider les données
+//         $validator = Validator::make($request->all(), $rules);
+
+//         if ($validator->fails()) {
+//             return back()->withErrors($validator)->withInput();
+//         }
+
+//         $validated = $validator->validated();
+
+//         // Gestion de l'image
+//         if ($request->hasFile('image')) {
+//             // Assurez-vous que le répertoire existe
+//             if (!Storage::disk('public')->exists('formations')) {
+//                 Storage::disk('public')->makeDirectory('formations');
+//             }
+
+//             $file = $request->file('image');
+//             $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
+//             $imagePath = $file->storeAs('formations', $fileName, 'public');
+
+//             // Vérifier si l'image a été correctement enregistrée
+//             if (!Storage::disk('public')->exists($imagePath)) {
+//                 throw new \Exception('Échec de l\'enregistrement de l\'image');
+//             }
+//         } elseif ($request->has('keep_image') && $request->has('current_image')) {
+//             // Utiliser l'image existante
+//             $imagePath = $request->current_image;
+//         } else {
+//             throw new \Exception('Image requise');
+//         }
+
+//         // Préparation des données pour la formation
+//         $formationData = [
+//             'title' => $validated['title'],
+//             'description' => $validated['description'],
+//             'type' => $validated['type'],
+//             'category_id' => $validated['category_id'],
+//             'user_id' => $validated['user_id'],
+//             'image' => $imagePath,
+//             'start_date' => $validated['start_date'],
+//             'end_date' => $validated['end_date'],
+//             'is_bestseller' => $request->has('is_bestseller') ? 1 : 0,
+//             'total_seats' => $validated['total_seats'],
+//         ];
+
+//         // Gestion du prix selon le type
+//         $formationData['price'] = ($validated['type'] === 'payante') ? $validated['price'] : 0;
+//         $formationData['discount'] = $request->has('discount') ? $request->discount : 0;
+//         $formationData['final_price'] = ($validated['type'] === 'payante')
+//             ? ($formationData['price'] * (1 - $formationData['discount'] / 100))
+//             : 0;
+
+//         // Gestion de la publication
+//         if ($validated['publication_type'] === 'later') {
+//             if (!$request->has('publish_date') || empty($request->publish_date)) {
+//                 return back()->withErrors(['publish_date' => 'La date de publication est requise pour une publication ultérieure.'])->withInput();
+//             }
+
+//             try {
+//                 $publishDate = Carbon::parse($validated['publish_date'])->startOfDay();
+
+//                 // Vérifier si la date est égale ou postérieure à aujourd'hui
+//                 if ($publishDate->greaterThanOrEqualTo(Carbon::today())) {
+//                     $formationData['publish_date'] = $publishDate->format('Y-m-d');
+//                     $formationData['status'] = 0; // Non publiée
+//                 } else {
+//                     return back()->withErrors(['publish_date' => 'La date de publication doit être égale ou postérieure à aujourd\'hui.'])->withInput();
+//                 }
+//             } catch (\Exception $e) {
+//                 Log::error('Erreur de conversion de date de publication', [
+//                     'date' => $request->publish_date,
+//                     'error' => $e->getMessage()
+//                 ]);
+//                 return back()->withErrors(['publish_date' => 'Format de date invalide. Utilisez le format JJ/MM/AAAA.'])->withInput();
+//             }
+//         } else {
+//             $formationData['status'] = 1; // Publiée immédiatement
+//             $formationData['publish_date'] = null;
+//         }
+
+//         // Log pour débogage
+//         Log::info('Données formation avant création', $formationData);
+
+//         DB::beginTransaction();
+
+//         // Vérifiez que le modèle Training inclut ces champs dans $fillable
+//         $formation = Training::create($formationData);
+
+//         if (!$formation || !$formation->exists) {
+//             throw new \Exception('La création de la formation a échoué');
+//         }
+
+//         DB::commit();
+
+//         Log::info('Formation créée avec succès', [
+//             'formation_id' => $formation->id,
+//             'title' => $formation->title,
+//             'user_id' => Auth::id()
+//         ]);
+
+//         // Utiliser la même clé 'formation_id' partout pour la cohérence
+//         session()->flash('formation_id', $formation->id);
+//         session()->flash('from_formation', true);
+
+//         // Vérification si c'est une requête AJAX ou JSON
+//         if ($request->ajax() || $request->wantsJson() || $request->header('X-Requested-With') === 'XMLHttpRequest') {
+//             return response()->json([
+//                 'success' => true,
+//                 'message' => 'Formation créée avec succès',
+//                 'formation_id' => $formation->id
+//             ]);
+//         }
+
+//         // Flasher les données pour SweetAlert2 et pour conserver les données du formulaire
+//         return redirect()->route('formationcreate')
+//             ->with('success', 'Formation créée avec succès')
+//             ->with('formation_id', $formation->id)
+//             ->with('form_data', $request->except(['image']))
+//             ->with('old_data', $formationData);   // Conserver également les données formatées
+
+//     } catch (\Exception $e) {
+//         // En cas d'erreur, annuler la transaction
+//         if (isset($formation) && DB::transactionLevel() > 0) {
+//             DB::rollBack();
+//         }
+
+//         Log::error('Erreur lors de la création de la formation', [
+//             'error' => $e->getMessage(),
+//             'trace' => $e->getTraceAsString(),
+//             'user_id' => Auth::id(),
+//             'request_data' => $request->all()
+//         ]);
+
+//         // Supprimer l'image si elle a été uploadée en cas d'échec
+//         if (isset($imagePath) && $imagePath && !$request->has('current_image')) {
+//             Storage::disk('public')->delete($imagePath);
+//         }
+
+//         // Vérification si c'est une requête AJAX ou JSON pour l'erreur aussi
+//         if ($request->ajax() || $request->wantsJson() || $request->header('X-Requested-With') === 'XMLHttpRequest') {
+//             return response()->json([
+//                 'success' => false,
+//                 'message' => 'Erreur lors de la création de la formation: ' . $e->getMessage()
+//             ], 500);
+//         }
+
+//         return back()->withErrors('Erreur lors de la création de la formation: ' . $e->getMessage())->withInput();
+//     }
+// }
 public function store(Request $request)
 {
-    // Convertir les dates du format DD/MM/YYYY au format YYYY-MM-DD
-    if ($request->has('start_date')) {
-        $request->merge(['start_date' => Carbon::createFromFormat('d/m/Y', $request->start_date)->format('Y-m-d')]);
-    }
-
-    if ($request->has('end_date')) {
-        $request->merge(['end_date' => Carbon::createFromFormat('d/m/Y', $request->end_date)->format('Y-m-d')]);
-    }
-
-    // Convertir également la date de publication si elle existe
-    if ($request->has('publish_date') && $request->publish_date) {
-        try {
-            $request->merge(['publish_date' => Carbon::createFromFormat('d/m/Y', $request->publish_date)->format('Y-m-d')]);
-        } catch (\Exception $e) {
-            return back()->withErrors(['publish_date' => 'Format de date invalide. Utilisez le format JJ/MM/AAAA.'])->withInput();
+    // Fonction helper pour convertir les dates de manière sécurisée
+    $convertDate = function($dateString, $fieldName) {
+        if (empty($dateString)) {
+            return null;
         }
-    }
+
+        // Log de débogage pour voir le format reçu
+        Log::info("Tentative de conversion de date pour {$fieldName}: '{$dateString}'");
+
+        // Nettoyer la chaîne (supprimer espaces, caractères invisibles)
+        $dateString = trim($dateString);
+
+        // Essayer différents formats courants
+        $formats = [
+            'd/m/Y',     // 25/12/2023
+            'd-m-Y',     // 25-12-2023
+            'Y-m-d',     // 2023-12-25
+            'd/m/y',     // 25/12/23
+            'd-m-y',     // 25-12-23
+        ];
+
+        foreach ($formats as $format) {
+            try {
+                $date = Carbon::createFromFormat($format, $dateString);
+                if ($date && $date->format($format) === $dateString) {
+                    Log::info("Date convertie avec succès pour {$fieldName} avec le format {$format}: {$date->format('Y-m-d')}");
+                    return $date->format('Y-m-d');
+                }
+            } catch (\Exception $e) {
+                continue; // Essayer le format suivant
+            }
+        }
+
+        // Si aucun format n'a fonctionné, essayer Carbon::parse() en dernier recours
+        try {
+            $date = Carbon::parse($dateString);
+            Log::info("Date convertie avec Carbon::parse pour {$fieldName}: {$date->format('Y-m-d')}");
+            return $date->format('Y-m-d');
+        } catch (\Exception $e) {
+            Log::error("Impossible de convertir la date pour {$fieldName}: '{$dateString}' - " . $e->getMessage());
+            throw new \Exception("Format de date invalide pour {$fieldName}. Formats acceptés: JJ/MM/AAAA, JJ-MM-AAAA");
+        }
+    };
 
     try {
+        // Convertir les dates avec gestion d'erreur améliorée
+        if ($request->has('start_date') && $request->start_date) {
+            $convertedStartDate = $convertDate($request->start_date, 'start_date');
+            $request->merge(['start_date' => $convertedStartDate]);
+        }
+
+        if ($request->has('end_date') && $request->end_date) {
+            $convertedEndDate = $convertDate($request->end_date, 'end_date');
+            $request->merge(['end_date' => $convertedEndDate]);
+        }
+
+        if ($request->has('publish_date') && $request->publish_date) {
+            $convertedPublishDate = $convertDate($request->publish_date, 'publish_date');
+            $request->merge(['publish_date' => $convertedPublishDate]);
+        }
+
         // Définir les règles de validation
         $rules = [
             'title' => 'required|string|max:255',
@@ -176,26 +421,18 @@ public function store(Request $request)
 
         // Gestion de la publication
         if ($validated['publication_type'] === 'later') {
-            if (!$request->has('publish_date') || empty($request->publish_date)) {
+            if (!isset($validated['publish_date']) || empty($validated['publish_date'])) {
                 return back()->withErrors(['publish_date' => 'La date de publication est requise pour une publication ultérieure.'])->withInput();
             }
 
-            try {
-                $publishDate = Carbon::parse($validated['publish_date'])->startOfDay();
+            $publishDate = Carbon::parse($validated['publish_date'])->startOfDay();
 
-                // Vérifier si la date est égale ou postérieure à aujourd'hui
-                if ($publishDate->greaterThanOrEqualTo(Carbon::today())) {
-                    $formationData['publish_date'] = $publishDate->format('Y-m-d');
-                    $formationData['status'] = 0; // Non publiée
-                } else {
-                    return back()->withErrors(['publish_date' => 'La date de publication doit être égale ou postérieure à aujourd\'hui.'])->withInput();
-                }
-            } catch (\Exception $e) {
-                Log::error('Erreur de conversion de date de publication', [
-                    'date' => $request->publish_date,
-                    'error' => $e->getMessage()
-                ]);
-                return back()->withErrors(['publish_date' => 'Format de date invalide. Utilisez le format JJ/MM/AAAA.'])->withInput();
+            // Vérifier si la date est égale ou postérieure à aujourd'hui
+            if ($publishDate->greaterThanOrEqualTo(Carbon::today())) {
+                $formationData['publish_date'] = $publishDate->format('Y-m-d');
+                $formationData['status'] = 0; // Non publiée
+            } else {
+                return back()->withErrors(['publish_date' => 'La date de publication doit être égale ou postérieure à aujourd\'hui.'])->withInput();
             }
         } else {
             $formationData['status'] = 1; // Publiée immédiatement
@@ -240,7 +477,7 @@ public function store(Request $request)
             ->with('success', 'Formation créée avec succès')
             ->with('formation_id', $formation->id)
             ->with('form_data', $request->except(['image']))
-            ->with('old_data', $formationData);   // Conserver également les données formatées
+            ->with('old_data', $formationData);
 
     } catch (\Exception $e) {
         // En cas d'erreur, annuler la transaction

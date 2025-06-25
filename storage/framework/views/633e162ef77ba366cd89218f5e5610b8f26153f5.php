@@ -1,10 +1,8 @@
  
+ <?php $__env->startSection('title'); ?>
+    Création d'un nouveau Quiz <?php echo e($title); ?>
 
-
-
-
-
- 
+ <?php $__env->stopSection(); ?>
  <?php $__env->startPush('css'); ?>
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
  <link rel="stylesheet" href="<?php echo e(asset('assets/css/MonCss/quizzes/createQuiz.css')); ?>">

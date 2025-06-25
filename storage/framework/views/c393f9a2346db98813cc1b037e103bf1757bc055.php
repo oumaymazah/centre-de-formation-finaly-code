@@ -665,8 +665,8 @@
 
                     <div class="mt-4 d-flex justify-content-between align-items-center">
                         <?php if($quiz->isFinalQuiz()): ?>
-                            <a href="<?php echo e(route('index')); ?>" class="btn btn-primary">
-                                <i class="fas fa-home mr-1"></i> Retour au tableau de bord
+                            <a href="<?php echo e(route('formations')); ?>" class="btn btn-primary">
+                                <i class="fas fa-home mr-1"></i> Retour à la liste de formations
                             </a>
                         <?php else: ?>
                             <a href="<?php echo e(route('training.detail',$quiz->training->id)); ?>" class="btn btn-primary">

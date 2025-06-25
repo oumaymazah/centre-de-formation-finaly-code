@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\AccountValidationMail;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\AccountValidationMail;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class LoginController extends Controller
@@ -49,57 +50,127 @@ class LoginController extends Controller
             $this->middleware('auth')->only('logout'); // ← LIGNE AJOUTÉE
     }
 
+    // public function login(Request $request)
+    // {
+
+
+    //     $this->validateLogin($request);
+
+    //     // Vérifier si l'utilisateur existe
+    //     $user = User::where('email', $request->email)->first();
+
+    //     // Si l'utilisateur n'existe pas, rediriger avec une erreur
+    //     if (!$user) {
+    //         return $this->sendFailedLoginResponse($request);
+    //     }
+
+    //     // Vérifier si l'utilisateur est inactif (bloqué par l'administration) et n'a pas de code de validation
+    //     if ($user->status === 'inactive' && $user->validation_code === null) {
+    //         return redirect()->back()
+    //             ->withInput($request->only('email', 'remember'))
+    //             ->withErrors([
+    //                 'email' => 'Vous n\'avez pas accès à cette plateforme.',
+    //             ]);
+    //     }
+
+    //     // Vérification spécifique pour les étudiants avec un code de validation non validé
+    //     if ($user->hasRole('etudiant') && $user->validation_code !== null) {
+    //         // Générer un nouveau code de validation
+    //         $validationCode = Str::random(6);
+    //         $user->validation_code = $validationCode;
+    //         $user->save();
+
+    //         try {
+    //             session(['user_id' => $user->id]);
+    //             Mail::to($user->email)->send(new AccountValidationMail($user, $validationCode));
+    //             return redirect()->route('validation.form')->with('info', 'Votre compte n\'est pas encore activé. Un nouveau code de validation a été envoyé à votre email.');
+    //         } catch (\Exception $e) {
+    //             return redirect()->back()->with('error', 'Une erreur est survenue lors de l\'envoi de l\'e-mail de validation.');
+    //         }
+    //     }
+    //     // Vérification spécifique pour les autres autilisateur avec un code de validation
+    //     if ( $user->validation_code !== null) {
+    //         $request->session()->put('user_id', $user->id);
+    //         return redirect()->route('validation.form')->with('info', 'Votre compte n\'est pas encore activé. Veuillez saisir le code de validation reçu par email.');
+
+    //     }
+
+    //     // Si l'utilisateur est valide, tenter de le connecter
+    //     if ($this->attemptLogin($request)) {
+    //         return $this->sendLoginResponse($request);
+    //     }
+
+    //     // Si la connexion échoue, rediriger avec une erreur
+    //     return $this->sendFailedLoginResponse($request);
+    // }
     public function login(Request $request)
-    {
-        $this->validateLogin($request);
+{
+    $request->flash();
 
-        // Vérifier si l'utilisateur existe
-        $user = User::where('email', $request->email)->first();
+    $this->validateLogin($request);
 
-        // Si l'utilisateur n'existe pas, rediriger avec une erreur
-        if (!$user) {
-            return $this->sendFailedLoginResponse($request);
-        }
+    $user = User::where('email', $request->email)->first();
 
-        // Vérifier si l'utilisateur est inactif (bloqué par l'administration) et n'a pas de code de validation
-        if ($user->status === 'inactive' && $user->validation_code === null) {
-            return redirect()->back()
-                ->withInput($request->only('email', 'remember'))
-                ->withErrors([
-                    'email' => 'Vous n\'avez pas accès à cette plateforme.',
-                ]);
-        }
-
-        // Vérification spécifique pour les étudiants avec un code de validation non validé
-        if ($user->hasRole('etudiant') && $user->validation_code !== null) {
-            // Générer un nouveau code de validation
-            $validationCode = Str::random(6);
-            $user->validation_code = $validationCode;
-            $user->save();
-
-            try {
-                session(['user_id' => $user->id]);
-                Mail::to($user->email)->send(new AccountValidationMail($user, $validationCode));
-                return redirect()->route('validation.form')->with('info', 'Votre compte n\'est pas encore activé. Un nouveau code de validation a été envoyé à votre email.');
-            } catch (\Exception $e) {
-                return redirect()->back()->with('error', 'Une erreur est survenue lors de l\'envoi de l\'e-mail de validation.');
-            }
-        }
-        // Vérification spécifique pour les autres autilisateur avec un code de validation
-        if ( $user->validation_code !== null) {
-            $request->session()->put('user_id', $user->id);
-            return redirect()->route('validation.form')->with('info', 'Votre compte n\'est pas encore activé. Veuillez saisir le code de validation reçu par email.');
-
-        }
-
-        // Si l'utilisateur est valide, tenter de le connecter
-        if ($this->attemptLogin($request)) {
-            return $this->sendLoginResponse($request);
-        }
-
-        // Si la connexion échoue, rediriger avec une erreur
-        return $this->sendFailedLoginResponse($request);
+    // Si l'utilisateur n'existe pas
+    if (!$user) {
+        return redirect()->back()
+            ->withInput()
+            ->withErrors([
+                'email' => 'Adresse e-mail incorrecte.',
+            ]);
     }
+
+    // Si l'utilisateur est inactif (bloqué)
+    if ($user->status === 'inactive' && $user->validation_code === null) {
+        return redirect()->back()
+            ->withInput()
+            ->withErrors([
+                'email' => 'Vous n\'avez pas accès à cette plateforme.',
+            ]);
+    }
+
+    // Si c'est un étudiant avec un code de validation encore actif
+    if ($user->hasRole('etudiant') && $user->validation_code !== null) {
+        $validationCode = Str::random(6);
+        $user->validation_code = $validationCode;
+        $user->save();
+
+        try {
+            session(['user_id' => $user->id]);
+            Mail::to($user->email)->send(new AccountValidationMail($user, $validationCode));
+            return redirect()->route('validation.form')->with('info', 'Votre compte n\'est pas encore activé. Un nouveau code de validation a été envoyé à votre email.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Une erreur est survenue lors de l\'envoi de l\'e-mail de validation.');
+        }
+    }
+
+    // Si l'utilisateur a un code de validation non nul
+    if ($user->validation_code !== null) {
+        $request->session()->put('user_id', $user->id);
+        return redirect()->route('validation.form')->with('info', 'Votre compte n\'est pas encore activé. Veuillez saisir le code de validation reçu par email.');
+    }
+
+    // Vérifier si le mot de passe est correct
+    if (!Hash::check($request->password, $user->password)) {
+        return redirect()->back()
+            ->withErrors([
+                'password' => 'Mot de passe incorrect.',
+            ])
+            ->withInput();
+    }
+
+    // Si tout est bon, tenter la connexion
+    if ($this->attemptLogin($request)) {
+        return $this->sendLoginResponse($request);
+    }
+
+    // Cas très rare si tout échoue sans raison précise
+    return redirect()->back()
+        ->withInput()
+        ->withErrors([
+            'email' => 'Email ou mot de passe incorrect.',
+        ]);
+}
 
     /**
      * The user has been authenticated.
@@ -119,5 +190,5 @@ class LoginController extends Controller
         return redirect()->route('formations');
     }
 
-  
+
 }

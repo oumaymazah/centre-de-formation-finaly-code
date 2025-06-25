@@ -155,7 +155,7 @@ Détails de la Formation {{ $title }}
                                 @if($canTakeQuiz)
                                     @if($quiz->type == 'placement' )
 
-                                        @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('super-admin') || auth()->id() == $formation->user_id)
+                                        @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('super-admin') )
                                             <form action="{{ route('admin.quizzes.show', $quiz->id) }}" method="GET" style="display: inline;">
                                                 <button type="submit" class="btn btn-success btn-sm">
                                                     <i class="fas fa-eye"></i> Voir détails
@@ -171,7 +171,7 @@ Détails de la Formation {{ $title }}
                                         @endif
 
                                     @elseif($quiz->type == 'final')
-                                        @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('super-admin') || auth()->id() == $formation->user_id)
+                                        @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('super-admin') )
 
                                             <form action="{{ route('admin.quizzes.show', $quiz->id) }}" method="GET" style="display: inline;">
                                                 <button type="submit" class="btn btn-success btn-sm">

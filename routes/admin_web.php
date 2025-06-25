@@ -578,7 +578,7 @@ Route::middleware(['auth', 'role:admin|super-admin'])->name('admin.')->prefix('a
      Route::resource('quizzes', QuizController::class)->except(['edit', 'update']);
     // Route::resource('quizzes', QuizController::class)->except(['edit', 'update','show']);
 
-    // Route::get('quizzes/create', [QuizController::class,'create'])->name('quizzes.create');
+  
 
      Route::post('/quizzes/{quiz}/publish', [QuizController::class, 'publish'])->name('quizzes.publish');
      Route::post('/quizzes/{quiz}/toggle', [QuizController::class, 'toggle'])->name('quizzes.toggle');

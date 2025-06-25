@@ -159,7 +159,7 @@ Détails de la Formation <?php echo e($title); ?>
                                 <?php if($canTakeQuiz): ?>
                                     <?php if($quiz->type == 'placement' ): ?>
 
-                                        <?php if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('super-admin') || auth()->id() == $formation->user_id): ?>
+                                        <?php if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('super-admin') ): ?>
                                             <form action="<?php echo e(route('admin.quizzes.show', $quiz->id)); ?>" method="GET" style="display: inline;">
                                                 <button type="submit" class="btn btn-success btn-sm">
                                                     <i class="fas fa-eye"></i> Voir détails
@@ -175,7 +175,7 @@ Détails de la Formation <?php echo e($title); ?>
                                         <?php endif; ?>
 
                                     <?php elseif($quiz->type == 'final'): ?>
-                                        <?php if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('super-admin') || auth()->id() == $formation->user_id): ?>
+                                        <?php if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('super-admin') ): ?>
 
                                             <form action="<?php echo e(route('admin.quizzes.show', $quiz->id)); ?>" method="GET" style="display: inline;">
                                                 <button type="submit" class="btn btn-success btn-sm">

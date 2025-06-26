@@ -563,7 +563,7 @@ Route::post('/formations/button-states', [App\Http\Controllers\PanierController:
 
 
 
-//route pour les gestions des roles et des permissions
+
 Route::middleware(['auth', 'role:admin|super-admin'])->name('admin.')->prefix('admin')->group(function () {
     Route::resource('/roles', RoleController::class);
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
@@ -576,9 +576,9 @@ Route::middleware(['auth', 'role:admin|super-admin'])->name('admin.')->prefix('a
     Route::patch('/users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggleStatus');
      // Quiz
      Route::resource('quizzes', QuizController::class)->except(['edit', 'update']);
-    // Route::resource('quizzes', QuizController::class)->except(['edit', 'update','show']);
 
-  
+
+
 
      Route::post('/quizzes/{quiz}/publish', [QuizController::class, 'publish'])->name('quizzes.publish');
      Route::post('/quizzes/{quiz}/toggle', [QuizController::class, 'toggle'])->name('quizzes.toggle');
@@ -592,8 +592,8 @@ Route::middleware(['auth', 'role:admin|super-admin'])->name('admin.')->prefix('a
       Route::get('/quiz-attempts', [AdminQuizController::class, 'index'])
           ->name('quiz-attempts.index');
 
-    // Route::get('/quiz-attempts/{attempt}', [AdminQuizController::class, 'show'])
-    //       ->name('quiz-attempts.show');
+    Route::get('/quiz-attempts/{attempt}', [AdminQuizController::class, 'show'])
+          ->name('quiz-attempts.show');
     Route::delete('/quiz-attempts/{attempt}', [AdminQuizController::class, 'destroy'])
           ->name('quiz-attempts.destroy');
 	Route::delete('/reservation/{reservation}', [ReservationController::class, 'destroy'])->name('reservations.destroy');

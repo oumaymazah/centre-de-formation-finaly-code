@@ -1,4 +1,16 @@
 <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/MonCss/mes-reservations2.css')); ?>">
+
+<style>
+    .formation-card {
+        cursor: pointer; /* Indique que la carte est cliquable */
+        transition: transform 0.2s, box-shadow 0.2s; /* Animation pour un effet de survol */
+    }
+    .formation-card:hover {
+        transform: translateY(-5px); /* Effet de survol */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre au survol */
+    }
+</style>
+
 <script>
     // Définir les fonctions dans l'espace global pour y accéder depuis n'importe où
     window.synchronizeWithServer = function() {
@@ -16,21 +28,18 @@
         .then(data => {
             const count = data.count || 0;
             localStorage.setItem('cartCount', count.toString());
-            // Mettre à jour tous les badges existants
             const badges = document.querySelectorAll('.cart-badge, .custom-violet-badge');
             badges.forEach(badge => {
                 badge.textContent = count.toString();
                 badge.style.display = count > 0 ? 'flex' : 'none';
             });
 
-            // Mettre à jour le badge fixe si présent
             const fixedBadge = document.getElementById('fixed-cart-badge');
             if (fixedBadge) {
                 fixedBadge.textContent = count.toString();
                 fixedBadge.style.display = count > 0 ? 'flex' : 'none';
             }
 
-            // Créer des badges s'il n'y en a pas et si le compteur > 0
             if (count > 0 && badges.length === 0) {
                 window.initializeCartBadges();
             }
@@ -39,13 +48,9 @@
     };
 
     window.initializeCartBadges = function() {
-        // Récupérer la valeur du panier depuis localStorage
-        const cartCount = parseInt(localStorage  .getItem('cartCount') || '0');
-
-        // Ne rien faire si le compteur est 0
+        const cartCount = parseInt(localStorage.getItem('cartCount') || '0');
         if (cartCount <= 0) return;
 
-        // Injecter le style du badge si nécessaire
         if (!document.getElementById('cart-badge-styles')) {
             const style = document.createElement('style');
             style.id = 'cart-badge-styles';
@@ -73,7 +78,6 @@
             document.head.appendChild(style);
         }
 
-        // Sélecteurs pour trouver les icônes de panier
         const cartSelectors = [
             '.shopping-cart-icon',
             'svg[data-icon="shopping-cart"]',
@@ -90,16 +94,12 @@
         cartIcons.forEach(icon => {
             const container = icon.closest('a, div, button, .cart-container');
             if (container && !container.querySelector('.cart-badge, .custom-violet-badge')) {
-                // Créer le badge
                 const badge = document.createElement('span');
                 badge.className = 'cart-badge custom-violet-badge';
                 badge.textContent = cartCount.toString();
-
-                // S'assurer que le conteneur est en position relative
                 if (getComputedStyle(container).position === 'static') {
                     container.style.position = 'relative';
                 }
-
                 container.appendChild(badge);
             }
         });
@@ -107,50 +107,72 @@
 
     window.updateCartBadgeCount = function(count) {
         localStorage.setItem('cartCount', count.toString());
-
-        // Mettre à jour tous les badges existants
         const badges = document.querySelectorAll('.cart-badge, .custom-violet-badge');
         badges.forEach(badge => {
             badge.textContent = count.toString();
             badge.style.display = count > 0 ? 'flex' : 'none';
         });
 
-        // Mettre à jour le badge fixe si présent
         const fixedBadge = document.getElementById('fixed-cart-badge');
         if (fixedBadge) {
             fixedBadge.textContent = count.toString();
             fixedBadge.style.display = count > 0 ? 'flex' : 'none';
         }
 
-        // Créer des badges s'il n'y en a pas et si le compteur > 0
         if (count > 0 && badges.length === 0) {
             window.initializeCartBadges();
         }
     };
 
+    // Fonction pour gérer le clic sur une carte de formation
+    function redirectToTrainingDetail(trainingId) {
+        if (!trainingId) {
+            console.error('Training ID is undefined');
+            return;
+        }
+        // Utiliser la route Laravel générée dynamiquement
+        window.location.href = '<?php echo e(route("training.detail", ":id")); ?>'.replace(':id', trainingId);
+    }
+
+    // Fonction pour initialiser les événements de clic sur les cartes
+    function initFormationCardClicks() {
+        const formationCards = document.querySelectorAll('.formation-card');
+        formationCards.forEach(card => {
+            if (!card.dataset.clickInitialized) {
+                card.dataset.clickInitialized = 'true';
+                card.addEventListener('click', function(event) {
+                    event.preventDefault(); // Empêche tout comportement par défaut
+                    const trainingId = this.dataset.trainingId;
+                    if (trainingId) {
+                        redirectToTrainingDetail(trainingId);
+                    } else {
+                        console.error('No training ID found for this card');
+                    }
+                });
+            }
+        });
+    }
+
     // Fonction d'initialisation principale
     function initCartSystem() {
-        // Initialiser les badges immédiatement avec la valeur en cache
         window.initializeCartBadges();
-
-        // Puis synchroniser avec le serveur
         setTimeout(window.synchronizeWithServer, 100);
 
-        // Observer le DOM pour les nouvelles icônes de panier
         const observer = new MutationObserver(mutations => {
             mutations.forEach(mutation => {
                 if (mutation.addedNodes.length) {
-                    // Vérifier si de nouvelles icônes ont été ajoutées
                     window.initializeCartBadges();
+                    initFormationCardClicks();
                 }
             });
         });
 
-        // Observer le document entier
         observer.observe(document.documentElement, {
             childList: true,
             subtree: true
         });
+
+        initFormationCardClicks();
     }
 
     // Exécuter au chargement de la page
@@ -170,18 +192,14 @@
 
     // Fonction pour gérer les dropdowns d'alerte de paiement
     document.addEventListener('DOMContentLoaded', function() {
-        // Initialiser tous les dropdowns d'alerte de paiement
         initPaymentAlertDropdowns();
     });
 
     function initPaymentAlertDropdowns() {
         const paymentAlertHeaders = document.querySelectorAll('.payment-alert-header');
-
         paymentAlertHeaders.forEach(header => {
             header.addEventListener('click', function() {
                 const content = this.nextElementSibling;
-
-                // Toggle la visibilité du contenu
                 if (content.style.maxHeight) {
                     content.style.maxHeight = null;
                     content.classList.remove('open');
@@ -202,36 +220,20 @@
         const reservationCard = formationsGrid.closest('.reservation-card');
 
         if (hiddenFormations.style.display === 'none' || hiddenFormations.style.display === '') {
-            // Afficher les formations cachées
             hiddenFormations.style.display = 'contents';
             toggleBtn.innerHTML = '<i class="fas fa-chevron-up me-2"></i>Voir moins';
-
-            // Forcer le recalcul de la hauteur du card
             reservationCard.style.minHeight = 'auto';
-
-            // Ajouter une transition fluide
             reservationCard.style.transition = 'all 0.5s ease';
-
-            // Utiliser requestAnimationFrame pour s'assurer que le DOM est mis à jour
             requestAnimationFrame(() => {
-                // Calculer la nouvelle hauteur nécessaire
                 const cardHeight = reservationCard.scrollHeight;
                 reservationCard.style.minHeight = cardHeight + 'px';
             });
-
         } else {
-            // Cacher les formations supplémentaires
             hiddenFormations.style.display = 'none';
             toggleBtn.innerHTML = `<i class="fas fa-chevron-down me-2"></i>Voir plus (${remainingCount} formation(s))`;
-
-            // Réinitialiser la hauteur à auto pour revenir à l'état initial
             reservationCard.style.minHeight = 'auto';
             reservationCard.style.height = 'auto';
-
-            // Ajouter la transition
             reservationCard.style.transition = 'all 0.5s ease';
-
-            // Scroll vers le haut du card après réduction
             setTimeout(() => {
                 reservationCard.scrollIntoView({
                     behavior: 'smooth',
@@ -300,7 +302,6 @@
                         <div>
                             <h5 class="mb-0" style="color: #1b1c1d;">Réservation #<?php echo e($reservation->id); ?></h5>
                             <small class="text-muted">Effectuée le <?php echo e(\Carbon\Carbon::parse($reservation->created_at)->format('d/m/Y à H:i')); ?></small>
-                            <!-- Bouton "Voir le reçu" placé ici, juste sous la date -->
                             <div class="mt-2">
                                 <button
                                     class="btn view-invoice-btn btn-sm square-button"
@@ -328,7 +329,7 @@
                     <div class="formations-container <?php echo e($reservation->trainings->count() <= 3 ? 'formations-few' : ''); ?>" id="formations-container-<?php echo e($reservation->id); ?>">
                         <div class="formations-grid" id="formations-grid-<?php echo e($reservation->id); ?>">
                             <?php $__currentLoopData = $reservation->trainings->take(3); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $training): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <div class="formation-card">
+                                <div class="formation-card" data-training-id="<?php echo e($training->id); ?>">
                                     <div class="formation-image">
                                         <?php if($training->discount > 0): ?>
                                             <div class="ribbon ribbon-success ribbon-right"><?php echo e($training->discount); ?>%</div>
@@ -354,11 +355,10 @@
                                 </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-                            <!-- Hidden formations -->
                             <?php if($reservation->trainings->count() > 3): ?>
                                 <div class="hidden-formations" id="hidden-formations-<?php echo e($reservation->id); ?>" style="display: none;">
                                     <?php $__currentLoopData = $reservation->trainings->skip(3); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $training): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <div class="formation-card">
+                                        <div class="formation-card" data-training-id="<?php echo e($training->id); ?>">
                                             <div class="formation-image">
                                                 <?php if($training->discount > 0): ?>
                                                     <div class="ribbon ribbon-success ribbon-right"><?php echo e($training->discount); ?>%</div>
@@ -387,7 +387,6 @@
                             <?php endif; ?>
                         </div>
 
-                        <!-- Bouton Voir plus/Voir moins -->
                         <?php if($reservation->trainings->count() > 3): ?>
                             <div class="text-center mt-3 mb-4">
                                 <button class="btn-voir-plus" onclick="toggleFormations(<?php echo e($reservation->id); ?>, <?php echo e($reservation->trainings->count() - 3); ?>)" id="btn-toggle-<?php echo e($reservation->id); ?>">
@@ -396,7 +395,6 @@
                             </div>
                         <?php endif; ?>
 
-                        <!-- Section Total inside the card -->
                         <div class="total-container">
                             <div class="total-section">
                                 <?php if($reservation->total_discount > 0): ?>
@@ -416,14 +414,11 @@
                             </div>
                         </div>
                     </div>
-
                 <?php endif; ?>
             </div>
-            <!-- Suppression du bouton dans le footer -->
             <div class="card-footer d-flex justify-content-end" style="background-color: #f8f9fa; border-top: 1px solid #CFE2FF;"></div>
         </div>
 
-        <!-- Inclusion du modal de facture -->
         <?php echo $__env->make('admin.apps.reservations.modal-facture', ['reservation' => $reservation], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
   <?php endif; ?>

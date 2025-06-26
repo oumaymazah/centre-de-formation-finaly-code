@@ -105,7 +105,7 @@
                         </li>
                         <li class="dropdown">
 
-                                <a class="nav-link menu-title link-nav <?php echo e(routeActive('contacts')); ?>" href="<?php echo e(route('contacts')); ?>"><i data-feather="list"></i><span>Gestion des utilisateurss</span></a>
+                                <a class="nav-link menu-title link-nav <?php echo e(routeActive('contacts')); ?>" href="<?php echo e(route('contacts')); ?>"><i data-feather="list"></i><span>Gestion des utilisateurs</span></a>
 
                         </li>
                     <?php endif; ?>

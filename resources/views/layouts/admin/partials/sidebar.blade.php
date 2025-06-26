@@ -105,7 +105,7 @@
                         </li>
                         <li class="dropdown">
 
-                                <a class="nav-link menu-title link-nav {{routeActive('contacts')}}" href="{{ route('contacts') }}"><i data-feather="list"></i><span>Gestion des utilisateurss</span></a>
+                                <a class="nav-link menu-title link-nav {{routeActive('contacts')}}" href="{{ route('contacts') }}"><i data-feather="list"></i><span>Gestion des utilisateurs</span></a>
 
                         </li>
                     @endif

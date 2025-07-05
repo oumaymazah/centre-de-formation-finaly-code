@@ -57,8 +57,26 @@
                                             <div class="col-sm-10">
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="fa fa-tag"></i></span>
-                                                    <input class="form-control" type="text" id="title" name="title" placeholder="Titre" value="<?php echo e(session('form_data.title') ?? old('title')); ?>" required />
-                                                                                                    <div class="invalid-feedback">Veuillez entrer un Titre valide.</div>
+                                                    <input class="form-control  <?php $__errorArgs = ['title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="text" id="title" name="title" placeholder="Titre" value="<?php echo e(session('form_data.title') ?? old('title')); ?>" required />
+                                                    
+                                                    <div class="invalid-feedback js-error">Veuillez entrer un Titre valide.</div>
+                                                    <?php $__errorArgs = ['title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                        <div class="invalid-feedback laravel-error" style="display: block;"><?php echo e($message); ?></div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
 
                                                 </div>
                                             </div>
@@ -71,9 +89,27 @@
                                                     <div class="input-group-text d-flex align-items-stretch" style="height: auto;">
                                                         <i class="fa fa-align-left align-self-center"></i>
                                                     </div>
-                                                    <textarea class="form-control" id="description" name="description" placeholder="Description" required><?php echo e(session('form_data.description') ?? old('description')); ?></textarea>
+                                                    <textarea class="form-control  <?php $__errorArgs = ['description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" id="description" name="description" placeholder="Description" required><?php echo e(session('form_data.description') ?? old('description')); ?></textarea>
                                                 </div>
-                                                <div class="invalid-feedback">Veuillez entrer une description valide.</div>
+                                                
+                                                <div class="invalid-feedback js-error">Veuillez entrer une description valide.</div>
+                                                <?php $__errorArgs = ['description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="invalid-feedback laravel-error" style="display: block;"><?php echo e($message); ?></div>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
@@ -84,7 +120,14 @@
             <div class="col-md-6">
                 <div class="input-group">
                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                    <input class="form-control datepicker"
+                    <input class="form-control  <?php $__errorArgs = ['start_date'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> datepicker"
                            type="text"
                            id="start_date"
                            name="start_date"
@@ -92,7 +135,18 @@
                            value="<?php echo e(old('start_date')); ?>"
                            readonly
                            required />
-                                           <div class="invalid-feedback">Veuillez sélectionner une date de début valide.</div>
+                    
+                    <div class="invalid-feedback js-error">Veuillez sélectionner une date de début valide.</div>
+                    <?php $__errorArgs = ['title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <div class="invalid-feedback laravel-error" style="display: block;"><?php echo e($message); ?></div>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
 
                 </div>
                 <small class="text-muted">Date début</small>
@@ -101,7 +155,14 @@
             <div class="col-md-6">
                 <div class="input-group">
                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                    <input class="form-control datepicker"
+                    <input class="form-control  <?php $__errorArgs = ['end_date'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> datepicker"
                            type="text"
                            id="end_date"
                            name="end_date"
@@ -109,7 +170,18 @@
                            value="<?php echo e(old('end_date')); ?>"
                            readonly
                            required />
-                                           <div class="invalid-feedback">Veuillez sélectionner une date de fin valide.</div>
+                                           
+                    <div class="invalid-feedback js-error">Veuillez sélectionner une date de fin valide.</div>
+                    <?php $__errorArgs = ['title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <div class="invalid-feedback laravel-error" style="display: block;"><?php echo e($message); ?></div>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
 
                 </div>
                 <small class="text-muted">Date fin</small>
@@ -127,13 +199,30 @@
                                             <div class="col-sm-10">
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="fa fa-list"></i></span>
-                                                    <select class="form-select" id="type" name="type" required>
+                                                    <select class="form-control <?php $__errorArgs = ['type'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> form-select" id="type" name="type" required>
                                                         <option value="" selected disabled>Choisir un type</option>
                                                         <option value="payante" <?php echo e((session('form_data.type') == 'payante' || old('type') == 'payante') ? 'selected' : ''); ?>>Payante</option>
                                                         <option value="gratuite" <?php echo e((session('form_data.type') == 'gratuite' || old('type') == 'gratuite') ? 'selected' : ''); ?>>Gratuite</option>
                                                     </select>
-                                                                                                    <div class="invalid-feedback">Veuillez sélectionner un type.</div>
-
+                                                                                                    
+                                                    <div class="invalid-feedback js-error">Veuillez sélectionner un type.</div>
+                                                    <?php $__errorArgs = ['type'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                        <div class="invalid-feedback laravel-error" style="display: block;"><?php echo e($message); ?></div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -144,7 +233,14 @@
                                             <div class="col-sm-10">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Dt</span>
-                                                    <input class="form-control"
+                                                    <input class="form-control  <?php $__errorArgs = ['price'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                                            type="number"
                                                            id="price"
                                                            name="price"
@@ -152,9 +248,21 @@
                                                            step="0.001"
                                                            min="0"
                                                            value="<?php echo e(session('form_data.price') ?? old('price')); ?>" />
+                                                    <div class="invalid-feedback js-error">Veuillez entrer un prix valide (ex: 50.000 ou 45.500)</div>
+                                                    <?php $__errorArgs = ['price'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                        <div class="invalid-feedback laravel-error" style="display: block;"><?php echo e($message); ?></div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                 </div>
                                                 <small class="text-muted">Format: 000.000 (3 décimales obligatoires)</small>
-                                                <div class="invalid-feedback">Veuillez entrer un prix valide (ex: 50.000 ou 45.500)</div>
+                                                
+
                                             </div>
                                         </div>
 
@@ -163,7 +271,14 @@
                                             <label class="col-sm-2 col-form-label">Catégorie <span class="text-danger">*</span></label>
                                             <div class="col-sm-10">
                                                 <div class="input-group">
-                                                    <select class="form-select select2-categorie" id="categorie_id" name="category_id" required>
+                                                    <select class="form-select form-control <?php $__errorArgs = ['category_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> select2-categorie" id="categorie_id" name="category_id" required>
                                                         <option value="" selected disabled>Choisir une catégorie</option>
                                                         <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $categorie): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                             <option value="<?php echo e($categorie->id); ?>" <?php echo e((session('form_data.category_id') == $categorie->id || old('category_id') == $categorie->id) ? 'selected' : ''); ?>>
@@ -173,8 +288,18 @@
                                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                                                     </select>
-                                                                                                            <div class="invalid-feedback">Veuillez sélectionner une catégorie valide.</div>
-
+                                                                                                            
+                                                    <div class="invalid-feedback js-error">Veuillez sélectionner une catégorie valide.</div>
+                                                    <?php $__errorArgs = ['category_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                        <div class="invalid-feedback laravel-error" style="display: block;"><?php echo e($message); ?></div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -188,7 +313,14 @@
                                                         <span class="input-group-text"><i class="fa fa-user"></i></span>
                                                     </div>
                                                     <div class="col">
-                                                        <select id="user_id" class="form-select select2-professeur" name="user_id" >
+                                                        <select id="user_id" class="form-control <?php $__errorArgs = ['user_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> form-select select2-professeur" name="user_id" >
                                                             <option value="" disabled selected>Sélectionnez un professeur</option>
                                                             <?php $__currentLoopData = $professeurs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $professeur): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                 <option value="<?php echo e($professeur->id); ?>" <?php echo e((session('form_data.user_id') == $professeur->id || old('user_id') == $professeur->id) ? 'selected' : ''); ?>>
@@ -198,8 +330,18 @@
                                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                                                         </select>
-                                                        <div class="invalid-feedback">Veuillez sélectionner un professeur valide.</div>
-
+                                                        
+                                                        <div class="invalid-feedback js-error">Veuillez sélectionner un professeur valide.</div>
+                                                        <?php $__errorArgs = ['user_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <div class="invalid-feedback laravel-error" style="display: block;"><?php echo e($message); ?></div>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -209,7 +351,14 @@
                                             <div class="col-sm-10">
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="fa fa-users"></i></span>
-                                                    <input class="form-control"
+                                                    <input class="form-control  <?php $__errorArgs = ['total_seats'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                                            type="number"
                                                            id="total_seats"
                                                            name="total_seats"
@@ -217,10 +366,22 @@
                                                            min="1"
                                                            value="<?php echo e(session('form_data.total_seats') ?? old('total_seats')); ?>"
                                                            required />
-                                                            <div class="invalid-feedback">Veuillez entrer un nombre de places valide (minimum 1).</div>
+                                                            
+                                                    <div class="invalid-feedback js-error">Veuillez entrer un nombre de places valide (minimum 1).</div>
+                                                    <?php $__errorArgs = ['total_seats'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                        <div class="invalid-feedback laravel-error" style="display: block;"><?php echo e($message); ?></div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
 
                                                 </div>
                                                 <small class="text-muted">Nombre maximum de participants</small>
+
                                             </div>
                                         </div>
 
@@ -243,11 +404,29 @@
                                                     <!-- Afficher l'interface normale d'upload pendant la création -->
                                                     <div class="input-group">
                                                         <span class="input-group-text"><i class="fa fa-image"></i></span>
-                                                        <input class="form-control" type="file" id="image" name="image" accept="image/*" required />
-                                                        <div class="invalid-feedback">Veuillez télécharger une image valide.</div>
+                                                        <input class="form-control <?php $__errorArgs = ['image'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="file" id="image" name="image" accept="image/*" required />
+                                                        
+                                                         <div class="invalid-feedback js-error">>Veuillez télécharger une image valide.</div>
+                                                        <?php $__errorArgs = ['image'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <div class="invalid-feedback laravel-error" style="display: block;"><?php echo e($message); ?></div>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
 
                                                     </div>
-                                                    <small class="text-muted">Formats acceptés: JPG, PNG, GIF. Taille max: 2Mo</small>
+                                                    <small class="text-muted">Formats acceptés: JPG,  PNG, GIF. Taille max: 2Mo</small>
                                                 <?php endif; ?>
                                             </div>
                                         </div>
@@ -327,7 +506,8 @@
 <script src="<?php echo e(asset('assets/js/dropzone/dropzone.js')); ?>"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script src="<?php echo e(asset('assets/js/MonJs/select2-init/single-select.js')); ?>"></script>
-<script src="<?php echo e(asset('assets/js/MonJs/form-validation/form-validation.js')); ?>"></script>
+
+<script src="<?php echo e(asset('assets/js/form-validation/form_validation2.js')); ?>"></script>
 <script src="<?php echo e(asset('assets/js/MonJs/formations/formation-submit.js')); ?>"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link href="<?php echo e(asset('assets/css/MonCss/SweatAlert2.css')); ?>" rel="stylesheet">

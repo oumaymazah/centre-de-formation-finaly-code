@@ -58,8 +58,12 @@
                                             <div class="col-sm-10">
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="fa fa-tag"></i></span>
-                                                    <input class="form-control" type="text" id="title" name="title" placeholder="Titre" value="{{ session('form_data.title') ?? old('title') }}" required />
-                                                                                                    <div class="invalid-feedback">Veuillez entrer un Titre valide.</div>
+                                                    <input class="form-control  @error('title') is-invalid @enderror" type="text" id="title" name="title" placeholder="Titre" value="{{ session('form_data.title') ?? old('title') }}" required />
+                                                    {{-- <div class="invalid-feedback">Veuillez entrer un Titre valide.</div> --}}
+                                                    <div class="invalid-feedback js-error">Veuillez entrer un Titre valide.</div>
+                                                    @error('title')
+                                                        <div class="invalid-feedback laravel-error" style="display: block;">{{ $message }}</div>
+                                                    @enderror
 
                                                 </div>
                                             </div>
@@ -72,9 +76,13 @@
                                                     <div class="input-group-text d-flex align-items-stretch" style="height: auto;">
                                                         <i class="fa fa-align-left align-self-center"></i>
                                                     </div>
-                                                    <textarea class="form-control" id="description" name="description" placeholder="Description" required>{{ session('form_data.description') ?? old('description') }}</textarea>
+                                                    <textarea class="form-control  @error('description') is-invalid @enderror" id="description" name="description" placeholder="Description" required>{{ session('form_data.description') ?? old('description') }}</textarea>
                                                 </div>
-                                                <div class="invalid-feedback">Veuillez entrer une description valide.</div>
+                                                {{-- <div class="invalid-feedback">Veuillez entrer une description valide.</div> --}}
+                                                <div class="invalid-feedback js-error">Veuillez entrer une description valide.</div>
+                                                @error('description')
+                                                    <div class="invalid-feedback laravel-error" style="display: block;">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
@@ -85,7 +93,7 @@
             <div class="col-md-6">
                 <div class="input-group">
                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                    <input class="form-control datepicker"
+                    <input class="form-control  @error('start_date') is-invalid @enderror datepicker"
                            type="text"
                            id="start_date"
                            name="start_date"
@@ -93,7 +101,11 @@
                            value="{{ old('start_date') }}"
                            readonly
                            required />
-                                           <div class="invalid-feedback">Veuillez sélectionner une date de début valide.</div>
+                    {{-- <div class="invalid-feedback">Veuillez sélectionner une date de début valide.</div> --}}
+                    <div class="invalid-feedback js-error">Veuillez sélectionner une date de début valide.</div>
+                    @error('title')
+                        <div class="invalid-feedback laravel-error" style="display: block;">{{ $message }}</div>
+                    @enderror
 
                 </div>
                 <small class="text-muted">Date début</small>
@@ -102,7 +114,7 @@
             <div class="col-md-6">
                 <div class="input-group">
                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                    <input class="form-control datepicker"
+                    <input class="form-control  @error('end_date') is-invalid @enderror datepicker"
                            type="text"
                            id="end_date"
                            name="end_date"
@@ -110,7 +122,11 @@
                            value="{{ old('end_date') }}"
                            readonly
                            required />
-                                           <div class="invalid-feedback">Veuillez sélectionner une date de fin valide.</div>
+                                           {{-- <div class="invalid-feedback">Veuillez sélectionner une date de fin valide.</div> --}}
+                    <div class="invalid-feedback js-error">Veuillez sélectionner une date de fin valide.</div>
+                    @error('title')
+                        <div class="invalid-feedback laravel-error" style="display: block;">{{ $message }}</div>
+                    @enderror
 
                 </div>
                 <small class="text-muted">Date fin</small>
@@ -120,32 +136,7 @@
 </div>
 
 
-{{--
-                                        <div class="mb-3 row">
-                                            <label class="col-sm-2 col-form-label">Périodes <span class="text-danger">*</span></label>
-                                            <div class="col-sm-10">
-                                                <div class="row">
-                                                    <!-- Date de début -->
-                                                    <div class="col-md-6">
-                                                        <div class="input-group">
-                                                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                                            <input class="form-control datepicker" type="text" id="start_date" name="start_date" placeholder="" value="{{ session('form_data.start_date') ? \Carbon\Carbon::parse(session('form_data.start_date'))->format('d/m/Y') : old('start_date') }}" readonly required />
-                                                        </div>
-                                                        <small class="text-muted">Date début</small>
-                                                        <div class="invalid-feedback">Veuillez sélectionner une date de début valide.</div>
-                                                    </div>
-                                                    <!-- Date de fin -->
-                                                    <div class="col-md-6">
-                                                        <div class="input-group">
-                                                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                                            <input class="form-control datepicker" type="text" id="end_date" name="end_date" placeholder="" value="{{ session('form_data.end_date') ? \Carbon\Carbon::parse(session('form_data.end_date'))->format('d/m/Y') : old('end_date') }}" readonly required />
-                                                        </div>
-                                                        <small class="text-muted">Date fin</small>
-                                                        <div class="invalid-feedback">Veuillez sélectionner une date de fin valide.</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>                              --}}
+
 
                                         <!-- Type -->
                                         <div class="mb-3 row">
@@ -153,13 +144,16 @@
                                             <div class="col-sm-10">
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="fa fa-list"></i></span>
-                                                    <select class="form-select" id="type" name="type" required>
+                                                    <select class="form-control @error('type') is-invalid @enderror form-select" id="type" name="type" required>
                                                         <option value="" selected disabled>Choisir un type</option>
                                                         <option value="payante" {{ (session('form_data.type') == 'payante' || old('type') == 'payante') ? 'selected' : '' }}>Payante</option>
                                                         <option value="gratuite" {{ (session('form_data.type') == 'gratuite' || old('type') == 'gratuite') ? 'selected' : '' }}>Gratuite</option>
                                                     </select>
-                                                                                                    <div class="invalid-feedback">Veuillez sélectionner un type.</div>
-
+                                                                                                    {{-- <div class="invalid-feedback">Veuillez sélectionner un type.</div> --}}
+                                                    <div class="invalid-feedback js-error">Veuillez sélectionner un type.</div>
+                                                    @error('type')
+                                                        <div class="invalid-feedback laravel-error" style="display: block;">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
                                         </div>
@@ -170,7 +164,7 @@
                                             <div class="col-sm-10">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Dt</span>
-                                                    <input class="form-control"
+                                                    <input class="form-control  @error('price') is-invalid @enderror"
                                                            type="number"
                                                            id="price"
                                                            name="price"
@@ -178,9 +172,14 @@
                                                            step="0.001"
                                                            min="0"
                                                            value="{{ session('form_data.price') ?? old('price') }}" />
+                                                    <div class="invalid-feedback js-error">Veuillez entrer un prix valide (ex: 50.000 ou 45.500)</div>
+                                                    @error('price')
+                                                        <div class="invalid-feedback laravel-error" style="display: block;">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                                 <small class="text-muted">Format: 000.000 (3 décimales obligatoires)</small>
-                                                <div class="invalid-feedback">Veuillez entrer un prix valide (ex: 50.000 ou 45.500)</div>
+                                                {{-- <div class="invalid-feedback">Veuillez entrer un prix valide (ex: 50.000 ou 45.500)</div> --}}
+
                                             </div>
                                         </div>
 
@@ -189,7 +188,7 @@
                                             <label class="col-sm-2 col-form-label">Catégorie <span class="text-danger">*</span></label>
                                             <div class="col-sm-10">
                                                 <div class="input-group">
-                                                    <select class="form-select select2-categorie" id="categorie_id" name="category_id" required>
+                                                    <select class="form-select form-control @error('category_id') is-invalid @enderror select2-categorie" id="categorie_id" name="category_id" required>
                                                         <option value="" selected disabled>Choisir une catégorie</option>
                                                         @foreach($categories as $categorie)
                                                             <option value="{{ $categorie->id }}" {{ (session('form_data.category_id') == $categorie->id || old('category_id') == $categorie->id) ? 'selected' : '' }}>
@@ -198,8 +197,11 @@
                                                         @endforeach
 
                                                     </select>
-                                                                                                            <div class="invalid-feedback">Veuillez sélectionner une catégorie valide.</div>
-
+                                                                                                            {{-- <div class="invalid-feedback">Veuillez sélectionner une catégorie valide.</div> --}}
+                                                    <div class="invalid-feedback js-error">Veuillez sélectionner une catégorie valide.</div>
+                                                    @error('category_id')
+                                                        <div class="invalid-feedback laravel-error" style="display: block;">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
                                         </div>
@@ -213,7 +215,7 @@
                                                         <span class="input-group-text"><i class="fa fa-user"></i></span>
                                                     </div>
                                                     <div class="col">
-                                                        <select id="user_id" class="form-select select2-professeur" name="user_id" >
+                                                        <select id="user_id" class="form-control @error('user_id') is-invalid @enderror form-select select2-professeur" name="user_id" >
                                                             <option value="" disabled selected>Sélectionnez un professeur</option>
                                                             @foreach($professeurs as $professeur)
                                                                 <option value="{{ $professeur->id }}" {{ (session('form_data.user_id') == $professeur->id || old('user_id') == $professeur->id) ? 'selected' : '' }}>
@@ -222,8 +224,11 @@
                                                             @endforeach
 
                                                         </select>
-                                                        <div class="invalid-feedback">Veuillez sélectionner un professeur valide.</div>
-
+                                                        {{-- <div class="invalid-feedback">Veuillez sélectionner un professeur valide.</div> --}}
+                                                        <div class="invalid-feedback js-error">Veuillez sélectionner un professeur valide.</div>
+                                                        @error('user_id')
+                                                            <div class="invalid-feedback laravel-error" style="display: block;">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -233,7 +238,7 @@
                                             <div class="col-sm-10">
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="fa fa-users"></i></span>
-                                                    <input class="form-control"
+                                                    <input class="form-control  @error('total_seats') is-invalid @enderror"
                                                            type="number"
                                                            id="total_seats"
                                                            name="total_seats"
@@ -241,10 +246,15 @@
                                                            min="1"
                                                            value="{{ session('form_data.total_seats') ?? old('total_seats') }}"
                                                            required />
-                                                            <div class="invalid-feedback">Veuillez entrer un nombre de places valide (minimum 1).</div>
+                                                            {{-- <div class="invalid-feedback">Veuillez entrer un nombre de places valide (minimum 1).</div> --}}
+                                                    <div class="invalid-feedback js-error">Veuillez entrer un nombre de places valide (minimum 1).</div>
+                                                    @error('total_seats')
+                                                        <div class="invalid-feedback laravel-error" style="display: block;">{{ $message }}</div>
+                                                    @enderror
 
                                                 </div>
                                                 <small class="text-muted">Nombre maximum de participants</small>
+
                                             </div>
                                         </div>
 
@@ -267,11 +277,15 @@
                                                     <!-- Afficher l'interface normale d'upload pendant la création -->
                                                     <div class="input-group">
                                                         <span class="input-group-text"><i class="fa fa-image"></i></span>
-                                                        <input class="form-control" type="file" id="image" name="image" accept="image/*" required />
-                                                        <div class="invalid-feedback">Veuillez télécharger une image valide.</div>
+                                                        <input class="form-control @error('image') is-invalid @enderror" type="file" id="image" name="image" accept="image/*" required />
+                                                        {{-- <div class="invalid-feedback">Veuillez télécharger une image valide.</div> --}}
+                                                         <div class="invalid-feedback js-error">>Veuillez télécharger une image valide.</div>
+                                                        @error('image')
+                                                            <div class="invalid-feedback laravel-error" style="display: block;">{{ $message }}</div>
+                                                        @enderror
 
                                                     </div>
-                                                    <small class="text-muted">Formats acceptés: JPG, PNG, GIF. Taille max: 2Mo</small>
+                                                    <small class="text-muted">Formats acceptés: JPG,  PNG, GIF. Taille max: 2Mo</small>
                                                 @endif
                                             </div>
                                         </div>
@@ -351,7 +365,8 @@
 <script src="{{ asset('assets/js/dropzone/dropzone.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script src="{{ asset('assets/js/MonJs/select2-init/single-select.js') }}"></script>
-<script src="{{ asset('assets/js/MonJs/form-validation/form-validation.js') }}"></script>
+{{-- <script src="{{ asset('assets/js/MonJs/form-validation/form-validation.js') }}"></script> --}}
+<script src="{{ asset('assets/js/form-validation/form_validation2.js') }}"></script>
 <script src="{{ asset('assets/js/MonJs/formations/formation-submit.js') }}"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link href="{{ asset('assets/css/MonCss/SweatAlert2.css') }}" rel="stylesheet">

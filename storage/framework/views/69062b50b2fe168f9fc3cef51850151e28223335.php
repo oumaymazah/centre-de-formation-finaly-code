@@ -9,13 +9,13 @@
 <body style="margin: 0; padding: 20px; font-family: Arial, sans-serif; background-color: #f5f7fa;">
   <div style="max-width: 900px; margin: auto; background: white; border: 1px solid #ccc; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); position: relative;">
 
-    <!-- Header -->
+
     <div style="background: #2B6ED4; color: white; padding: 40px ; text-align: center; border-top-left-radius: 8px; border-top-right-radius: 8px;">
       <h1 style="margin: 0; font-size: 32px;">CERTIFICAT DE RÉUSSITE</h1>
       <p style="font-size: 14px;">Ce document certifie l'accomplissement avec succès du programme de formation</p>
     </div>
 
-    <!-- Body -->
+
     <div style="padding: 40px 20px; text-align: center;">
       <p style="font-size: 18px;">Décerné à</p>
       <h2 style="font-size: 28px; color: #2B6ED4; margin: 20px 0;"><?php echo e($user->name); ?> <?php echo e($user->lastname); ?></h2>
@@ -42,25 +42,24 @@
       </p>
     </div>
 
-    <!-- Footer -->
-<!-- Footer using table layout -->
+
 <table style="width: 100%; margin-top: 40px; text-align: center; border-collapse: collapse;">
   <tr>
-    <!-- Directeur Pédagogique -->
+
     <td>
       <div style="border-top: 1px solid #aaa; width: 150px; margin: auto;"></div>
       <p style="font-size: 13px;">Le Directeur Pédagogique</p>
       <p style="font-weight: bold;">Anis Saidi</p>
     </td>
 
-    <!-- Formateur -->
+
     <td>
       <div style="border-top: 1px solid #aaa; width: 150px; margin: auto;"></div>
       <p style="font-size: 13px;">Le Formateur</p>
       <p style="font-weight: bold;"><?php echo e($training->user->lastname); ?> <?php echo e($training->user->name); ?></p>
     </td>
 
-    <!-- Numéro de certificat -->
+   
     <td>
       <div style="border-top: 1px solid #aaa; width: 150px; margin: auto;"></div>
       <p style="font-size: 13px;">certificate_number</p>

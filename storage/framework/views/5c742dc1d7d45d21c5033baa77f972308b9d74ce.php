@@ -245,60 +245,62 @@
 <div class="mb-3 row">
     <div class="col-12">
         <?php if($formation->status): ?>
-            <div class="publication-status text-success text-center">
+            <!-- Formation déjà publiée - Afficher seulement le statut -->
+            <div class="publication-status  text-center">
                 <i class="fa fa-check-circle"></i> Formation publiée
                 <?php if($formation->publish_date): ?>
                     le <?php echo e(\Carbon\Carbon::parse($formation->publish_date)->format('d/m/Y')); ?>
 
                 <?php endif; ?>
             </div>
-        <?php elseif($formation->publish_date): ?>
-            <div class="publication-status text-muted text-center">
-                <i class="fa fa-clock"></i> Publication programmée pour le <?php echo e(\Carbon\Carbon::parse($formation->publish_date)->format('d/m/Y')); ?>
+        <?php else: ?>
+            <!-- Formation non publiée - Afficher les options -->
+            <?php if($formation->publish_date): ?>
+                <div class="publication-status  text-center">
+                    <i class="fa fa-clock"></i> Publication programmée pour le <?php echo e(\Carbon\Carbon::parse($formation->publish_date)->format('d/m/Y')); ?>
 
+                </div>
+            <?php endif; ?>
+
+            <div class="d-flex justify-content-center mt-3">
+                <div class="form-group m-t-15 m-checkbox-inline mb-0 custom-radio-ml">
+                    <div class="radio radio-primary mx-2">
+                        <input id="publishNow" type="radio" name="publication_type" value="now"
+                            <?php echo e((old('publication_type', $formation->publish_date ? 'later' : 'now')) == 'now' ? 'checked' : ''); ?>>
+                        <label class="mb-0" for="publishNow">
+                            Publier immédiatement
+                        </label>
+                    </div>
+
+                    <div class="radio radio-primary mx-2">
+    <input id="publishLater" type="radio" name="publication_type" value="later"
+        <?php echo e((old('publication_type', 'later')) == 'later' ? 'checked' : ''); ?>>
+    <label class="mb-0" for="publishLater">
+        Programmer la publication
+    </label>
+</div>
+                </div>
+            </div>
+
+            <!-- Publication Date Container -->
+            <div id="publishDateContainer" class="mt-3 text-center"
+                style="<?php echo e((old('publication_type', $formation->publish_date ? 'later' : 'now')) == 'later' ? 'display: block;' : 'display: none;'); ?>">
+                <div class="d-flex justify-content-center">
+                    <div class="input-group" style="max-width:500px;">
+                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        <input class="form-control datepicker"
+                               type="text"
+                               id="publish_date"
+                               name="publish_date"
+                               value=""
+                               placeholder="<?php echo e($formation->publish_date ? \Carbon\Carbon::parse($formation->publish_date)->format('d/m/Y') : 'JJ/MM/AAAA'); ?>">
+                    </div>
+                </div>
+                <small class="text-muted">Sélectionnez la date de publication</small>
             </div>
         <?php endif; ?>
-
-        <div class="d-flex justify-content-center mt-3">
-            <div class="form-group m-t-15 m-checkbox-inline mb-0 custom-radio-ml">
-                <div class="radio radio-primary mx-2">
-                    <input id="publishNow" type="radio" name="publication_type" value="now"
-                        <?php echo e((old('publication_type', $formation->status ? 'now' : ($formation->publish_date ? 'later' : 'now'))) == 'now' ? 'checked' : ''); ?>>
-                    <label class="mb-0" for="publishNow">
-                        <?php echo e($formation->status ? 'Maintenir publiée' : 'Publier immédiatement'); ?>
-
-                    </label>
-                </div>
-                <div class="radio radio-primary mx-2">
-                    <input id="publishLater" type="radio" name="publication_type" value="later"
-                        <?php echo e((old('publication_type', $formation->status ? 'now' : ($formation->publish_date ? 'later' : 'now'))) == 'later' ? 'checked' : ''); ?>>
-                    <label class="mb-0" for="publishLater">
-                        <?php echo e($formation->status ? 'Dépublier' : 'Programmer la publication'); ?>
-
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <!-- Publication Date Container -->
-<div id="publishDateContainer" class="mt-3 text-center"
-    style="<?php echo e((old('publication_type', $formation->status ? 'now' : ($formation->publish_date ? 'later' : 'now'))) == 'later' ? 'display: block;' : 'display: none;'); ?>">
-    <div class="d-flex justify-content-center">
-        <div class="input-group" style="max-width:500px;">
-            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-            <input class="form-control datepicker"
-                   type="text"
-                   id="publish_date"
-                   name="publish_date"
-                   value="<?php echo e(old('publish_date', $formation->publish_date ? \Carbon\Carbon::parse($formation->publish_date)->format('d/m/Y') : \Carbon\Carbon::now()->format('d/m/Y'))); ?>"
-                   placeholder="JJ/MM/AAAA">
-        </div>
     </div>
-    <small class="text-muted">Sélectionnez la date de publication</small>
 </div>
-
-                                        <!-- Publication Section -->
-                                        
 
                                         <!-- Boutons de soumission -->
                                         <div class="row">
@@ -339,7 +341,7 @@
 
 <script src="<?php echo e(asset('assets/js/MonJs/calendar/custom-calendar.js')); ?>"></script>
 
-    <script src="https://cdn.tiny.cloud/1/kekmlqdijg5r326hw82c8zalt4qp1hl0ui3v3tim9vh1xpzv/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="https://cdn.tiny.cloud/1/ivqx4rg9mkp3j7b0kjhnttlk4jwpkp1ay6dw3twe5jjabyss/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
         // Script pour afficher le toast si un message de succès est présent
         document.addEventListener('DOMContentLoaded', function() {
@@ -349,7 +351,7 @@
         });
     </script>
 
-
+    
 
 
 <?php $__env->stopPush(); ?>
